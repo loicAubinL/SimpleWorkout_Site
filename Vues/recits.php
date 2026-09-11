@@ -1,5 +1,5 @@
 <?php
-
+// Vues/recits.php
 ob_start();
 
 $recitsAdmin = [
@@ -37,23 +37,31 @@ $recitsUtilisateur = [
     <h1><?= htmlspecialchars($titrePage ?? 'Récits Utilisateurs', ENT_QUOTES, 'UTF-8') ?></h1>
     <p>Liste des fonctionnalités attendues (User Stories) pour le projet SimpleWorkout.</p>
 
-    <h2>Récits Administrateur</h2>
-    <ul class="liste-recits">
-        <?php foreach ($recitsAdmin as $index => $recit): ?>
-            <li>
-                <strong>En tant qu'admin</strong>, je veux pouvoir <?= htmlspecialchars($recit, ENT_QUOTES, 'UTF-8') ?>
-            </li>
-        <?php endforeach; ?>
-    </ul>
+    <div class="grille-recits">
+        
+        <div class="colonne-recits">
+            <h2>Récits Administrateur</h2>
+            <ul class="liste-recits">
+                <?php foreach ($recitsAdmin as $recit): ?>
+                    <li>
+                        <strong>En tant qu'admin</strong>, je veux pouvoir <?= htmlspecialchars($recit, ENT_QUOTES, 'UTF-8') ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
 
-    <h2>Récits Utilisateur</h2>
-    <ul class="liste-recits">
-        <?php foreach ($recitsUtilisateur as $index => $recit): ?>
-            <li>
-                <strong>En tant qu'utilisateur</strong>, je veux pouvoir <?= htmlspecialchars($recit, ENT_QUOTES, 'UTF-8') ?>
-            </li>
-        <?php endforeach; ?>
-    </ul>
+        <div class="colonne-recits">
+            <h2>Récits Utilisateur</h2>
+            <ul class="liste-recits">
+                <?php foreach ($recitsUtilisateur as $recit): ?>
+                    <li>
+                        <strong>En tant qu'utilisateur</strong>, je veux pouvoir <?= htmlspecialchars($recit, ENT_QUOTES, 'UTF-8') ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+
+    </div>
 </section>
 
 <?php

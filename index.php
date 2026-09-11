@@ -13,7 +13,7 @@ require_once __DIR__ . '/Modeles/exercice-modele.php';
             afficherAccueil($pdo);
             break;
 
-        case 'exercices':
+
         case 'exercice':
             require __DIR__ . '/Controleurs/exercice-controleur.php';
             afficherExercices($pdo);

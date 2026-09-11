@@ -1,6 +1,9 @@
 <?php
 
-$titrePage = "Récits - Simple Workout";
-$descriptionRecits = "Découvre les récit de l'application Simple Workout";
+declare(strict_types=1);
 
-require __DIR__ . '/recits.php';
+function afficherRecits(): void
+{
+    $titrePage = "Récits Utilisateurs";
+    require __DIR__ . '/../Vues/recits.php';
+}
