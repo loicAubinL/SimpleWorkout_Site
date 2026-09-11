@@ -152,3 +152,23 @@ http://localhost/Projet/
 
 
 L'application est alors accessible localement.
+
+---------------------------------------------------
+
+Projet 02
+
+---------------------------------------------------
+
+1. Ajout de la configuration à la base de données
+
+2. Ajout des 3 controleurs accueil, exercice, recits
+
+3. Ajout du style.css
+
+4. Ajout de la database (schema.sql et les 10 lignes de test)
+
+5. Ajout du modele exercice qui permet d'aller chercher le Workoutsplit du jour, le workoutday et les exercices de ceux-ci
+
+6. Ajout des vues : accueil, erreur, gabarit, recits et index
+
+7. Modification de index.php a la racine par un switch case pouvant accède a plusieurs Vue
