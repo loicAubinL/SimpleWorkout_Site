@@ -1,25 +1,61 @@
-1. En tant qu'admin, je veux pouvoir accèder à tous les comptes utilisateurs afin de pouvoir les gérer.
-2. En tant qu'admin, je veux pouvoir supprimer un compte utilisateur afin de pouvoir gérer les utilisateurs.
-3. En tant qu'admin, je veux pouvoir modifier un compte utilisateur afin de pouvoir gérer les utilisateurs.
-4. En tant qu'admin, je veux pouvoir créer un compte utilisateur afin de pouvoir gérer les utilisateurs.
-5. En tant qu'admin, je veux pouvoir modifier les entrainements d'un utilisateur afin de pouvoir gérer les utilisateurs.
-6. En tant qu'admin, je veux pouvoir supprimer les entrainements d'un utilisateur afin de pouvoir gérer les utilisateurs.
-7. En tant qu'admin, je veux pouvoir créer des entrainements pour un utilisateur afin de pouvoir gérer les utilisateurs.
-8. En tant qu'admin, je veux pouvoir modifier les exercices d'un utilisateur afin de pouvoir gérer les utilisateurs.
-9. En tant qu'admin, je veux pouvoir supprimer les exercices d'un utilisateur afin de pouvoir gérer les utilisateurs.
-10. En tant qu'admin, je veux pouvoir créer des exercices pour un utilisateur afin de pouvoir gérer les utilisateurs.
-11. En tant qu'admin, je veux pouvoir accèder à tous les entrainements d'un utilisateur afin de pouvoir gérer les utilisateurs.
-12. En tant qu'admin, je veux pouvoir accèder à tous les exercices d'un utilisateur afin de pouvoir gérer les utilisateurs.
+<?php
 
-1. En tant qu'utilisateur, je veux pouvoir créer un compte afin de pouvoir utiliser l'application.
-2. En tant qu'utilisateur, je veux pouvoir me connecter à mon compte afin de pouvoir utiliser l'application.
-3. En tant qu'utilisateur, je veux pouvoir modifier mon compte afin de pouvoir gérer mes informations
-4. En tant qu'utilisateur, je veux pouvoir supprimer mon compte afin de pouvoir gérer mes informations.
-5. En tant qu'utilisateur, je veux pouvoir créer un entrainement afin de pouvoir gérer mes entrainements.
-6. En tant qu'utilisateur, je veux pouvoir modifier un entrainement afin de pouvoir gérer mes entrainements.
-7. En tant qu'utilisateur, je veux pouvoir supprimer un entrainement afin de pouvoir gérer mes entrainements.
-8. En tant qu'utilisateur, je veux pouvoir créer un exercice afin de pouvoir gérer mes exercices.
-9. En tant qu'utilisateur, je veux pouvoir modifier un exercice afin de pouvoir gérer mes exercices
-10. En tant qu'utilisateur, je veux pouvoir supprimer un exercice afin de pouvoir gérer mes exercices.
-11. En tant qu'utilisateur, je veux pouvoir accèder à tous mes entrainements afin de pouvoir gérer mes entrainements.
-12. En tant qu'utilisateur, je veux pouvoir accèder à tous mes exercices afin de pouvoir gérer mes exercices.
+ob_start();
+
+$recitsAdmin = [
+    "Accéder à tous les comptes utilisateurs afin de pouvoir les gérer.",
+    "Supprimer un compte utilisateur afin de pouvoir gérer les utilisateurs.",
+    "Modifier un compte utilisateur afin de pouvoir gérer les utilisateurs.",
+    "Créer un compte utilisateur afin de pouvoir gérer les utilisateurs.",
+    "Modifier les entraînements d'un utilisateur afin de pouvoir gérer les utilisateurs.",
+    "Supprimer les entraînements d'un utilisateur afin de pouvoir gérer les utilisateurs.",
+    "Créer des entraînements pour un utilisateur afin de pouvoir gérer les utilisateurs.",
+    "Modifier les exercices d'un utilisateur afin de pouvoir gérer les utilisateurs.",
+    "Supprimer les exercices d'un utilisateur afin de pouvoir gérer les utilisateurs.",
+    "Créer des exercices pour un utilisateur afin de pouvoir gérer les utilisateurs.",
+    "Accéder à tous les entraînements d'un utilisateur afin de pouvoir gérer les utilisateurs.",
+    "Accéder à tous les exercices d'un utilisateur afin de pouvoir gérer les utilisateurs."
+];
+
+$recitsUtilisateur = [
+    "Créer un compte afin de pouvoir utiliser l'application.",
+    "Me connecter à mon compte afin de pouvoir utiliser l'application.",
+    "Modifier mon compte afin de pouvoir gérer mes informations.",
+    "Supprimer mon compte afin de pouvoir gérer mes informations.",
+    "Créer un entraînement afin de pouvoir gérer mes entraînements.",
+    "Modifier un entraînement afin de pouvoir gérer mes entraînements.",
+    "Supprimer un entraînement afin de pouvoir gérer mes entraînements.",
+    "Créer un exercice afin de pouvoir gérer mes exercices.",
+    "Modifier un exercice afin de pouvoir gérer mes exercices.",
+    "Supprimer un exercice afin de pouvoir gérer mes exercices.",
+    "Accéder à tous mes entraînements afin de pouvoir gérer mes entraînements.",
+    "Accéder à tous mes exercices afin de pouvoir gérer mes exercices."
+];
+?>
+
+<section class="recits-container">
+    <h1><?= htmlspecialchars($titrePage ?? 'Récits Utilisateurs', ENT_QUOTES, 'UTF-8') ?></h1>
+    <p>Liste des fonctionnalités attendues (User Stories) pour le projet SimpleWorkout.</p>
+
+    <h2>Récits Administrateur</h2>
+    <ul class="liste-recits">
+        <?php foreach ($recitsAdmin as $index => $recit): ?>
+            <li>
+                <strong>En tant qu'admin</strong>, je veux pouvoir <?= htmlspecialchars($recit, ENT_QUOTES, 'UTF-8') ?>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+
+    <h2>Récits Utilisateur</h2>
+    <ul class="liste-recits">
+        <?php foreach ($recitsUtilisateur as $index => $recit): ?>
+            <li>
+                <strong>En tant qu'utilisateur</strong>, je veux pouvoir <?= htmlspecialchars($recit, ENT_QUOTES, 'UTF-8') ?>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+</section>
+
+<?php
+$contenu = ob_get_clean();
+require __DIR__ . '/Vues/gabarit.php';
