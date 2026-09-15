@@ -1,9 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 try {
     $pdo = require __DIR__ . '/config/bd.php';
-require_once __DIR__ . '/Modeles/exercice-modele.php';
+    require_once __DIR__ . '/Modeles/workout-modele.php';
 
     $action = $_GET['action'] ?? 'accueil';
 
@@ -14,9 +15,36 @@ require_once __DIR__ . '/Modeles/exercice-modele.php';
             break;
 
 
-        case 'exercice':
-            require __DIR__ . '/Controleurs/exercice-controleur.php';
-            afficherExercices($pdo);
+        case 'workout-detail':
+            require __DIR__ . '/Controleurs/workout-detail-controleur.php';
+            $id = $_GET['id'] ?? null;
+            if ($id !== null) {
+                afficherWorkoutDetail($pdo, $id);
+            } else {
+                http_response_code(404);
+                $titrePage = 'Page non trouvée';
+                $messageErreur = "Identifiant de workout manquant.";
+                require __DIR__ . '/Vues/erreur.php';
+            }
+            break;
+
+        case 'day-detail':
+            require __DIR__ . '/Controleurs/day-detail-controleur.php';
+            $id = $_GET['id'] ?? null;
+            if ($id !== null) {
+                afficherDayDetail($pdo, $id);
+            } else {
+                http_response_code(404);
+                $titrePage = 'Page non trouvée';
+                $messageErreur = "Identifiant de jour manquant.";
+                require __DIR__ . '/Vues/erreur.php';
+            }
+            break;
+
+
+        case 'workouts':
+            require __DIR__ . '/Controleurs/workout-controleur.php';
+            afficherWorkouts($pdo);
             break;
 
         case 'recits':

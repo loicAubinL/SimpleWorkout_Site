@@ -103,11 +103,19 @@ li {
     background-color: #131a24;
     border: 1px solid #1f2733;
     border-radius: 10px;
-    padding: 14px 16px;
+    padding: 0;
+    overflow: hidden;
+}
+
+li a {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 14px;
+    padding: 14px 16px;
+    width: 100%;
+    height: 100%;
+    color: inherit;
+    text-decoration: none;
 }
 
 .exercice-nom {
