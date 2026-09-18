@@ -8,11 +8,12 @@
 body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-    background-color: #0d1117;
+    background-color: #0b0f14;
     color: #e6edf3;
     line-height: 1.5;
     display: flex;
     flex-direction: column;
+    align-items: center;
     min-height: 100vh;
 }
 
@@ -20,27 +21,29 @@ body {
    2. NAVIGATION & EN-TÊTE
 -------------------------------------------------- */
 header {
-    background-color: #131a24;
-    border-bottom: 1px solid #1f2733;
+    background-color: #10151d;
+    border-bottom: 1px solid #1c2531;
     position: sticky;
     top: 0;
     z-index: 100;
+    width: 100%;
 }
 
 nav {
     display: flex;
     justify-content: center;
-    gap: 24px;
-    padding: 16px;
+    gap: 28px;
+    padding: 18px;
     max-width: 900px;
     margin: 0 auto;
 }
 
 nav a {
-    color: #9db4c9;
+    color: #8fa3b8;
     text-decoration: none;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
+    letter-spacing: 0.02em;
     transition: color 0.2s ease;
 }
 
@@ -54,27 +57,28 @@ nav a:hover {
 main {
     flex: 1;
     width: 100%;
-    max-width: 900px; /* Élargi pour accueillir les 2 colonnes */
+    max-width: 720px;
     margin: 0 auto;
-    padding: 24px 16px;
+    padding: 32px 20px;
 }
 
 h1 {
-    font-size: 22px;
-    font-weight: 600;
-    margin: 0 0 16px;
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 0 6px;
     color: #ffffff;
+    letter-spacing: -0.01em;
 }
 
 h2 {
     font-size: 18px;
     font-weight: 600;
-    margin: 24px 0 12px;
+    margin: 28px 0 14px;
     color: #4a9eff;
 }
 
 p {
-    color: #b5b5b5;
+    color: #8fa3b8;
     margin-top: 0;
 }
 
@@ -84,52 +88,190 @@ a {
 }
 
 a:hover {
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 /* --------------------------------------------------
-   4. LISTES & EXERCICES
+   4. LISTES (workouts, jours)
 -------------------------------------------------- */
 ul, ol {
     list-style: none;
-    margin: 0;
+    margin: 20px 0 0;
     padding: 0;
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-li {
+ul li {
     background-color: #131a24;
-    border: 1px solid #1f2733;
-    border-radius: 10px;
+    border: 1px solid #1c2531;
+    border-radius: 12px;
     padding: 0;
     overflow: hidden;
+    transition: border-color 0.15s ease, transform 0.1s ease;
 }
 
-li a {
+ul li:hover {
+    border-color: #2a3a4d;
+}
+
+ul li > a {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 14px 16px;
+    padding: 16px 18px;
     width: 100%;
-    height: 100%;
-    color: inherit;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+ul li > a:hover {
     text-decoration: none;
 }
 
+/* --------------------------------------------------
+   5. CARTES D'EXERCICE (accueil)
+-------------------------------------------------- */
+.carte-exercice {
+    background-color: #131a24;
+    border: 1px solid #1c2531;
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 12px;
+}
+
 .exercice-nom {
-    font-weight: 500;
+    font-weight: 600;
     color: #ffffff;
+    font-size: 15px;
 }
 
 .exercice-details {
     color: #7d8b9a;
     font-size: 13px;
+    margin-left: 6px;
 }
 
 /* --------------------------------------------------
-   5. COMPOSANTS (Badges, Récits, Messages)
+   6. FORMULAIRES
+-------------------------------------------------- */
+form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid #1c2531;
+}
+
+input[type="number"],
+input[type="text"] {
+    background-color: #0b0f14;
+    border: 1px solid #263341;
+    border-radius: 8px;
+    color: #e6edf3;
+    padding: 9px 12px;
+    font-size: 13px;
+    width: 92px;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+input[type="number"]::placeholder,
+input[type="text"]::placeholder {
+    color: #5c6b7a;
+}
+
+input[type="number"]:focus,
+input[type="text"]:focus {
+    border-color: #4a9eff;
+    box-shadow: 0 0 0 3px rgba(74, 158, 255, 0.15);
+}
+
+button {
+    background-color: #1a5cff;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 9px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+button:hover {
+    background-color: #4a9eff;
+}
+
+button.bouton-danger {
+    background-color: #d64545;
+}
+
+button.bouton-danger:hover {
+    background-color: #ef5757;
+}
+
+a.bouton-danger {
+    background-color: #d64545;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-block;
+    width: auto;
+    flex: none;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 0.15s ease;
+}
+
+a.bouton-danger:hover {
+    background-color: #ef5757;
+    text-decoration: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* --------------------------------------------------
+   7. SÉRIES ENREGISTRÉES (logged sets)
+-------------------------------------------------- */
+.serie {
+    background-color: #131a24;
+    border: 1px solid #1c2531;
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.serie-info {
+    font-size: 14px;
+    color: #e6edf3;
+}
+
+.serie-badge {
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 6px;
+    background-color: #16283d;
+    color: #4a9eff;
+    font-weight: 600;
+    margin-right: 8px;
+}
+
+/* --------------------------------------------------
+   8. COMPOSANTS (Badges, Récits, Messages)
 -------------------------------------------------- */
 .badge {
     font-size: 12px;
@@ -141,7 +283,16 @@ li a {
     font-weight: 500;
 }
 
-/* --- Grille des Récits (Côte à côte) --- */
+.message-erreur {
+    background-color: #2a1418;
+    border: 1px solid #4a1f26;
+    color: #ff9a9a;
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
 .grille-recits {
     display: flex;
     gap: 20px;
@@ -157,7 +308,7 @@ li a {
     font-size: 16px;
     margin-top: 0;
     margin-bottom: 12px;
-    border-bottom: 1px solid #1f2733;
+    border-bottom: 1px solid #1c2531;
     padding-bottom: 8px;
 }
 
@@ -165,6 +316,9 @@ li a {
     display: block;
     line-height: 1.5;
     font-size: 13px;
+    background: none;
+    border: none;
+    padding: 6px 0;
 }
 
 .liste-recits strong {
@@ -176,45 +330,58 @@ li a {
     padding: 40px 16px;
     color: #7d8b9a;
     background-color: #131a24;
-    border: 1px dashed #1f2733;
-    border-radius: 10px;
+    border: 1px dashed #1c2531;
+    border-radius: 12px;
 }
 
 /* --------------------------------------------------
-   6. PIED DE PAGE (FOOTER)
+   9. PIED DE PAGE (FOOTER)
 -------------------------------------------------- */
 footer {
     text-align: center;
-    padding: 20px 16px;
+    padding: 22px 16px;
     font-size: 13px;
-    color: #7d8b9a;
-    border-top: 1px solid #1f2733;
-    background-color: #0d1117;
+    color: #5c6b7a;
+    border-top: 1px solid #1c2531;
+    background-color: #0b0f14;
+    width: 100%;
 }
 
 /* --------------------------------------------------
-   7. ADAPTATION RESPONSIVE (Tablettes & Mobiles)
+   10. ADAPTATION RESPONSIVE
 -------------------------------------------------- */
 @media (max-width: 768px) {
     .grille-recits {
-        flex-direction: column; /* Passe l'une sous l'autre sur écran réduit */
+        flex-direction: column;
     }
 }
 
 @media (max-width: 480px) {
     main {
-        padding: 16px 12px;
+        padding: 20px 14px;
     }
 
     nav {
-        gap: 16px;
+        gap: 18px;
     }
 
     nav a {
         font-size: 13px;
     }
 
-    li {
-        padding: 12px;
+    form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    input[type="number"],
+    input[type="text"] {
+        width: 100%;
+    }
+
+    .serie {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
     }
 }

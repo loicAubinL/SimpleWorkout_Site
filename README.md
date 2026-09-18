@@ -172,3 +172,27 @@ Projet 02
 6. Ajout des vues : accueil, erreur, gabarit, recits et index
 
 7. Modification de index.php a la racine par un switch case pouvant accède a plusieurs Vue
+
+---------------------------------------------------
+
+Projet 03
+
+---------------------------------------------------
+
+1. Configuration de Xdebug (.vscode/launch.json, port 9003)
+
+2. Ajout de la table reliée logged_sets (séries réellement effectuées, liées à exercises)
+
+3. Ajout du modèle logged-sets-modele.php séparé du modèle workout
+
+4. Ajout de la page de détail d'un exercice avec sous-vue distincte pour la liste des séries
+
+5. Transformation de index.php en contrôleur frontal (toutes les actions passent par index.php?action=...)
+
+6. Ajout des codes HTTP 400, 403, 404, 405, 500 selon le cas
+
+7. Ajout de config/securite.php (session, jeton CSRF, vérification)
+
+8. Ajout du formulaire d'ajout d'une série, protégé par CSRF
+
+9. Ajout de la suppression d'une série avec page de confirmation

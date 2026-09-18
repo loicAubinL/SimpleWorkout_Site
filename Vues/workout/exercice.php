@@ -7,11 +7,13 @@ ob_start();
     <ul>
         <?php foreach ($exercices as $exercice): ?>
             <li>
-                <span class="exercice-nom"><?php echo htmlspecialchars($exercice['name'], ENT_QUOTES, 'UTF-8'); ?></span>
-                <span class="exercice-details">
-                    <?php echo htmlspecialchars((string) $exercice['target_sets'], ENT_QUOTES, 'UTF-8'); ?> séries
-                    × <?php echo htmlspecialchars($exercice['target_reps'], ENT_QUOTES, 'UTF-8'); ?> reps
-                </span>
+                <a href="index.php?action=exercice-detail&id=<?php echo htmlspecialchars($exercice['id'], ENT_QUOTES, 'UTF-8'); ?>">
+                    <span class="exercice-nom"><?php echo htmlspecialchars($exercice['name'], ENT_QUOTES, 'UTF-8'); ?></span>
+                    <span class="exercice-details">
+                        <?php echo htmlspecialchars((string) $exercice['target_sets'], ENT_QUOTES, 'UTF-8'); ?> séries
+                        × <?php echo htmlspecialchars($exercice['target_reps'], ENT_QUOTES, 'UTF-8'); ?> reps
+                    </span>
+                </a>
             </li>
         <?php endforeach; ?>
     </ul>

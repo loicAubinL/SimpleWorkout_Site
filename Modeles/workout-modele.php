@@ -37,9 +37,10 @@ function obtenirJourActif(PDO $pdo, string $splitId, int $position): ?array {
     $requete->execute(['id' => $splitId, 'position' => $position]);
     return $requete->fetch() ?: null;
 }
+
 function obtenirExercicesDuJour(PDO $pdo, string $jourId): array {
     $requete = $pdo->prepare(
-        'SELECT  workout_day_id, name, notes, sub1, sub2, target_sets, target_reps, position, created_at, rir, subs FROM exercises WHERE workout_day_id = :jourId ORDER BY position'
+        'SELECT id, workout_day_id, name, notes, sub1, sub2, target_sets, target_reps, position, created_at, rir, subs FROM exercises WHERE workout_day_id = :jourId ORDER BY position'
     );
     $requete->execute(['jourId' => $jourId]);
     return $requete->fetchAll();
@@ -66,6 +67,14 @@ function obtenirDayDetail(PDO $pdo, string $id): ?array {
     
     $requete = $pdo->prepare(
         'SELECT id, name, is_rest_day FROM workout_days WHERE id = :id'
+    );
+    $requete->execute(['id' => $id]);
+    return $requete->fetch() ?: null;
+}
+
+function obtenirExerciceParId(PDO $pdo, string $id): ?array {
+    $requete = $pdo->prepare(
+        'SELECT id, name, target_sets, target_reps FROM exercises WHERE id = :id'
     );
     $requete->execute(['id' => $id]);
     return $requete->fetch() ?: null;
