@@ -31,6 +31,7 @@ class ControleurAccueil
             }
         }
 
-        $this->vue->afficher('accueil', compact('jour', 'exercices'), 'Accueil');
+        $titrePage = $jour !== null ? 'Workout - ' . $jour['name'] : 'Accueil Workout';
+$this->vue->afficher('accueil', compact('jour', 'exercices'), $titrePage);
     }
 }

@@ -7,20 +7,26 @@ class Routeur
     private $accueil;
     private $recits;
     private $workouts;
+    private $exercices;
     private $loggedSets;
+    private $utilisateurs;
     private $erreurs;
 
     public function __construct(
         ControleurAccueil $accueil,
         ControleurRecits $recits,
         ControleurWorkout $workouts,
+        ControleurExercice $exercices,
         ControleurLoggedSet $loggedSets,
+        ControleurUtilisateur $utilisateurs,
         ControleurErreur $erreurs
     ) {
         $this->accueil = $accueil;
         $this->recits = $recits;
         $this->workouts = $workouts;
+        $this->exercices = $exercices;
         $this->loggedSets = $loggedSets;
+        $this->utilisateurs = $utilisateurs;
         $this->erreurs = $erreurs;
     }
 
@@ -29,6 +35,7 @@ class Routeur
         $action = $_GET['action'] ?? 'accueil';
 
         switch ($action) {
+            // --- Lecture ---
             case 'accueil':
                 $this->accueil->index();
                 break;
@@ -53,6 +60,17 @@ class Routeur
                 $this->loggedSets->liste($this->lireIdGet());
                 break;
 
+            // --- Récit : modifier un exercice ---
+            case 'exercice-modifier':
+                $this->exercices->formulaire($this->lireIdGet());
+                break;
+
+            case 'exercice-enregistrer':
+                $this->exigerEcriture($_POST['csrf_token'] ?? null);
+                $this->exercices->enregistrer($this->lireIdPost(), $_POST);
+                break;
+
+            // --- Séries ---
             case 'logged-set-ajouter':
                 $this->exigerEcriture($_POST['csrf_token'] ?? null);
                 $this->loggedSets->ajouter($_POST);
@@ -65,6 +83,30 @@ class Routeur
             case 'logged-set-supprimer-confirme':
                 $this->exigerEcriture($_POST['csrf_token'] ?? null);
                 $this->loggedSets->supprimer($this->lireIdPost());
+                break;
+
+            // --- Comptes ---
+            case 'connexion':
+                $this->utilisateurs->connexion();
+                break;
+
+            case 'authentifier':
+                $this->exigerEcriture($_POST['csrf_token'] ?? null);
+                $this->utilisateurs->authentifier($_POST);
+                break;
+
+            case 'inscription':
+                $this->utilisateurs->inscription();
+                break;
+
+            case 'creer-compte':
+                $this->exigerEcriture($_POST['csrf_token'] ?? null);
+                $this->utilisateurs->creerCompte($_POST);
+                break;
+
+            case 'deconnexion':
+                $this->exigerEcriture($_POST['csrf_token'] ?? null);
+                $this->utilisateurs->deconnecter();
                 break;
 
             default:
@@ -82,7 +124,6 @@ class Routeur
         return $this->validerId(filter_input(INPUT_POST, 'id'));
     }
 
-    
     private function validerId($id): string
     {
         if (!is_string($id) || !preg_match('/^[A-Za-z0-9-]{1,36}$/', $id)) {

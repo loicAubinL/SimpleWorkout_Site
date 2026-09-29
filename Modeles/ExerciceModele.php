@@ -27,8 +27,18 @@ class ExerciceModele extends Modele
     public function obtenirExerciceParId(string $id): ?array
     {
         return $this->executer(
-            'SELECT id, name, target_sets, target_reps FROM exercises WHERE id = :id',
+            'SELECT id, workout_day_id, name, notes, target_sets, target_reps FROM exercises WHERE id = :id',
             ['id' => $id]
         )->fetch() ?: null;
+    }
+
+    public function modifier(string $id, string $nom, int $series, string $reps, string $notes): void
+    {
+        $this->executer(
+            'UPDATE exercises
+             SET name = :nom, target_sets = :series, target_reps = :reps, notes = :notes
+             WHERE id = :id',
+            ['id' => $id, 'nom' => $nom, 'series' => $series, 'reps' => $reps, 'notes' => $notes]
+        );
     }
 }

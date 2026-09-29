@@ -4,7 +4,7 @@
     <ul>
         <?php foreach ($workouts as $workout): ?>
             <li>
-                <a href="index.php?action=workout-detail&id=<?= htmlspecialchars((string) $workout['id'], ENT_QUOTES, 'UTF-8') ?>">
+                <a href="workout/<?= htmlspecialchars((string) $workout['id'], ENT_QUOTES, 'UTF-8') ?>">
                     <?= htmlspecialchars($workout['name'], ENT_QUOTES, 'UTF-8') ?>
                 </a>
             </li>
