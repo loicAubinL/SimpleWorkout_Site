@@ -3,15 +3,16 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?= htmlspecialchars($titrePage ?? 'Mon Application Fitness', ENT_QUOTES, 'UTF-8') ?></title>
+    <base href="<?= htmlspecialchars(urlBase(), ENT_QUOTES, 'UTF-8') ?>">
+    <title><?= htmlspecialchars($titrePage ?: 'Mon Application Fitness', ENT_QUOTES, 'UTF-8') ?></title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <header>
         <nav>
-            <a href="index.php?action=accueil">Accueil</a>
-            <a href="index.php?action=workouts">Mes Workouts</a>
-            <a href="index.php?action=recits">Récits</a>
+            <a href="./">Accueil</a>
+            <a href="workouts">Mes Workouts</a>
+            <a href="recits">Récits</a>
         </nav>
     </header>
 

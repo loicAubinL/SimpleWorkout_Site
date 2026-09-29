@@ -2,38 +2,35 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/Controleur.php';
-require_once __DIR__ . '/../Modeles/WorkoutModele.php';
-require_once __DIR__ . '/../Modeles/ExerciceModele.php';
-
-class ControleurAccueil extends Controleur
+class ControleurAccueil
 {
-    public function __construct(
-        Vue $vue,
-        private WorkoutModele $workoutModele,
-        private ExerciceModele $exerciceModele
-    ) {
-        parent::__construct($vue);
+    private const USER_ID_TEMP = 'a1111111-1111-1111-1111-111111111111';
+
+    private $workouts;
+    private $exercices;
+    private $vue;
+
+    public function __construct(WorkoutModele $workouts, ExerciceModele $exercices, Vue $vue)
+    {
+        $this->workouts = $workouts;
+        $this->exercices = $exercices;
+        $this->vue = $vue;
     }
 
     public function index(): void
     {
         $jour = null;
         $exercices = [];
-        $split = $this->workoutModele->obtenirSplitActif(self::USER_ID_TEMP);
+        $split = $this->workouts->obtenirSplitActif(self::USER_ID_TEMP);
 
         if ($split !== null) {
-            $jour = $this->workoutModele->obtenirJourActif((string) $split['id'], (int) $split['current_position']);
+            $jour = $this->workouts->obtenirJourActif((string) $split['id'], (int) $split['current_position']);
 
             if ($jour !== null) {
-                $exercices = $this->exerciceModele->obtenirExercicesDuJour((string) $jour['id']);
+                $exercices = $this->exercices->obtenirExercicesDuJour((string) $jour['id']);
             }
         }
 
-        $this->vue->rendre('accueil', [
-            'titrePage' => 'Accueil',
-            'jour' => $jour,
-            'exercices' => $exercices,
-        ]);
+        $this->vue->afficher('accueil', compact('jour', 'exercices'), 'Accueil');
     }
 }

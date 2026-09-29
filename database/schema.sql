@@ -29,7 +29,7 @@ USE `workout_site` ;
 -- Table `workout_site`.`users`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `workout_site`.`users` (
-  `id` CHAR(36) NOT NULL DEFAULT uuid(),
+  `id` CHAR(36) NOT NULL DEFAULT (uuid()),
   `email` VARCHAR(255) NOT NULL,
   `password_hash` VARCHAR(255) NOT NULL,
   `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
@@ -43,7 +43,7 @@ DEFAULT CHARACTER SET = utf8mb4;
 -- Table `workout_site`.`workout_splits`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `workout_site`.`workout_splits` (
-  `id` CHAR(36) NOT NULL DEFAULT uuid(),
+  `id` CHAR(36) NOT NULL DEFAULT (uuid()),
   `user_id` CHAR(36) NOT NULL,
   `name` TEXT NOT NULL,
   `is_active` TINYINT(1) NOT NULL DEFAULT '0',
@@ -68,7 +68,7 @@ DEFAULT CHARACTER SET = utf8mb4;
 -- Table `workout_site`.`workout_days`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `workout_site`.`workout_days` (
-  `id` CHAR(36) NOT NULL DEFAULT uuid(),
+  `id` CHAR(36) NOT NULL DEFAULT (uuid()),
   `user_id` CHAR(36) NOT NULL,
   `day_of_week` INT NULL DEFAULT NULL,
   `name` TEXT NOT NULL,
@@ -93,7 +93,7 @@ DEFAULT CHARACTER SET = utf8mb4;
 -- Table `workout_site`.`exercices`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `workout_site`.`exercices` (
-  `id` CHAR(36) NOT NULL DEFAULT uuid(),
+  `id` CHAR(36) NOT NULL DEFAULT (uuid()),
   `workout_day_id` CHAR(36) NOT NULL,
   `name` TEXT NOT NULL,
   `notes` TEXT NULL DEFAULT NULL,
@@ -119,7 +119,7 @@ DEFAULT CHARACTER SET = utf8mb4;
 -- Table `workout_site`.`logged_sets`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `workout_site`.`logged_sets` (
-  `id` CHAR(36) NOT NULL DEFAULT uuid(),
+  `id` CHAR(36) NOT NULL DEFAULT (uuid()),
   `exercice_id` CHAR(36) NOT NULL,
   `user_id` CHAR(36) NOT NULL,
   `set_number` INT NOT NULL,
@@ -176,7 +176,7 @@ USE `simpleworkout_site` ;
 -- Table `simpleworkout_site`.`users`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `simpleworkout_site`.`users` (
-  `id` CHAR(36) NOT NULL DEFAULT uuid(),
+  `id` CHAR(36) NOT NULL DEFAULT (uuid()),
   `email` VARCHAR(255) NOT NULL,
   `password_hash` VARCHAR(255) NOT NULL,
   `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
@@ -191,7 +191,7 @@ COLLATE = utf8mb4_unicode_ci;
 -- Table `simpleworkout_site`.`workout_splits`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `simpleworkout_site`.`workout_splits` (
-  `id` CHAR(36) NOT NULL DEFAULT uuid(),
+  `id` CHAR(36) NOT NULL DEFAULT (uuid()),
   `user_id` CHAR(36) NOT NULL,
   `name` VARCHAR(255) NOT NULL,
   `is_active` TINYINT(1) NOT NULL DEFAULT '0',
@@ -218,7 +218,7 @@ COLLATE = utf8mb4_unicode_ci;
 -- Table `simpleworkout_site`.`workout_days`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `simpleworkout_site`.`workout_days` (
-  `id` CHAR(36) NOT NULL DEFAULT uuid(),
+  `id` CHAR(36) NOT NULL DEFAULT (uuid()),
   `user_id` CHAR(36) NOT NULL,
   `day_of_week` INT NULL DEFAULT NULL,
   `name` VARCHAR(255) NOT NULL,
@@ -246,7 +246,7 @@ COLLATE = utf8mb4_unicode_ci;
 -- Table `simpleworkout_site`.`exercises`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `simpleworkout_site`.`exercises` (
-  `id` CHAR(36) NOT NULL DEFAULT uuid(),
+  `id` CHAR(36) NOT NULL DEFAULT (uuid()),
   `workout_day_id` CHAR(36) NOT NULL,
   `name` VARCHAR(255) NOT NULL,
   `notes` TEXT NULL DEFAULT NULL,
@@ -273,7 +273,7 @@ COLLATE = utf8mb4_unicode_ci;
 -- Table `simpleworkout_site`.`logged_sets`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `simpleworkout_site`.`logged_sets` (
-  `id` CHAR(36) NOT NULL DEFAULT uuid(),
+  `id` CHAR(36) NOT NULL DEFAULT (uuid()),
   `exercise_id` CHAR(36) NOT NULL,
   `user_id` CHAR(36) NOT NULL,
   `set_number` INT NOT NULL,
@@ -300,7 +300,7 @@ COLLATE = utf8mb4_unicode_ci;
 -- Table `simpleworkout_site`.`profiles`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `simpleworkout_site`.`profiles` (
-  `id` CHAR(36) NOT NULL DEFAULT uuid(),
+  `id` CHAR(36) NOT NULL DEFAULT (uuid()),
   `user_id` CHAR(36) NOT NULL,
   `avatar_url` VARCHAR(255) NULL DEFAULT NULL,
   `language` VARCHAR(10) NOT NULL DEFAULT 'fr',
@@ -320,7 +320,7 @@ COLLATE = utf8mb4_unicode_ci;
 -- Table `simpleworkout_site`.`user_progress`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `simpleworkout_site`.`user_progress` (
-  `id` CHAR(36) NOT NULL DEFAULT uuid(),
+  `id` CHAR(36) NOT NULL DEFAULT (uuid()),
   `user_id` CHAR(36) NOT NULL,
   `current_position` INT NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),

@@ -2,12 +2,17 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/Controleur.php';
-
-class ControleurRecits extends Controleur
+class ControleurRecits
 {
+    private $vue;
+
+    public function __construct(Vue $vue)
+    {
+        $this->vue = $vue;
+    }
+
     public function index(): void
     {
-        $this->vue->rendre('recits', ['titrePage' => 'Récits Utilisateurs']);
+        $this->vue->afficher('recits', [], 'Récits Utilisateurs');
     }
 }

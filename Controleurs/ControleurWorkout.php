@@ -2,57 +2,57 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/Controleur.php';
-require_once __DIR__ . '/../Modeles/WorkoutModele.php';
-require_once __DIR__ . '/../Modeles/ExerciceModele.php';
-
-class ControleurWorkout extends Controleur
+class ControleurWorkout
 {
-    public function __construct(
-        Vue $vue,
-        private WorkoutModele $workoutModele,
-        private ExerciceModele $exerciceModele
-    ) {
-        parent::__construct($vue);
+    private const USER_ID_TEMP = 'a1111111-1111-1111-1111-111111111111';
+
+    private $workouts;
+    private $exercices;
+    private $vue;
+    private $erreurs;
+
+    public function __construct(WorkoutModele $workouts, ExerciceModele $exercices, Vue $vue, ControleurErreur $erreurs)
+    {
+        $this->workouts = $workouts;
+        $this->exercices = $exercices;
+        $this->vue = $vue;
+        $this->erreurs = $erreurs;
     }
 
     public function liste(): void
     {
-        $this->vue->rendre('workout/liste', [
-            'titrePage' => 'Mes Workouts',
-            'workouts' => $this->workoutModele->obtenirWorkouts(self::USER_ID_TEMP),
-        ]);
+        $this->vue->afficher('workout/liste', [
+            'workouts' => $this->workouts->obtenirWorkouts(self::USER_ID_TEMP),
+        ], 'Mes Workouts');
     }
 
-    public function detail(string $workoutId): void
+    public function detail(string $id): void
     {
-        $workout = $this->workoutModele->obtenirWorkoutDetail($workoutId);
+        $workout = $this->workouts->obtenirWorkoutDetail($id);
 
         if ($workout === null) {
-            $this->erreur(404, 'Workout non trouvé', "Le workout demandé n'existe pas.");
+            $this->erreurs->afficher('Workout introuvable.', 404);
             return;
         }
 
-        $this->vue->rendre('workout/detail', [
-            'titrePage' => $workout['name'],
+        $this->vue->afficher('workout/detail', [
             'workout' => $workout,
-            'jours' => $this->workoutModele->obtenirJoursDuWorkout($workoutId),
-        ]);
+            'jours' => $this->workouts->obtenirJoursDuWorkout($id),
+        ], $workout['name']);
     }
 
-    public function jour(string $jourId): void
+    public function jour(string $id): void
     {
-        $jour = $this->workoutModele->obtenirDayDetail($jourId);
+        $jour = $this->workouts->obtenirDayDetail($id);
 
         if ($jour === null) {
-            $this->erreur(404, 'Jour non trouvé', "Le jour demandé n'existe pas.");
+            $this->erreurs->afficher('Jour introuvable.', 404);
             return;
         }
 
-        $this->vue->rendre('jour/detail', [
-            'titrePage' => $jour['name'],
+        $this->vue->afficher('jour/detail', [
             'jour' => $jour,
-            'exercices' => $this->exerciceModele->obtenirExercicesDuJour($jourId),
-        ]);
+            'exercices' => $this->exercices->obtenirExercicesDuJour($id),
+        ], $jour['name']);
     }
 }

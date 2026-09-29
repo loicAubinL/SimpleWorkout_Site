@@ -2,96 +2,81 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/Controleur.php';
-require_once __DIR__ . '/../Modeles/ExerciceModele.php';
-require_once __DIR__ . '/../Modeles/LoggedSetModele.php';
-
-class ControleurLoggedSet extends Controleur
+class ControleurLoggedSet
 {
-    public function __construct(
-        Vue $vue,
-        private ExerciceModele $exerciceModele,
-        private LoggedSetModele $loggedSetModele
-    ) {
-        parent::__construct($vue);
+    private const USER_ID_TEMP = 'a1111111-1111-1111-1111-111111111111';
+
+    private $exercices;
+    private $loggedSets;
+    private $vue;
+    private $erreurs;
+
+    public function __construct(ExerciceModele $exercices, LoggedSetModele $loggedSets, Vue $vue, ControleurErreur $erreurs)
+    {
+        $this->exercices = $exercices;
+        $this->loggedSets = $loggedSets;
+        $this->vue = $vue;
+        $this->erreurs = $erreurs;
     }
 
     public function liste(string $exerciceId): void
     {
-        $exercice = $this->exerciceModele->obtenirExerciceParId($exerciceId);
+        $exercice = $this->exercices->obtenirExerciceParId($exerciceId);
 
         if ($exercice === null) {
-            $this->erreur(404, 'Exercice non trouvé', "L'exercice demandé n'existe pas.");
+            $this->erreurs->afficher('Exercice introuvable.', 404);
             return;
         }
 
-        $this->vue->rendre('exercice/detail', [
-            'titrePage' => $exercice['name'],
+        $this->vue->afficher('exercice/detail', [
             'exercice' => $exercice,
-            'loggedSets' => $this->loggedSetModele->obtenirLoggedSetsParExercice($exerciceId),
-        ]);
+            'loggedSets' => $this->loggedSets->obtenirLoggedSetsParExercice($exerciceId),
+        ], $exercice['name']);
     }
 
-    public function ajouter(): void
+    public function ajouter(array $donnees): void
     {
-        $exerciceId = trim($_POST['exercise_id'] ?? '');
-        $setNumber = trim($_POST['set_number'] ?? '');
-        $weight = trim($_POST['weight'] ?? '');
-        $reps = trim($_POST['reps'] ?? '');
+        $exerciceId = trim((string) ($donnees['exercise_id'] ?? ''));
+        $setNumber = trim((string) ($donnees['set_number'] ?? ''));
+        $weight = trim((string) ($donnees['weight'] ?? ''));
+        $reps = trim((string) ($donnees['reps'] ?? ''));
 
         if ($exerciceId === '' || $setNumber === '' || $weight === '' || $reps === '') {
             $_SESSION['erreur_formulaire'] = 'Tous les champs sont requis.';
-            $this->rediriger('index.php?action=accueil');
+            rediriger();
         }
 
-        if ($this->exerciceModele->obtenirExerciceParId($exerciceId) === null) {
-            $this->erreur(404, 'Exercice introuvable', "L'exercice concerné n'existe pas.");
+        if ($this->exercices->obtenirExerciceParId($exerciceId) === null) {
+            $this->erreurs->afficher('Exercice introuvable.', 404);
             return;
         }
 
-        $this->loggedSetModele->ajouterLoggedSet(
-            $exerciceId,
-            self::USER_ID_TEMP,
-            (int) $setNumber,
-            (float) $weight,
-            (int) $reps
-        );
-
-        $this->rediriger('index.php?action=accueil');
+        $this->loggedSets->ajouterLoggedSet($exerciceId, self::USER_ID_TEMP, (int) $setNumber, (float) $weight, (int) $reps);
+        rediriger();
     }
 
     public function confirmerSuppression(string $id): void
     {
-        $set = $this->loggedSetModele->obtenirLoggedSetParId($id);
+        $set = $this->loggedSets->obtenirLoggedSetParId($id);
 
         if ($set === null) {
-            $this->erreur(404, 'Série introuvable', "Cette série n'existe pas ou a déjà été supprimée.");
+            $this->erreurs->afficher("Cette série n'existe pas ou a déjà été supprimée.", 404);
             return;
         }
 
-        $this->vue->rendre('logged-set/confirmer-suppression', [
-            'titrePage' => 'Supprimer une série',
-            'set' => $set,
-        ]);
+        $this->vue->afficher('logged-set/confirmer-suppression', ['set' => $set], 'Supprimer une série');
     }
 
-    public function supprimer(): void
+    public function supprimer(string $id): void
     {
-        $id = trim($_POST['id'] ?? '');
-
-        if ($id === '') {
-            $this->erreur(400, 'Identifiant manquant', 'Aucun identifiant fourni.');
-            return;
-        }
-
-        $set = $this->loggedSetModele->obtenirLoggedSetParId($id);
+        $set = $this->loggedSets->obtenirLoggedSetParId($id);
 
         if ($set === null) {
-            $this->erreur(404, 'Série introuvable', "Cette série n'existe pas ou a déjà été supprimée.");
+            $this->erreurs->afficher("Cette série n'existe pas ou a déjà été supprimée.", 404);
             return;
         }
 
-        $this->loggedSetModele->supprimerLoggedSet($id);
-        $this->rediriger('index.php?action=exercice-detail&id=' . urlencode((string) $set['exercise_id']));
+        $this->loggedSets->supprimerLoggedSet($id);
+        rediriger('exercice/' . urlencode((string) $set['exercise_id']));
     }
 }
