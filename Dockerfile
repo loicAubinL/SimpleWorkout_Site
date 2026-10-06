@@ -11,5 +11,8 @@ COPY docker/apache-vhost.conf /etc/apache2/sites-available/000-default.conf
 WORKDIR /var/www/html
 COPY . .
 
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader \
+    && chown -R www-data:www-data storage bootstrap/cache
+
 EXPOSE 80
 CMD ["apache2-foreground"]
