@@ -31,6 +31,8 @@ docker compose exec app php artisan migrate
 
 - Site : http://localhost:8080
 - MySQL (Workbench) : `127.0.0.1:3307`, identifiants de `.env`
+    > Dans `.env`, garder `DB_HOST=db` et `DB_PORT=3306` : c'est le port interne au réseau Docker.
+    > Le port `3307` sert seulement à se connecter depuis l'hôte (Workbench).
 - État des migrations : `docker compose exec app php artisan migrate:status`
 
 ## Arrêter et redémarrer
