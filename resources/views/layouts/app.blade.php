@@ -12,6 +12,7 @@
     <header>
         <nav>
             <a href="{{ route('workout-splits.index') }}">Mes workouts</a>
+            <a href="{{ route('recits') }}">Récits</a>
         </nav>
     </header>
 
