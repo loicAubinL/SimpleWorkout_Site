@@ -1,25 +1,26 @@
-<!doctype html>
-<html lang="fr">
+@extends('layouts.app')
 
-<head>
-    <meta charset="utf-8">
-    <title>Mes workouts</title>
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-</head>
+@section('title', 'Mes workouts')
 
-<body>
-    <h1>Mes workouts</h1>
+@section('content')
+<h1>Mes workouts</h1>
+<a href="{{ route('workout-splits.create') }}" class="bouton">+ Créer un workout</a>
+@if ($splits->isEmpty())
+<p class="etat-vide">Aucun workout pour l'instant.</p>
+@else
+<ul>
+    @foreach ($splits as $split)
+    <li>
+        <a href="{{ route('workout-splits.show', $split) }}">
+            {{ $split->name }}
+            <span class="badge">
+                {{ $split->workout_days_count }} jour(s){{ $split->is_active ? ' · Actif' : '' }}
+            </span>
+        </a>
+    </li>
+    @endforeach
+</ul>
+@endif
 
-    @forelse ($splits as $split)
-    <article>
-        <h2><a href="{{ route('workout-splits.show', $split) }}">{{ $split->name }}</a></h2>
-        <p>{{ $split->workout_days_count }} jour(s){{ $split->is_active ? ' · Actif' : '' }}</p>
-    </article>
-    @empty
-    <p>Aucun workout pour l'instant.</p>
-    @endforelse
-
-    {{ $splits->links() }}
-</body>
-
-</html>
+{{ $splits->links('pagination::simple-default') }}
+@endsection

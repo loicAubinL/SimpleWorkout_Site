@@ -1,26 +1,29 @@
-<!doctype html>
-<html lang="fr">
+@extends('layouts.app')
 
-<head>
-    <meta charset="utf-8">
-    <title>{{ $split->name }}</title>
-</head>
+@section('title', $split->name)
 
-<body>
-    <p><a href="{{ route('workout-splits.index') }}">← Mes workouts</a></p>
+@section('content')
+<p><a href="{{ route('workout-splits.index') }}">← Mes workouts</a></p>
 
-    <h1>{{ $split->name }}</h1>
-    <p>{{ $split->is_active ? 'Actif' : 'Inactif' }}</p>
+<h1>{{ $split->name }}</h1>
+<p><span class="badge">{{ $split->is_active ? 'Actif' : 'Inactif' }}</span></p>
 
-    <h2>Jours</h2>
-    @forelse ($split->workoutDays as $day)
-    <article>
-        <h3>{{ $day->name }}</h3>
-        <p>{{ $day->is_rest_day ? 'Jour de repos' : 'Entraînement' }}</p>
-    </article>
-    @empty
-    <p>Aucun jour dans ce workout.</p>
-    @endforelse
-</body>
+<a href="{{ route('workout-splits.edit', $split) }}" class="bouton">Modifier</a>
 
-</html>
+<form method="post" action="{{ route('workout-splits.destroy', $split) }}"
+    onsubmit="return confirm('Supprimer ce workout et tous ses jours ?')">
+    @csrf
+    @method('DELETE')
+    <button type="submit" class="bouton-danger">Supprimer</button>
+</form>
+
+<h2>Jours</h2>
+@forelse ($split->workoutDays as $day)
+<div class="carte-exercice">
+    <span class="exercice-nom">{{ $day->name }}</span>
+    <span class="exercice-details">· {{ $day->is_rest_day ? 'Jour de repos' : 'Entraînement' }}</span>
+</div>
+@empty
+<p class="etat-vide">Aucun jour dans ce workout.</p>
+@endforelse
+@endsection
