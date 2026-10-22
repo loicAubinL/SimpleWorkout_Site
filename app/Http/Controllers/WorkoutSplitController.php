@@ -39,12 +39,20 @@ class WorkoutSplitController extends Controller
      */
     public function store(EnregistrerWorkoutSplitRequest $request): RedirectResponse
     {
-        $split = $this->utilisateurCourant()->workoutSplits()->create($request->validated());
+        $donnees = $request->validated();
+        $user = $this->utilisateurCourant();
+
+        $split = DB::transaction(function () use ($user, $donnees) {
+            if ($donnees['is_active']) {
+                $user->workoutSplits()->update(['is_active' => false]);
+            }
+
+            return $user->workoutSplits()->create($donnees);
+        });
 
         return redirect()->route('workout-splits.show', $split)
-            ->with('status', 'Workout crée.');
+            ->with('status', 'Workout créé.');
     }
-
     /**
      * Display the specified resource.
      */
@@ -72,13 +80,21 @@ class WorkoutSplitController extends Controller
     public function update(EnregistrerWorkoutSplitRequest $request, WorkoutSplit $workoutSplit): RedirectResponse
     {
         $this->verifierProprietaire($workoutSplit);
+        $donnees = $request->validated();
 
-        $workoutSplit->update($request->validated());
+        DB::transaction(function () use ($workoutSplit, $donnees) {
+            if ($donnees['is_active']) {
+                $workoutSplit->user->workoutSplits()
+                    ->whereKeyNot($workoutSplit->id)
+                    ->update(['is_active' => false]);
+            }
+
+            $workoutSplit->update($donnees);
+        });
 
         return redirect()->route('workout-splits.show', $workoutSplit)
             ->with('status', 'Workout modifié.');
     }
-
     /**
      * Remove the specified resource from storage.
      */
