@@ -35,3 +35,39 @@ En tant qu'utilisateur, je veux pouvoir :
 - supprimer un exercice afin de pouvoir gérer mes exercices;
 - accéder à tous mes entraînements afin de pouvoir gérer mes entraînements;
 - accéder à tous mes exercices afin de pouvoir gérer mes exercices.
+
+## Récits réalisés en Laravel
+
+### ✅ Complété — Accéder à tous mes entraînements
+
+En tant qu'utilisateur, je veux accéder à tous mes entraînements afin de pouvoir les gérer.
+
+- La liste affiche seulement mes workouts, 10 par page.
+- Chaque workout affiche son nombre de jours et s'il est actif.
+- Le détail d'un workout affiche ses jours ; un workout sans jour affiche un message.
+- Un workout d'un autre utilisateur ou inexistant donne une erreur 404.
+
+### ✅ Complété — Créer un entraînement
+
+En tant qu'utilisateur, je veux créer un entraînement afin de pouvoir gérer mes entraînements.
+
+- Le nom est obligatoire (255 caractères maximum).
+- En cas d'erreur, un message s'affiche et la saisie est conservée.
+- Après la création, je suis redirigé vers le détail avec un message de confirmation.
+- Un seul workout peut être actif à la fois.
+
+### ✅ Complété — Modifier un entraînement
+
+En tant qu'utilisateur, je veux modifier un entraînement afin de pouvoir gérer mes entraînements.
+
+- Le formulaire est prérempli avec les valeurs actuelles.
+- Les mêmes règles de validation que la création s'appliquent.
+- Activer un workout désactive les autres (transaction).
+
+### ✅ Complété — Supprimer un entraînement
+
+En tant qu'utilisateur, je veux supprimer un entraînement afin de pouvoir gérer mes entraînements.
+
+- La suppression passe par un formulaire (méthode DELETE), jamais par un lien.
+- Les jours du workout sont supprimés avec lui.
+- Je suis redirigé vers la liste avec un message de confirmation.

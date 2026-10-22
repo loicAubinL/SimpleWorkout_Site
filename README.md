@@ -47,3 +47,26 @@ docker compose up -d
 ## Récits
 
 Voir [docs/recits.md](docs/recits.md).
+
+## Données de démonstration
+
+Sur une base locale jetable (efface toutes les données) :
+
+```powershell
+docker compose exec app php artisan migrate:fresh --seed
+```
+
+Crée un utilisateur démo avec 13 workouts (dont un sans jour) et un workout appartenant à un autre utilisateur (invisible).
+
+## Routes principales
+
+| Méthode | Adresse                     | Action                              |
+| ------- | --------------------------- | ----------------------------------- |
+| GET     | `/`                         | Redirige vers la liste des workouts |
+| GET     | `/workout-splits`           | Liste paginée                       |
+| GET     | `/workout-splits/create`    | Formulaire de création              |
+| POST    | `/workout-splits`           | Création                            |
+| GET     | `/workout-splits/{id}`      | Détail                              |
+| GET     | `/workout-splits/{id}/edit` | Formulaire de modification          |
+| PATCH   | `/workout-splits/{id}`      | Modification                        |
+| DELETE  | `/workout-splits/{id}`      | Suppression                         |
