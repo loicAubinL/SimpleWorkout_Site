@@ -1,0 +1,35 @@
+{
+  "nom": "Upper Lower",
+  "version": 1,
+  "unite": "kg",
+  "jours": [
+    {
+      "nom": "Upper",
+      "jour_semaine": 1,
+      "repos": false,
+      "exercices": [
+        { "nom": "Développé couché", "series": 4, "repetitions": "6-8", "rir": 2 },
+        { "nom": "Rowing haltère", "series": 4, "repetitions": "8-10", "rir": 2 },
+        { "nom": "Développé militaire haltères", "series": 3, "repetitions": "8-10", "rir": 1 },
+        { "nom": "Tirage poitrine poulie", "series": 3, "repetitions": "10-12", "rir": 1 }
+      ]
+    },
+    {
+      "nom": "Lower",
+      "jour_semaine": 2,
+      "repos": false,
+      "exercices": [
+        { "nom": "Squat", "series": 4, "repetitions": "6-8", "rir": 2 },
+        { "nom": "Soulevé de terre roumain", "series": 3, "repetitions": "8-10", "rir": 2 },
+        { "nom": "Fentes bulgares", "series": 3, "repetitions": "10-12", "rir": 1 },
+        { "nom": "Mollets assis", "series": 4, "repetitions": "12-15", "rir": 1 }
+      ]
+    },
+    {
+      "nom": "Repos",
+      "jour_semaine": 3,
+      "repos": true,
+      "exercices": []
+    }
+  ]
+}

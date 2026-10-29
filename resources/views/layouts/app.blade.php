@@ -1,18 +1,30 @@
 <!doctype html>
-<html lang="fr">
+<html lang="{{ app()->getLocale() }}">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', 'Mon Application Workout')</title>
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <title>@yield('title', __('interface.footer'))</title>
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}?v={{ filemtime(public_path('css/app.css')) }}">
+    @stack('scripts')
 </head>
 
 <body>
     <header>
         <nav>
-            <a href="{{ route('workout-splits.index') }}">Mes workouts</a>
-            <a href="{{ route('recits') }}">Récits</a>
+            <a href="{{ route('accueil') }}">{{ __('interface.nav_home') }}</a>
+            <a href="{{ route('workout-splits.index') }}">{{ __('interface.nav_workouts') }}</a>
+            <a href="{{ route('recits') }}">{{ __('interface.nav_stories') }}</a>
+
+            <form method="post" action="{{ route('locale.update') }}" class="choix-langue">
+                @csrf
+                <label for="locale">{{ __('interface.language') }}</label>
+                <select id="locale" name="locale" onchange="this.form.submit()">
+                    <option value="fr" @selected(app()->getLocale() === 'fr')>Français</option>
+                    <option value="en" @selected(app()->getLocale() === 'en')>English</option>
+                </select>
+                <noscript><button type="submit">{{ __('interface.apply') }}</button></noscript>
+            </form>
         </nav>
     </header>
 
@@ -24,7 +36,7 @@
     </main>
 
     <footer>
-        <p>&copy; {{ date('Y') }} - Mon Application Workout</p>
+        <p>&copy; {{ date('Y') }} - {{ __('interface.footer') }}</p>
     </footer>
 </body>
 

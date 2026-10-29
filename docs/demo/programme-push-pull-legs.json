@@ -1,0 +1,49 @@
+{
+  "nom": "Push Pull Legs",
+  "version": 1,
+  "unite": "kg",
+  "jours": [
+    {
+      "nom": "Push",
+      "jour_semaine": 1,
+      "repos": false,
+      "exercices": [
+        { "nom": "Développé couché", "series": 4, "repetitions": "6-8", "rir": 2 },
+        { "nom": "Développé militaire", "series": 3, "repetitions": "8-10", "rir": 2 },
+        { "nom": "Développé incliné haltères", "series": 3, "repetitions": "10-12", "rir": 1 },
+        { "nom": "Élévations latérales", "series": 3, "repetitions": "12-15", "rir": 1 },
+        { "nom": "Extensions triceps poulie", "series": 3, "repetitions": "10-12", "rir": 1 }
+      ]
+    },
+    {
+      "nom": "Pull",
+      "jour_semaine": 2,
+      "repos": false,
+      "exercices": [
+        { "nom": "Tractions", "series": 4, "repetitions": "6-8", "rir": 2 },
+        { "nom": "Rowing barre", "series": 3, "repetitions": "8-10", "rir": 2 },
+        { "nom": "Tirage poitrine poulie", "series": 3, "repetitions": "10-12", "rir": 1 },
+        { "nom": "Face pull", "series": 3, "repetitions": "12-15", "rir": 1 },
+        { "nom": "Curl haltères", "series": 3, "repetitions": "10-12", "rir": 1 }
+      ]
+    },
+    {
+      "nom": "Legs",
+      "jour_semaine": 3,
+      "repos": false,
+      "exercices": [
+        { "nom": "Squat", "series": 4, "repetitions": "6-8", "rir": 2 },
+        { "nom": "Soulevé de terre roumain", "series": 3, "repetitions": "8-10", "rir": 2 },
+        { "nom": "Presse à cuisses", "series": 3, "repetitions": "10-12", "rir": 1 },
+        { "nom": "Leg curl", "series": 3, "repetitions": "10-12", "rir": 1 },
+        { "nom": "Mollets debout", "series": 4, "repetitions": "12-15", "rir": 1 }
+      ]
+    },
+    {
+      "nom": "Repos",
+      "jour_semaine": 4,
+      "repos": true,
+      "exercices": []
+    }
+  ]
+}
