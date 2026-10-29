@@ -1,5 +1,25 @@
+/* ==================================================
+   SimpleWorkout — public/css/app.css
+   1.  Base
+   2.  Navigation et en-tête
+   3.  Contenu principal
+   4.  Listes
+   5.  Cartes (jours, exercices)
+   6.  Formulaires
+   7.  Boutons
+   8.  Fichier programme
+   9.  Recherche
+   10. Pagination
+   11. Composants (badges, messages, états)
+   12. Récits
+   13. Séries enregistrées
+   14. Pages connexion / inscription
+   15. Pied de page
+   16. Petit écran
+================================================== */
+
 /* --------------------------------------------------
-   1. REINITIALISATION & BASE
+   1. BASE
 -------------------------------------------------- */
 * {
     box-sizing: border-box;
@@ -19,7 +39,7 @@ body {
 }
 
 /* --------------------------------------------------
-   2. NAVIGATION & EN-TÊTE
+   2. NAVIGATION ET EN-TÊTE
 -------------------------------------------------- */
 header {
     background-color: #10151d;
@@ -62,7 +82,7 @@ nav a:hover {
     border-left: 1px solid #263341;
 }
 
-/* Le formulaire de déconnexion ne doit pas hériter du style des formulaires */
+/* Les formulaires du menu ne doivent pas hériter du style des formulaires */
 nav form.nav-deconnexion {
     display: inline-flex;
     margin: 0 0 0 -16px;
@@ -85,8 +105,47 @@ nav form.nav-deconnexion button:hover {
     color: #ff9a9a;
 }
 
+/* Choix de langue */
+nav form.choix-langue {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    padding: 0 0 0 20px;
+    border: none;
+    border-left: 1px solid #263341;
+}
+
+nav form.choix-langue label {
+    color: #8fa3b8;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+nav form.choix-langue select {
+    color-scheme: dark;
+    cursor: pointer;
+    background-color: #0b0f14;
+    border: 1px solid #263341;
+    border-radius: 8px;
+    color: #e6edf3;
+    padding: 6px 8px;
+    font-size: 13px;
+}
+
+nav form.choix-langue select option {
+    background-color: #10151d;
+    color: #e6edf3;
+}
+
+nav form.choix-langue button {
+    padding: 6px 12px;
+    font-size: 13px;
+}
+
 /* --------------------------------------------------
-   3. CONTENU PRINCIPAL (MAIN)
+   3. CONTENU PRINCIPAL
 -------------------------------------------------- */
 main {
     flex: 1;
@@ -122,7 +181,7 @@ a {
 }
 
 /* --------------------------------------------------
-   4. LISTES (workouts, jours)
+   4. LISTES
 -------------------------------------------------- */
 ul,
 ol {
@@ -153,6 +212,7 @@ ul li > a {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 12px;
     padding: 16px 18px;
     width: 100%;
     color: #ffffff;
@@ -162,7 +222,7 @@ ul li > a {
 }
 
 /* --------------------------------------------------
-   5. CARTES D'EXERCICE (accueil)
+   5. CARTES (jours, exercices)
 -------------------------------------------------- */
 .carte-exercice {
     background-color: #131a24;
@@ -233,7 +293,7 @@ textarea[aria-invalid="true"] {
     border-color: #d64545;
 }
 
-/* Formulaires pleine page : modifier, connexion, inscription */
+/* Formulaires pleine page : création, modification, connexion */
 form.formulaire {
     flex-direction: column;
     align-items: stretch;
@@ -280,6 +340,28 @@ form.formulaire .actions {
     margin-top: 16px;
 }
 
+/* Case à cocher sur une ligne */
+form.formulaire label.case-a-cocher {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+form.formulaire label.case-a-cocher input {
+    width: auto;
+    margin: 0;
+}
+
+.aide {
+    margin: 2px 0 0;
+    font-size: 12px;
+    color: #5c6b7a;
+}
+
+/* --------------------------------------------------
+   7. BOUTONS
+-------------------------------------------------- */
 button {
     background-color: #1a5cff;
     color: #ffffff;
@@ -304,6 +386,13 @@ button.bouton-danger:hover {
     background-color: #ef5757;
 }
 
+button.bouton-plein {
+    width: 100%;
+    margin-top: 18px;
+    padding: 12px;
+    font-size: 14px;
+}
+
 /* Liens qui ressemblent à des boutons */
 a.bouton {
     display: inline-block;
@@ -324,16 +413,16 @@ a.bouton:focus-visible {
 }
 
 a.bouton-danger {
+    display: inline-block;
+    flex: none;
+    width: auto;
+    padding: 8px 16px;
     background-color: #d64545;
     color: #ffffff;
     border: none;
     border-radius: 8px;
-    padding: 8px 16px;
     font-size: 13px;
     font-weight: 600;
-    display: inline-block;
-    width: auto;
-    flex: none;
     white-space: nowrap;
     transition: background-color 0.15s ease;
 }
@@ -343,335 +432,54 @@ a.bouton-danger:hover {
 }
 
 /* --------------------------------------------------
-   7. SÉRIES ENREGISTRÉES (logged sets)
+   8. FICHIER PROGRAMME
 -------------------------------------------------- */
-.serie {
-    background-color: #131a24;
-    border: 1px solid #1c2531;
-    border-radius: 12px;
-    padding: 14px 18px;
-    margin-bottom: 10px;
+/* Champ fichier personnalisé (texte traduit au lieu du bouton natif) */
+.champ-fichier {
+    position: relative;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
-.serie-info {
-    font-size: 14px;
-    color: #e6edf3;
+/* Caché visuellement, mais toujours accessible au clavier */
+.champ-fichier input[type="file"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
 }
 
-.serie-badge {
-    font-size: 12px;
-    padding: 3px 10px;
-    border-radius: 6px;
-    background-color: #16283d;
-    color: #4a9eff;
-    font-weight: 600;
-    margin-right: 8px;
-}
-
-/* --------------------------------------------------
-   8. COMPOSANTS (Badges, Récits, Messages)
--------------------------------------------------- */
-.badge {
-    font-size: 12px;
-    padding: 4px 10px;
-    border-radius: 6px;
-    background-color: #16283d;
-    color: #4a9eff;
-    white-space: nowrap;
-    font-weight: 500;
-}
-
-.message-erreur {
-    background-color: #2a1418;
-    border: 1px solid #4a1f26;
-    color: #ff9a9a;
-    border-radius: 10px;
-    padding: 12px 16px;
-    margin-bottom: 20px;
-    font-size: 14px;
-}
-
-.grille-recits {
-    display: flex;
-    gap: 20px;
-    align-items: flex-start;
-}
-
-.colonne-recits {
-    flex: 1;
-    min-width: 0;
-}
-
-.colonne-recits h2 {
-    font-size: 16px;
-    margin-top: 0;
-    margin-bottom: 12px;
-    border-bottom: 1px solid #1c2531;
-    padding-bottom: 8px;
-}
-
-.liste-recits li {
-    display: block;
-    line-height: 1.5;
-    font-size: 13px;
-    background: none;
-    border: none;
-    padding: 6px 0;
-}
-
-.liste-recits strong {
-    color: #4a9eff;
-}
-
-/* Plus spécifique que .liste-recits li, sinon le fond et la bordure sont écrasés */
-.liste-recits li.recit-complete {
-    background-color: rgba(46, 160, 67, 0.1);
-    border: 1px solid rgba(46, 160, 67, 0.35);
-    border-left: 4px solid #2ea043;
-    border-radius: 8px;
-    padding: 8px 10px;
-}
-
-.badge-complete {
-    display: inline-block;
-    margin-left: 6px;
-    padding: 2px 10px;
-    background-color: #2ea043;
-    color: #ffffff;
-    border-radius: 999px;
-    font-size: 11px;
-    font-weight: 700;
-    white-space: nowrap;
-}
-
-.etat-vide {
-    text-align: center;
-    padding: 40px 16px;
-    color: #7d8b9a;
-    background-color: #131a24;
-    border: 1px dashed #1c2531;
-    border-radius: 12px;
-}
-
-/* --------------------------------------------------
-   9. PIED DE PAGE (FOOTER)
--------------------------------------------------- */
-footer {
-    text-align: center;
-    padding: 22px 16px;
-    font-size: 13px;
-    color: #5c6b7a;
-    border-top: 1px solid #1c2531;
-    background-color: #0b0f14;
-    width: 100%;
-}
-/* --------------------------------------------------
-   11. PAGES CONNEXION / INSCRIPTION
--------------------------------------------------- */
-.carte-auth {
-    max-width: 420px;
-    margin: 24px auto 0;
-    padding: 32px 28px;
-    background-color: #131a24;
-    border: 1px solid #1c2531;
-    border-radius: 16px;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
-}
-
-.carte-auth h1 {
-    text-align: center;
-}
-
-.carte-auth .sous-titre {
-    text-align: center;
-    font-size: 14px;
-    margin-bottom: 20px;
-}
-
-/* Dans la carte, le formulaire n'a plus besoin de son propre cadre */
-.carte-auth form.formulaire {
-    max-width: none;
+form.formulaire .champ-fichier label.bouton-fichier {
     margin: 0;
-    padding: 0;
-    background: none;
-    border: none;
-}
-
-.carte-auth .message-erreur[role="alert"] {
-    text-align: center;
-}
-
-.carte-auth input {
-    padding: 11px 14px;
-    font-size: 14px;
-}
-
-.aide {
-    margin: 2px 0 0;
-    font-size: 12px;
-    color: #5c6b7a;
-}
-
-button.bouton-plein {
-    width: 100%;
-    margin-top: 18px;
-    padding: 12px;
-    font-size: 14px;
-}
-
-.lien-bas {
-    margin: 20px 0 0;
-    text-align: center;
-    font-size: 13px;
-}
-
-.lien-bas a {
-    font-weight: 600;
-}
-/* --------------------------------------------------
-   10. ADAPTATION RESPONSIVE
--------------------------------------------------- */
-@media (max-width: 768px) {
-    .grille-recits {
-        flex-direction: column;
-    }
-}
-
-@media (max-width: 480px) {
-    main {
-        padding: 20px 14px;
-    }
-
-    nav {
-        gap: 18px;
-    }
-
-    nav a {
-        font-size: 13px;
-    }
-
-    .nav-utilisateur {
-        padding-left: 0;
-        border-left: none;
-    }
-
-    nav form.nav-deconnexion {
-        margin-left: 0;
-    }
-
-    form {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    input[type="number"],
-    input[type="text"],
-    input[type="email"],
-    input[type="password"] {
-        width: 100%;
-    }
-
-    .serie {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-    }
-}
-/* --------------------------------------------------
-   12. PAGINATION
--------------------------------------------------- */
-main nav {
-    padding: 0;
-    margin-top: 24px;
-}
-
-ul.pagination {
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    margin: 0;
-}
-
-ul.pagination li,
-ul.pagination li:hover {
-    background: none;
-    border: none;
-}
-
-ul.pagination li > a,
-ul.pagination li > span {
-    display: inline-block;
-    width: auto;
     padding: 8px 14px;
     border: 1px solid #263341;
     border-radius: 8px;
+    background-color: #0b0f14;
+    color: #e6edf3;
     font-size: 13px;
     font-weight: 600;
-    color: #8fa3b8;
+    cursor: pointer;
+    transition:
+        border-color 0.15s ease,
+        color 0.15s ease;
 }
 
-ul.pagination li > a:hover {
+form.formulaire .champ-fichier label.bouton-fichier:hover,
+.champ-fichier input:focus-visible + label.bouton-fichier {
     border-color: #4a9eff;
     color: #4a9eff;
 }
 
-ul.pagination li.disabled > span {
-    opacity: 0.4;
-}
-.message-succes {
-    background-color: rgba(46, 160, 67, 0.1);
-    border: 1px solid rgba(46, 160, 67, 0.35);
-    color: #7ee2a8;
-    border-radius: 10px;
-    padding: 12px 16px;
-    margin-bottom: 20px;
-    font-size: 14px;
-}
-
-form.formulaire label.case-a-cocher {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 14px;
-}
-
-form.formulaire label.case-a-cocher input {
-    width: auto;
-    margin: 0;
-}
-
-.liste-recits ul.criteres {
-    list-style: disc;
-    margin: 6px 0 0 18px;
-    gap: 2px;
-}
-
-.liste-recits ul.criteres li,
-.liste-recits ul.criteres li:hover {
-    display: list-item;
-    background: none;
-    border: none;
-    padding: 0;
-    font-size: 12px;
+.nom-fichier {
+    font-size: 13px;
     color: #8fa3b8;
+    word-break: break-all;
 }
 
-.apercu-json {
-    background-color: #0b0f14;
-    border: 1px solid #1c2531;
-    border-radius: 10px;
-    padding: 14px;
-    margin-top: 12px;
-    max-height: 320px;
-    overflow: auto;
-    font-size: 12px;
-    color: #e6edf3;
-}
-
+/* Fichier actuel + bouton poubelle */
 .fichier-actuel {
     display: flex;
     align-items: center;
@@ -686,11 +494,26 @@ button.bouton-poubelle {
     line-height: 1;
 }
 
+/* Formulaire DELETE vide : seul le bouton poubelle est visible */
 form#supprimer-programme {
     display: none;
 }
+
+/* Aperçu du JSON dans le détail */
+.apercu-json {
+    background-color: #0b0f14;
+    border: 1px solid #1c2531;
+    border-radius: 10px;
+    padding: 14px;
+    margin-top: 12px;
+    max-height: 320px;
+    overflow: auto;
+    font-size: 12px;
+    color: #e6edf3;
+}
+
 /* --------------------------------------------------
-   13. RECHERCHE
+   9. RECHERCHE
 -------------------------------------------------- */
 .recherche {
     position: relative;
@@ -779,92 +602,342 @@ form#supprimer-programme {
 }
 
 /* --------------------------------------------------
-   14. Langue
+   10. PAGINATION
 -------------------------------------------------- */
-nav form.choix-langue {
-    display: inline-flex;
+main nav {
+    padding: 0;
+    margin-top: 24px;
+}
+
+ul.pagination {
+    flex-direction: row;
+    justify-content: center;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     margin: 0;
-    padding: 0 0 0 20px;
+}
+
+ul.pagination li,
+ul.pagination li:hover {
+    background: none;
     border: none;
-    border-left: 1px solid #263341;
 }
 
-nav form.choix-langue label {
-    color: #8fa3b8;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-nav form.choix-langue select {
-    background-color: #0b0f14;
-    border: 1px solid #263341;
-    border-radius: 8px;
-    color: #e6edf3;
-    padding: 6px 8px;
-    font-size: 13px;
-}
-
-nav form.choix-langue button {
-    padding: 6px 12px;
-    font-size: 13px;
-}
-
-nav form.choix-langue select {
-    color-scheme: dark;
-    cursor: pointer;
-}
-
-nav form.choix-langue select option {
-    background-color: #10151d;
-    color: #e6edf3;
-}
-
-/* --------------------------------------------------
-   15. Fichier
--------------------------------------------------- */
-
-.champ-fichier {
-    position: relative;
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-/* Caché visuellement, mais toujours accessible au clavier */
-.champ-fichier input[type="file"] {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    opacity: 0;
-    overflow: hidden;
-}
-
-form.formulaire .champ-fichier label.bouton-fichier {
-    margin: 0;
+ul.pagination li > a,
+ul.pagination li > span {
+    display: inline-block;
+    width: auto;
     padding: 8px 14px;
     border: 1px solid #263341;
     border-radius: 8px;
-    background-color: #0b0f14;
-    color: #e6edf3;
     font-size: 13px;
     font-weight: 600;
-    cursor: pointer;
-    transition:
-        border-color 0.15s ease,
-        color 0.15s ease;
+    color: #8fa3b8;
 }
 
-form.formulaire .champ-fichier label.bouton-fichier:hover,
-.champ-fichier input:focus-visible + label.bouton-fichier {
+ul.pagination li > a:hover {
     border-color: #4a9eff;
     color: #4a9eff;
 }
 
-.nom-fichier {
+ul.pagination li.disabled > span {
+    opacity: 0.4;
+}
+
+/* --------------------------------------------------
+   11. COMPOSANTS (badges, messages, états)
+-------------------------------------------------- */
+.badge {
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background-color: #16283d;
+    color: #4a9eff;
+    white-space: nowrap;
+    font-weight: 500;
+}
+
+.message-succes,
+.message-erreur {
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.message-succes {
+    background-color: rgba(46, 160, 67, 0.1);
+    border: 1px solid rgba(46, 160, 67, 0.35);
+    color: #7ee2a8;
+}
+
+.message-erreur {
+    background-color: #2a1418;
+    border: 1px solid #4a1f26;
+    color: #ff9a9a;
+}
+
+.etat-vide {
+    text-align: center;
+    padding: 40px 16px;
+    color: #7d8b9a;
+    background-color: #131a24;
+    border: 1px dashed #1c2531;
+    border-radius: 12px;
+}
+
+/* --------------------------------------------------
+   12. RÉCITS
+-------------------------------------------------- */
+.grille-recits {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.colonne-recits {
+    flex: 1;
+    min-width: 0;
+}
+
+.colonne-recits h2 {
+    font-size: 16px;
+    margin-top: 0;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #1c2531;
+    padding-bottom: 8px;
+}
+
+.liste-recits li {
+    display: block;
+    line-height: 1.5;
     font-size: 13px;
+    background: none;
+    border: none;
+    padding: 6px 0;
+}
+
+.liste-recits strong {
+    color: #4a9eff;
+}
+
+/* Plus spécifique que .liste-recits li, sinon le fond et la bordure sont écrasés */
+.liste-recits li.recit-complete {
+    background-color: rgba(46, 160, 67, 0.1);
+    border: 1px solid rgba(46, 160, 67, 0.35);
+    border-left: 4px solid #2ea043;
+    border-radius: 8px;
+    padding: 8px 10px;
+}
+
+.badge-complete {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 2px 10px;
+    background-color: #2ea043;
+    color: #ffffff;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.liste-recits ul.criteres {
+    list-style: disc;
+    margin: 6px 0 0 18px;
+    gap: 2px;
+}
+
+.liste-recits ul.criteres li,
+.liste-recits ul.criteres li:hover {
+    display: list-item;
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 12px;
     color: #8fa3b8;
-    word-break: break-all;
+}
+
+/* --------------------------------------------------
+   13. SÉRIES ENREGISTRÉES (logged sets)
+-------------------------------------------------- */
+.serie {
+    background-color: #131a24;
+    border: 1px solid #1c2531;
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.serie-info {
+    font-size: 14px;
+    color: #e6edf3;
+}
+
+.serie-badge {
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 6px;
+    background-color: #16283d;
+    color: #4a9eff;
+    font-weight: 600;
+    margin-right: 8px;
+}
+
+/* --------------------------------------------------
+   14. PAGES CONNEXION / INSCRIPTION
+-------------------------------------------------- */
+.carte-auth {
+    max-width: 420px;
+    margin: 24px auto 0;
+    padding: 32px 28px;
+    background-color: #131a24;
+    border: 1px solid #1c2531;
+    border-radius: 16px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.carte-auth h1 {
+    text-align: center;
+}
+
+.carte-auth .sous-titre {
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+/* Dans la carte, le formulaire n'a plus besoin de son propre cadre */
+.carte-auth form.formulaire {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: none;
+}
+
+.carte-auth .message-erreur[role="alert"] {
+    text-align: center;
+}
+
+.carte-auth input {
+    padding: 11px 14px;
+    font-size: 14px;
+}
+
+.lien-bas {
+    margin: 20px 0 0;
+    text-align: center;
+    font-size: 13px;
+}
+
+.lien-bas a {
+    font-weight: 600;
+}
+
+/* --------------------------------------------------
+   15. PIED DE PAGE
+-------------------------------------------------- */
+footer {
+    text-align: center;
+    padding: 22px 16px;
+    font-size: 13px;
+    color: #5c6b7a;
+    border-top: 1px solid #1c2531;
+    background-color: #0b0f14;
+    width: 100%;
+}
+
+/* --------------------------------------------------
+   16. PETIT ÉCRAN
+-------------------------------------------------- */
+@media (max-width: 768px) {
+    .grille-recits {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Mise en page */
+    main {
+        padding: 20px 14px;
+    }
+
+    h1 {
+        font-size: 21px;
+    }
+
+    /* Navigation */
+    nav {
+        gap: 14px 18px;
+        padding: 14px;
+    }
+
+    nav a {
+        font-size: 13px;
+    }
+
+    .nav-utilisateur,
+    nav form.choix-langue {
+        padding-left: 0;
+        border-left: none;
+    }
+
+    nav form.nav-deconnexion {
+        margin-left: 0;
+    }
+
+    /* Formulaires : un champ par ligne */
+    form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    /* ...sauf le choix de langue, qui reste sur une ligne */
+    nav form.choix-langue {
+        flex-direction: row;
+    }
+
+    form.formulaire {
+        padding: 18px;
+    }
+
+    input[type="number"],
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+        width: 100%;
+    }
+
+    /* Listes : le badge passe sous le nom si besoin */
+    ul li > a {
+        flex-wrap: wrap;
+        padding: 14px 16px;
+    }
+
+    /* Fichier programme */
+    .fichier-actuel {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .apercu-json {
+        font-size: 11px;
+        max-height: 240px;
+    }
+
+    /* Recherche */
+    #search-results {
+        max-height: 260px;
+    }
+
+    /* Séries */
+    .serie {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
 }
