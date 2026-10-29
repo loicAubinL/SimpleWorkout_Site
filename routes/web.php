@@ -3,7 +3,17 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WorkoutSplitController;
 
-Route::redirect('/', '/workout-splits');
+use App\Models\User;
+
+Route::get('/', function () {
+    $actif = User::query()->orderBy('id')->first()
+        ?->workoutSplits()
+        ->where('is_active', true)
+        ->withCount('workoutDays')
+        ->first();
+
+    return view('accueil', compact('actif'));
+})->name('accueil');
 
 Route::resource('workout-splits', WorkoutSplitController::class);
 
