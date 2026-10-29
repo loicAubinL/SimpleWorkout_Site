@@ -9,11 +9,15 @@
 @enderror
 
 @if ($split?->program_path)
-<p class="aide">
-    Fichier actuel :
-    <a href="{{ Storage::disk('public')->url($split->program_path) }}" download>télécharger</a>.
-    Choisir un nouveau fichier le remplacera.
-</p>
+<div class="fichier-actuel">
+    <span class="aide">
+        Fichier actuel :
+        <a href="{{ Storage::disk('public')->url($split->program_path) }}" download>télécharger</a>.
+        Choisir un nouveau fichier le remplacera.
+    </span>
+    <button type="submit" form="supprimer-programme" class="bouton-danger bouton-poubelle"
+        aria-label="Retirer le fichier du programme" title="Retirer le fichier">🗑</button>
+</div>
 @endif
 
 <label for="program">Programme (fichier JSON)</label>

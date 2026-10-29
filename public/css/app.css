@@ -671,3 +671,21 @@ form.formulaire label.case-a-cocher input {
     font-size: 12px;
     color: #e6edf3;
 }
+
+.fichier-actuel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+button.bouton-poubelle {
+    padding: 6px 10px;
+    font-size: 14px;
+    line-height: 1;
+}
+
+form#supprimer-programme {
+    display: none;
+}
