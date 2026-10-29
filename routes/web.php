@@ -2,9 +2,21 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WorkoutSplitController;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 use App\Models\User;
 use App\Http\Controllers\RechercheWorkoutSplitController;
+
+Route::post('/langue', function (Request $request) {
+    $data = $request->validate([
+        'locale' => ['required', Rule::in(['fr', 'en'])],
+    ]);
+
+    $request->session()->put('locale', $data['locale']);
+
+    return back();
+})->name('locale.update');
 
 Route::get('/', function () {
     $actif = User::query()->orderBy('id')->first()

@@ -777,3 +777,36 @@ form#supprimer-programme {
 #search-results li > a:focus-visible {
     background-color: #16283d;
 }
+
+/* --------------------------------------------------
+   14. Langue
+-------------------------------------------------- */
+nav form.choix-langue {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    padding: 0 0 0 20px;
+    border: none;
+    border-left: 1px solid #263341;
+}
+
+nav form.choix-langue label {
+    color: #8fa3b8;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+nav form.choix-langue select {
+    background-color: #0b0f14;
+    border: 1px solid #263341;
+    border-radius: 8px;
+    color: #e6edf3;
+    padding: 6px 8px;
+    font-size: 13px;
+}
+
+nav form.choix-langue button {
+    padding: 6px 12px;
+    font-size: 13px;
+}
