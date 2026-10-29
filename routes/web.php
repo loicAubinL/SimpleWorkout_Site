@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WorkoutSplitController;
 
 use App\Models\User;
+use App\Http\Controllers\RechercheWorkoutSplitController;
 
 Route::get('/', function () {
     $actif = User::query()->orderBy('id')->first()
@@ -14,6 +15,9 @@ Route::get('/', function () {
 
     return view('accueil', compact('actif'));
 })->name('accueil');
+
+Route::get('/recherche/workouts', RechercheWorkoutSplitController::class)
+    ->name('recherche.workouts');
 
 Route::resource('workout-splits', WorkoutSplitController::class);
 
