@@ -20,8 +20,7 @@ class RechercheWorkoutSplitController extends Controller
 
         $splits = $user->workoutSplits()
             ->where(function ($requete) use ($terme) {
-                $requete->where('name', 'like', '%' . $terme . '%')
-                    ->orWhereHas('workoutDays', fn($jours) => $jours->where('name', 'like', '%' . $terme . '%'));
+                $requete->whereHas('workoutDays', fn($jours) => $jours->where('name', 'like', '%' . $terme . '%'));
             })
             ->withCount('workoutDays')
             ->orderBy('name')
