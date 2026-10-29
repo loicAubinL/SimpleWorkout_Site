@@ -810,3 +810,13 @@ nav form.choix-langue button {
     padding: 6px 12px;
     font-size: 13px;
 }
+
+nav form.choix-langue select {
+    color-scheme: dark;
+    cursor: pointer;
+}
+
+nav form.choix-langue select option {
+    background-color: #10151d;
+    color: #e6edf3;
+}

@@ -19,11 +19,11 @@
             <form method="post" action="{{ route('locale.update') }}" class="choix-langue">
                 @csrf
                 <label for="locale">{{ __('interface.language') }}</label>
-                <select id="locale" name="locale">
+                <select id="locale" name="locale" onchange="this.form.submit()">
                     <option value="fr" @selected(app()->getLocale() === 'fr')>Français</option>
                     <option value="en" @selected(app()->getLocale() === 'en')>English</option>
                 </select>
-                <button type="submit">{{ __('interface.apply') }}</button>
+                <noscript><button type="submit">{{ __('interface.apply') }}</button></noscript>
             </form>
         </nav>
     </header>
