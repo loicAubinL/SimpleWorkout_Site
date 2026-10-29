@@ -4,7 +4,7 @@
 
 @section('content')
 <h1>Modifier un workout</h1>
-<form method="post" action="{{ route('workout-splits.update', $split) }}" class="formulaire">
+<form method="post" action="{{ route('workout-splits.update', $split) }}" class="formulaire" enctype="multipart/form-data">
     @method('PATCH')
     @include('workout-splits._form')
 </form>
