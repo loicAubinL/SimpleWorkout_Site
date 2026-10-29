@@ -54,6 +54,8 @@ return [
     'cancel' => 'Cancel',
     'edit' => 'Edit',
     'delete' => 'Delete',
+    'choose_file' => 'Choose a file',
+    'no_file_chosen' => 'No file chosen',
 
     // Confirmations
     'confirm_delete' => 'Delete this workout and all its days?',

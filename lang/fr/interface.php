@@ -54,6 +54,8 @@ return [
     'cancel' => 'Annuler',
     'edit' => 'Modifier',
     'delete' => 'Supprimer',
+    'choose_file' => 'Choisir un fichier',
+    'no_file_chosen' => 'Aucun fichier choisi',
 
     // Confirmations
     'confirm_delete' => 'Supprimer ce workout et tous ses jours ?',

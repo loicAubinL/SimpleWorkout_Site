@@ -21,11 +21,19 @@
 @endif
 
 <label for="program">{{ __('interface.program_file') }}</label>
-<input type="file" id="program" name="program" accept=".json,application/json"
-    @error('program') aria-invalid="true" aria-describedby="program-erreur" @enderror>
+<div class="champ-fichier">
+    <input type="file" id="program" name="program" accept=".json,application/json"
+        @error('program') aria-invalid="true" aria-describedby="program-erreur" @enderror>
+    <label for="program" class="bouton-fichier">{{ __('interface.choose_file') }}</label>
+    <span class="nom-fichier" data-empty="{{ __('interface.no_file_chosen') }}">{{ __('interface.no_file_chosen') }}</span>
+</div>
 @error('program')
 <p id="program-erreur" class="message-erreur" role="alert">{{ $message }}</p>
 @enderror
+
+@push('scripts')
+<script src="{{ asset('js/fichier.js') }}" defer></script>
+@endpush
 
 <label class="case-a-cocher">
     <input type="checkbox" name="is_active" value="1"

@@ -820,3 +820,51 @@ nav form.choix-langue select option {
     background-color: #10151d;
     color: #e6edf3;
 }
+
+/* --------------------------------------------------
+   15. Fichier
+-------------------------------------------------- */
+
+.champ-fichier {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* Caché visuellement, mais toujours accessible au clavier */
+.champ-fichier input[type="file"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+}
+
+form.formulaire .champ-fichier label.bouton-fichier {
+    margin: 0;
+    padding: 8px 14px;
+    border: 1px solid #263341;
+    border-radius: 8px;
+    background-color: #0b0f14;
+    color: #e6edf3;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        border-color 0.15s ease,
+        color 0.15s ease;
+}
+
+form.formulaire .champ-fichier label.bouton-fichier:hover,
+.champ-fichier input:focus-visible + label.bouton-fichier {
+    border-color: #4a9eff;
+    color: #4a9eff;
+}
+
+.nom-fichier {
+    font-size: 13px;
+    color: #8fa3b8;
+    word-break: break-all;
+}
