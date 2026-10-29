@@ -17,6 +17,18 @@
     <button type="submit" class="bouton-danger">Supprimer</button>
 </form>
 
+<h2>Programme</h2>
+@if ($split->program_path)
+<a href="{{ Storage::disk('public')->url($split->program_path) }}" download class="bouton">
+    Télécharger le programme (JSON)
+</a>
+@if ($apercu)
+<pre class="apercu-json">{{ $apercu }}</pre>
+@endif
+@else
+<p class="etat-vide">Aucun programme joint.</p>
+@endif
+
 <h2>Jours</h2>
 @forelse ($split->workoutDays as $day)
 <div class="carte-exercice">
