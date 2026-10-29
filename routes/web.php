@@ -18,3 +18,6 @@ Route::get('/', function () {
 Route::resource('workout-splits', WorkoutSplitController::class);
 
 Route::view('/recits', 'recits')->name('recits');
+
+Route::delete('/workout-splits/{workoutSplit}/programme', [WorkoutSplitController::class, 'destroyProgram'])
+    ->name('workout-splits.program.destroy');

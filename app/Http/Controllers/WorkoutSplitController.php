@@ -163,4 +163,18 @@ class WorkoutSplitController extends Controller
     {
         return $fichier?->storeAs('programmes', Str::random(40) . '.json', 'public');
     }
+
+    public function destroyProgram(WorkoutSplit $workoutSplit): RedirectResponse
+    {
+        $this->verifierProprietaire($workoutSplit);
+        $chemin = $workoutSplit->program_path;
+
+        if ($chemin) {
+            $workoutSplit->update(['program_path' => null]);
+            Storage::disk('public')->delete($chemin);
+        }
+
+        return redirect()->route('workout-splits.edit', $workoutSplit)
+            ->with('status', 'Programme retiré.');
+    }
 }
