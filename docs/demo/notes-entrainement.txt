@@ -1,0 +1,5 @@
+Notes d'entraînement
+Lundi : Push
+Mardi : Pull
+Mercredi : Legs
+Ce fichier texte doit être refusé par la validation (ce n'est pas un .json).
