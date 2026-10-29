@@ -31,7 +31,7 @@ class RechercheWorkoutSplitController extends Controller
             'data' => $splits->map(fn(WorkoutSplit $split) => [
                 'id' => $split->id,
                 'label' => $split->name,
-                'details' => $split->workout_days_count . ' jour(s)',
+                'details' => __('interface.days_count', ['count' => $split->workout_days_count]),
                 'url' => route('workout-splits.show', $split),
             ]),
         ]);

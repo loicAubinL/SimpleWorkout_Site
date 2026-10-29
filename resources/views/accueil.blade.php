@@ -1,24 +1,24 @@
 @extends('layouts.app')
 
-@section('title', 'Accueil')
+@section('title', __('interface.nav_home'))
 
 @section('content')
-<h1>Bienvenue sur SimpleWorkout</h1>
-<p>Gère tes programmes d'entraînement et suis ta progression.</p>
+<h1>{{ __('interface.welcome_title') }}</h1>
+<p>{{ __('interface.welcome_text') }}</p>
 
-<h2>Workout actif</h2>
+<h2>{{ __('interface.active_workout') }}</h2>
 @if ($actif)
 <ul>
     <li>
         <a href="{{ route('workout-splits.show', $actif) }}">
             {{ $actif->name }}
-            <span class="badge">{{ $actif->workout_days_count }} jour(s)</span>
+            <span class="badge">{{ __('interface.days_count', ['count' => $actif->workout_days_count]) }}</span>
         </a>
     </li>
 </ul>
 @else
-<p class="etat-vide">Aucun workout actif pour l'instant.</p>
+<p class="etat-vide">{{ __('interface.no_active_workout') }}</p>
 @endif
 
-<a href="{{ route('workout-splits.index') }}" class="bouton">Voir mes workouts</a>
+<a href="{{ route('workout-splits.index') }}" class="bouton">{{ __('interface.see_workouts') }}</a>
 @endsection
