@@ -11,8 +11,6 @@ class WorkoutSplit extends Model
 {
     use HasFactory;
 
-    protected $fillable = ["name", "is_active", "current_position", "override_date"];
-
     protected function casts(): array
     {
         return ["is_active" => "boolean", "override_date" => "date"];
@@ -27,4 +25,6 @@ class WorkoutSplit extends Model
     {
         return $this->hasMany(WorkoutDay::class);
     }
+
+    protected $fillable = ['name', 'program_path', 'is_active', 'current_position', 'override_date'];
 }
