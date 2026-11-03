@@ -6,6 +6,7 @@
 <p><a href="{{ route('workout-splits.index') }}">{{ __('interface.back_to_list') }}</a></p>
 
 <h1>{{ $split->name }}</h1>
+<p>{{ __('interface.by', ['name' => $split->user->name]) }}</p>
 <p><span class="badge">{{ $split->is_active ? __('interface.active') : __('interface.inactive') }}</span></p>
 
 <a href="{{ route('workout-splits.edit', $split) }}" class="bouton">{{ __('interface.edit') }}</a>

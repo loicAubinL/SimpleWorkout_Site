@@ -5,9 +5,10 @@ use App\Http\Controllers\WorkoutSplitController;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\InscriptionController;
-use App\Http\Controllers\AuthController; 
-
-use App\Models\User;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CompteController;
+use App\Http\Controllers\WorkoutPublicController;
+use App\Models\WorkoutSplit;
 use App\Http\Controllers\RechercheWorkoutSplitController;
 
 
@@ -33,22 +34,33 @@ Route::post('/langue', function (Request $request) {
     return back();
 })->name('locale.update');
 
-Route::get('/', function () {
-    $actif = User::query()->orderBy('id')->first()
-        ?->workoutSplits()
+Route::get('/', function (Request $request) {
+    $actif = $request->user()?->workoutSplits()
         ->where('is_active', true)
         ->withCount('workoutDays')
         ->first();
 
-    return view('accueil', compact('actif'));
+    $derniers = WorkoutSplit::with('user:id,name')
+        ->withCount('workoutDays')
+        ->latest()
+        ->limit(5)
+        ->get();
+
+    return view('accueil', compact('actif', 'derniers'));
 })->name('accueil');
 
-Route::get('/recherche/workouts', RechercheWorkoutSplitController::class)
-    ->name('recherche.workouts');
+//Route::get('/workouts-publics', WorkoutPublicController::class)->name('workouts.publics');
 
-Route::resource('workout-splits', WorkoutSplitController::class);
+//Route::get('/compte', [CompteController::class, 'show'])
+//    ->middleware('auth')->name('account.show');
+
+Route::get('/recherche/workouts', RechercheWorkoutSplitController::class)
+    ->middleware('auth')->name('recherche.workouts');
+
+Route::resource('workout-splits', WorkoutSplitController::class)
+    ->middlewareFor(['index', 'create', 'store', 'edit', 'update', 'destroy'], 'auth');
 
 Route::view('/recits', 'recits')->name('recits');
 
 Route::delete('/workout-splits/{workoutSplit}/programme', [WorkoutSplitController::class, 'destroyProgram'])
-    ->name('workout-splits.program.destroy');
+    ->middleware('auth')->name('workout-splits.program.destroy');

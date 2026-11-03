@@ -85,4 +85,11 @@ return [
     'captcha_required' => 'Please check "I\'m not a robot".',
     'captcha_unavailable' => 'Verification unavailable. Please try again.',
     'captcha_failed' => 'Please complete the verification again.',
+
+    // Public workouts
+    'public_workouts' => 'Public workouts',
+    'latest_public' => 'Latest public workouts',
+    'see_all_public' => 'See all public workouts',
+    'by' => 'by :name',
+    'my_account' => 'My account',
 ];

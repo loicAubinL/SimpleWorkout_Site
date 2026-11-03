@@ -85,4 +85,11 @@ return [
     'captcha_required' => 'Veuillez cocher « Je ne suis pas un robot ».',
     'captcha_unavailable' => 'Vérification indisponible. Réessayez.',
     'captcha_failed' => 'Veuillez refaire la vérification.',
+
+    // Public Workouts
+    'public_workouts' => 'Workouts publics',
+    'latest_public' => 'Derniers workouts publics',
+    'see_all_public' => 'Voir tous les workouts publics',
+    'by' => 'par :name',
+    'my_account' => 'Mon compte',
 ];

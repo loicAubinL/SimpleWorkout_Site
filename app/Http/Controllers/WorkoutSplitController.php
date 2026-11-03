@@ -19,9 +19,9 @@ class WorkoutSplitController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        $splits = $this->utilisateurCourant()
+        $splits = $request->user()
             ->workoutSplits()
             ->withCount('workoutDays')
             ->latest()
@@ -29,7 +29,6 @@ class WorkoutSplitController extends Controller
 
         return view('workout-splits.index', compact('splits'));
     }
-
     /**
      * Show the form for creating a new resource.
      */
@@ -70,9 +69,8 @@ class WorkoutSplitController extends Controller
      */
     public function show(WorkoutSplit $workoutSplit): View
     {
-        $this->verifierProprietaire($workoutSplit);
+        $workoutSplit->load(['user:id,name', 'workoutDays' => fn($q) => $q->orderBy('position')]);
 
-        $workoutSplit->load(['workoutDays' => fn($q) => $q->orderBy('position')]);
 
         $apercu = null;
         if ($workoutSplit->program_path && Storage::disk('public')->exists($workoutSplit->program_path)) {
