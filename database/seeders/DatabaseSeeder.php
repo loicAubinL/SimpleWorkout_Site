@@ -12,9 +12,16 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $user = User::factory()->create([
-            'name' => 'Utilisateur démo',
-            'email' => 'demo@example.test',
-        ]);
+    'name' => 'Utilisateur démo',
+    'email' => 'demo@example.test',
+    'role' => User::ROLE_MEMBER,
+]);
+
+User::factory()->create([
+    'name' => 'Responsable',
+    'email' => 'responsable@example.test',
+    'role' => User::ROLE_MANAGER,
+]);
 
         WorkoutSplit::factory()
             ->count(12)
