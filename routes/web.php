@@ -49,10 +49,10 @@ Route::get('/', function (Request $request) {
     return view('accueil', compact('actif', 'derniers'));
 })->name('accueil');
 
-//Route::get('/workouts-publics', WorkoutPublicController::class)->name('workouts.publics');
+Route::get('/workouts-publics', WorkoutPublicController::class)->name('workouts.publics');
 
-//Route::get('/compte', [CompteController::class, 'show'])
-//    ->middleware('auth')->name('account.show');
+Route::get('/compte', [CompteController::class, 'show'])
+    ->middleware('auth')->name('account.show');
 
 Route::get('/recherche/workouts', RechercheWorkoutSplitController::class)
     ->middleware('auth')->name('recherche.workouts');
