@@ -9,8 +9,11 @@
 <p>{{ __('interface.by', ['name' => $split->user->name]) }}</p>
 <p><span class="badge">{{ $split->is_active ? __('interface.active') : __('interface.inactive') }}</span></p>
 
+@can('update', $split)
 <a href="{{ route('workout-splits.edit', $split) }}" class="bouton">{{ __('interface.edit') }}</a>
+@endcan
 
+@can('delete', $split)
 <form method="post" action="{{ route('workout-splits.destroy', $split) }}"
     data-confirm="{{ __('interface.confirm_delete') }}"
     onsubmit="return confirm(this.dataset.confirm)">
@@ -18,6 +21,7 @@
     @method('DELETE')
     <button type="submit" class="bouton-danger">{{ __('interface.delete') }}</button>
 </form>
+@endcan
 
 <h2>{{ __('interface.program') }}</h2>
 @if ($split->program_path)

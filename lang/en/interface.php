@@ -99,4 +99,9 @@ return [
     'role_member' => 'Member',
     'role_manager' => 'Manager',
     'workouts_count' => ':count workout(s)',
+
+    // Errors
+    'forbidden_title' => 'Accès refusé',
+    'forbidden_text' => "Vous n'avez pas la permission d'effectuer cette action.",
+    'back_home' => "Retour à l'accueil",
 ];

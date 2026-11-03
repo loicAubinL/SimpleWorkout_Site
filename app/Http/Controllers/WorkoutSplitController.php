@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\User;
 use App\Models\WorkoutSplit;
 use Illuminate\Contracts\View\View;
 use App\Http\Requests\EnregistrerWorkoutSplitRequest;
@@ -12,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Gate;
 use Throwable;
 
 class WorkoutSplitController extends Controller
@@ -43,7 +43,7 @@ class WorkoutSplitController extends Controller
     public function store(EnregistrerWorkoutSplitRequest $request): RedirectResponse
     {
         $donnees = $request->safe()->except('program');
-        $user = $this->utilisateurCourant();
+        $user = $request->user();
         $chemin = $this->stockerProgramme($request->file('program'));
 
         try {
@@ -88,7 +88,7 @@ class WorkoutSplitController extends Controller
      */
     public function edit(WorkoutSplit $workoutSplit): View
     {
-        $this->verifierProprietaire($workoutSplit);
+        Gate::authorize('update', $workoutSplit);
 
         return view('workout-splits.edit', ['split' => $workoutSplit]);
     }
@@ -97,7 +97,7 @@ class WorkoutSplitController extends Controller
      */
     public function update(EnregistrerWorkoutSplitRequest $request, WorkoutSplit $workoutSplit): RedirectResponse
     {
-        $this->verifierProprietaire($workoutSplit);
+        Gate::authorize('update', $workoutSplit);
         $donnees = $request->safe()->except('program');
         $nouveauChemin = $this->stockerProgramme($request->file('program'));
         $ancienChemin = $workoutSplit->program_path;
@@ -134,7 +134,7 @@ class WorkoutSplitController extends Controller
      */
     public function destroy(WorkoutSplit $workoutSplit): RedirectResponse
     {
-        $this->verifierProprietaire($workoutSplit);
+        Gate::authorize('delete', $workoutSplit);
         $chemin = $workoutSplit->program_path;
 
         $workoutSplit->delete();
@@ -147,16 +147,6 @@ class WorkoutSplitController extends Controller
             ->with('status', 'Workout supprimé.');
     }
 
-    private function utilisateurCourant(): User
-    {
-        return User::query()->orderBy('id')->firstOrFail();
-    }
-
-    private function verifierProprietaire(WorkoutSplit $workoutSplit): void
-    {
-        abort_if($workoutSplit->user_id !== $this->utilisateurCourant()->id, 404);
-    }
-
     private function stockerProgramme(?UploadedFile $fichier): ?string
     {
         return $fichier?->storeAs('programmes', Str::random(40) . '.json', 'public');
@@ -164,7 +154,7 @@ class WorkoutSplitController extends Controller
 
     public function destroyProgram(WorkoutSplit $workoutSplit): RedirectResponse
     {
-        $this->verifierProprietaire($workoutSplit);
+        Gate::authorize('update', $workoutSplit);
         $chemin = $workoutSplit->program_path;
 
         if ($chemin) {
@@ -173,6 +163,6 @@ class WorkoutSplitController extends Controller
         }
 
         return redirect()->route('workout-splits.edit', $workoutSplit)
-            ->with('status', 'Programme retiré.');
+            ->with('status', __('interface.file_removed'));
     }
 }
