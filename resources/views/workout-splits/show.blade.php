@@ -6,17 +6,25 @@
 <p><a href="{{ route('workout-splits.index') }}">{{ __('interface.back_to_list') }}</a></p>
 
 <h1>{{ $split->name }}</h1>
+<p>{{ __('interface.by', ['name' => $split->user->name]) }}</p>
 <p><span class="badge">{{ $split->is_active ? __('interface.active') : __('interface.inactive') }}</span></p>
 
-<a href="{{ route('workout-splits.edit', $split) }}" class="bouton">{{ __('interface.edit') }}</a>
-
-<form method="post" action="{{ route('workout-splits.destroy', $split) }}"
-    data-confirm="{{ __('interface.confirm_delete') }}"
-    onsubmit="return confirm(this.dataset.confirm)">
-    @csrf
-    @method('DELETE')
-    <button type="submit" class="bouton-danger">{{ __('interface.delete') }}</button>
-</form>
+<div class="actions-ressource">
+    @can('update', $split)
+    <a href="{{ route('workout-splits.edit', $split) }}" class="bouton">{{ __('interface.edit') }}</a>
+    @endcan
+</div>
+<div class="actions-ressource">
+    @can('delete', $split)
+    <form method="post" action="{{ route('workout-splits.destroy', $split) }}"
+        data-confirm="{{ __('interface.confirm_delete') }}"
+        onsubmit="return confirm(this.dataset.confirm)">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="bouton-danger">{{ __('interface.delete') }}</button>
+    </form>
+    @endcan
+</div>
 
 <h2>{{ __('interface.program') }}</h2>
 @if ($split->program_path)

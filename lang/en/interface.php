@@ -15,6 +15,9 @@ return [
     'active_workout' => 'Active workout',
     'no_active_workout' => 'No active workout yet.',
     'see_workouts' => 'See my workouts',
+    'main_nav' => 'Main navigation',
+    'login_subtitle' => 'Welcome back!',
+    'register_subtitle' => 'Create your account to manage your workouts.',
 
     // List and detail
     'my_workouts' => 'My workouts',
@@ -64,4 +67,44 @@ return [
     'updated' => 'Workout updated.',
     'deleted' => 'Workout deleted.',
     'file_removed' => 'Program removed.',
+
+    // Register
+    'register_title' => 'Create an account',
+    'email' => 'Email address',
+    'email_confirmation' => 'Confirm email address',
+    'password' => 'Password',
+    'password_confirmation' => 'Confirm password',
+    'register_button' => 'Create account',
+    'have_account' => 'I already have an account',
+
+    // Login 
+    'login_title' => 'Log in',
+    'login_button' => 'Log in',
+    'no_account' => 'Create an account',
+    'logout' => 'Log out',
+    'invalid_credentials' => 'Invalid credentials.',
+
+    //  Captcha 
+    'captcha_required' => 'Please check "I\'m not a robot".',
+    'captcha_unavailable' => 'Verification unavailable. Please try again.',
+    'captcha_failed' => 'Please complete the verification again.',
+
+    // Public workouts
+    'public_workouts' => 'Public workouts',
+    'latest_public' => 'Latest public workouts',
+    'see_all_public' => 'See all public workouts',
+    'by' => 'by :name',
+    'my_account' => 'My account',
+
+    // Admin
+    'admin' => 'Administration',
+    'admin_text' => 'List of application accounts.',
+    'role_member' => 'Member',
+    'role_manager' => 'Manager',
+    'workouts_count' => ':count workout(s)',
+
+    // Errors
+    'forbidden_title' => 'Accès refusé',
+    'forbidden_text' => "Vous n'avez pas la permission d'effectuer cette action.",
+    'back_home' => "Retour à l'accueil",
 ];

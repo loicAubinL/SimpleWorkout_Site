@@ -6,6 +6,7 @@
 <h1>{{ __('interface.welcome_title') }}</h1>
 <p>{{ __('interface.welcome_text') }}</p>
 
+@auth
 <h2>{{ __('interface.active_workout') }}</h2>
 @if ($actif)
 <ul>
@@ -19,6 +20,9 @@
 @else
 <p class="etat-vide">{{ __('interface.no_active_workout') }}</p>
 @endif
+@endauth
 
-<a href="{{ route('workout-splits.index') }}" class="bouton">{{ __('interface.see_workouts') }}</a>
+<h2>{{ __('interface.latest_public') }}</h2>
+@include('workout-splits._liste-publique', ['splits' => $derniers])
+<a href="{{ route('workouts.publics') }}" class="bouton">{{ __('interface.see_all_public') }}</a>
 @endsection

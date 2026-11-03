@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\WorkoutSplit;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -16,7 +15,7 @@ class RechercheWorkoutSplitController extends Controller
         ]);
         $terme = $data['q'];
 
-        $user = User::query()->orderBy('id')->firstOrFail();
+        $user = $request->user();
 
         $splits = $user->workoutSplits()
             ->where(function ($requete) use ($terme) {

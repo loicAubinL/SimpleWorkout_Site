@@ -15,6 +15,9 @@ return [
     'active_workout' => 'Workout actif',
     'no_active_workout' => "Aucun workout actif pour l'instant.",
     'see_workouts' => 'Voir mes workouts',
+    'main_nav' => 'Navigation principale',
+    'login_subtitle' => 'Content de te revoir !',
+    'register_subtitle' => 'Crée ton compte pour gérer tes workouts.',
 
     // Liste et détail
     'my_workouts' => 'Mes workouts',
@@ -64,4 +67,44 @@ return [
     'updated' => 'Workout modifié.',
     'deleted' => 'Workout supprimé.',
     'file_removed' => 'Programme retiré.',
+
+    // Register 
+    'register_title' => 'Créer un compte',
+    'email' => 'Adresse courriel',
+    'email_confirmation' => "Confirmer l'adresse courriel",
+    'password' => 'Mot de passe',
+    'password_confirmation' => 'Confirmer le mot de passe',
+    'register_button' => 'Créer le compte',
+    'have_account' => "J'ai déjà un compte",
+
+    // Login
+    'login_title' => 'Connexion',
+    'login_button' => 'Se connecter',
+    'no_account' => 'Créer un compte',
+    'logout' => 'Se déconnecter',
+    'invalid_credentials' => 'Identifiants invalides.',
+
+    // Captcha
+    'captcha_required' => 'Veuillez cocher « Je ne suis pas un robot ».',
+    'captcha_unavailable' => 'Vérification indisponible. Réessayez.',
+    'captcha_failed' => 'Veuillez refaire la vérification.',
+
+    // Public Workouts
+    'public_workouts' => 'Workouts publics',
+    'latest_public' => 'Derniers workouts publics',
+    'see_all_public' => 'Voir tous les workouts publics',
+    'by' => 'par :name',
+    'my_account' => 'Mon compte',
+
+    // Admin
+    'admin' => 'Administration',
+    'admin_text' => 'Liste des comptes de l\'application.',
+    'role_member' => 'Membre',
+    'role_manager' => 'Responsable',
+    'workouts_count' => ':count workout(s)',
+
+    // Errors
+    'forbidden_title' => 'Accès refusé',
+    'forbidden_text' => "Vous n'avez pas la permission d'effectuer cette action.",
+    'back_home' => "Retour à l'accueil",
 ];
