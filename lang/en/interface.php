@@ -92,4 +92,11 @@ return [
     'see_all_public' => 'See all public workouts',
     'by' => 'by :name',
     'my_account' => 'My account',
+
+    // Admin
+    'admin' => 'Administration',
+    'admin_text' => 'List of application accounts.',
+    'role_member' => 'Member',
+    'role_manager' => 'Manager',
+    'workouts_count' => ':count workout(s)',
 ];

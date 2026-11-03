@@ -9,8 +9,16 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompteController;
 use App\Http\Controllers\WorkoutPublicController;
 use App\Models\WorkoutSplit;
+use App\Http\Controllers\AdministrationController;
+use App\Http\Middleware\EnsureManager;
 use App\Http\Controllers\RechercheWorkoutSplitController;
 
+
+
+Route::middleware(['auth', EnsureManager::class])->group(function () {
+    Route::get('/administration', [AdministrationController::class, 'index'])
+        ->name('admin.index');
+});
 
 Route::get('/inscription', [InscriptionController::class, 'create'])
     ->middleware('guest')->name('register');

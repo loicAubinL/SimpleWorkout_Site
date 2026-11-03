@@ -17,6 +17,9 @@
             @auth
             <a href="{{ route('workout-splits.index') }}">{{ __('interface.nav_workouts') }}</a>
             <a href="{{ route('account.show') }}">{{ __('interface.my_account') }}</a>
+            @if (auth()->user()->role === \App\Models\User::ROLE_MANAGER)
+            <a href="{{ route('admin.index') }}">{{ __('interface.admin') }}</a>
+            @endif
             @endauth
             <a href="{{ route('recits') }}">{{ __('interface.nav_stories') }}</a>
 
