@@ -4,9 +4,16 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WorkoutSplitController;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use App\Http\Controllers\InscriptionController;
 
 use App\Models\User;
 use App\Http\Controllers\RechercheWorkoutSplitController;
+
+
+Route::get('/inscription', [InscriptionController::class, 'create'])
+    ->middleware('guest')->name('register');
+Route::post('/inscription', [InscriptionController::class, 'store'])
+    ->middleware('guest')->name('register.store');
 
 Route::post('/langue', function (Request $request) {
     $data = $request->validate([

@@ -64,4 +64,13 @@ return [
     'updated' => 'Workout updated.',
     'deleted' => 'Workout deleted.',
     'file_removed' => 'Program removed.',
+
+    // Register
+    'register_title' => 'Create an account',
+    'email' => 'Email address',
+    'email_confirmation' => 'Confirm email address',
+    'password' => 'Password',
+    'password_confirmation' => 'Confirm password',
+    'register_button' => 'Create account',
+    'have_account' => 'I already have an account',
 ];
