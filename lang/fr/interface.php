@@ -80,4 +80,9 @@ return [
     'no_account' => 'Créer un compte',
     'logout' => 'Se déconnecter',
     'invalid_credentials' => 'Identifiants invalides.',
+
+    // Captcha
+    'captcha_required' => 'Veuillez cocher « Je ne suis pas un robot ».',
+    'captcha_unavailable' => 'Vérification indisponible. Réessayez.',
+    'captcha_failed' => 'Veuillez refaire la vérification.',
 ];

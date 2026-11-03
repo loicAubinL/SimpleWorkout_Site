@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Validation\ValidationException;
+
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -24,7 +28,31 @@ class InscriptionController extends Controller
             'password' => ['required', 'confirmed', Password::min(8)],
         ]);
 
-        // reCAPTCHA sera vérifié ici à l'étape 4
+        $token = $request->validate([
+            'g-recaptcha-response' => ['required', 'string'],
+        ], [
+            'g-recaptcha-response.required' => __('interface.captcha_required'),
+        ])['g-recaptcha-response'];
+
+        try {
+            $verification = Http::asForm()->timeout(5)->post(
+                'https://www.google.com/recaptcha/api/siteverify',
+                [
+                    'secret' => config('services.recaptcha.secret_key'),
+                    'response' => $token,
+                ]
+            );
+        } catch (ConnectionException $e) {
+            throw ValidationException::withMessages([
+                'g-recaptcha-response' => __('interface.captcha_unavailable'),
+            ]);
+        }
+
+        if (! $verification->successful() || $verification->json('success') !== true) {
+            throw ValidationException::withMessages([
+                'g-recaptcha-response' => __('interface.captcha_failed'),
+            ]);
+        }
 
         $user = User::create($data);
         Auth::login($user);
