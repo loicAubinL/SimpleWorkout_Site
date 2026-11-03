@@ -15,6 +15,9 @@ return [
     'active_workout' => 'Workout actif',
     'no_active_workout' => "Aucun workout actif pour l'instant.",
     'see_workouts' => 'Voir mes workouts',
+    'main_nav' => 'Navigation principale',
+    'login_subtitle' => 'Content de te revoir !',
+    'register_subtitle' => 'Crée ton compte pour gérer tes workouts.',
 
     // Liste et détail
     'my_workouts' => 'Mes workouts',

@@ -15,6 +15,9 @@ return [
     'active_workout' => 'Active workout',
     'no_active_workout' => 'No active workout yet.',
     'see_workouts' => 'See my workouts',
+    'main_nav' => 'Main navigation',
+    'login_subtitle' => 'Welcome back!',
+    'register_subtitle' => 'Create your account to manage your workouts.',
 
     // List and detail
     'my_workouts' => 'My workouts',
