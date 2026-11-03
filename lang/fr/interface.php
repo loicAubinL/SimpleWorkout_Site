@@ -73,4 +73,11 @@ return [
     'password_confirmation' => 'Confirmer le mot de passe',
     'register_button' => 'Créer le compte',
     'have_account' => "J'ai déjà un compte",
+
+    // Login
+    'login_title' => 'Connexion',
+    'login_button' => 'Se connecter',
+    'no_account' => 'Créer un compte',
+    'logout' => 'Se déconnecter',
+    'invalid_credentials' => 'Identifiants invalides.',
 ];

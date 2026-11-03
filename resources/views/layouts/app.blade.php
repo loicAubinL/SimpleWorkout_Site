@@ -15,6 +15,17 @@
             <a href="{{ route('accueil') }}">{{ __('interface.nav_home') }}</a>
             <a href="{{ route('workout-splits.index') }}">{{ __('interface.nav_workouts') }}</a>
             <a href="{{ route('recits') }}">{{ __('interface.nav_stories') }}</a>
+            
+            @auth
+                <span class="nav-utilisateur">{{ auth()->user()->name }}</span>
+                <form method="post" action="{{ route('logout') }}" class="nav-deconnexion">
+                    @csrf
+                    <button type="submit">{{ __('interface.logout') }}</button>
+                </form>
+            @else
+                <a href="{{ route('login') }}">{{ __('interface.login_title') }}</a>
+                <a href="{{ route('register') }}">{{ __('interface.register_title') }}</a>
+            @endauth
 
             <form method="post" action="{{ route('locale.update') }}" class="choix-langue">
                 @csrf

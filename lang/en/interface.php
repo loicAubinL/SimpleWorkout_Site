@@ -73,4 +73,11 @@ return [
     'password_confirmation' => 'Confirm password',
     'register_button' => 'Create account',
     'have_account' => 'I already have an account',
+
+    // Login 
+    'login_title' => 'Log in',
+    'login_button' => 'Log in',
+    'no_account' => 'Create an account',
+    'logout' => 'Log out',
+    'invalid_credentials' => 'Invalid credentials.',
 ];
