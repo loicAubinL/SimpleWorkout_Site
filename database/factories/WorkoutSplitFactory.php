@@ -13,6 +13,7 @@ class WorkoutSplitFactory extends Factory
             'user_id' => User::factory(),
             'name' => fake()->randomElement(['Push Pull Legs', 'Upper Lower', 'Full Body', 'Arnold Split', 'Bro Split']),
             'is_active' => false,
+            'is_public' => false,
             'current_position' => 0,
         ];
     }

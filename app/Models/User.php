@@ -7,7 +7,9 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends Authenticatable
 {
@@ -53,8 +55,28 @@ class User extends Authenticatable
         ];
     }
 
+    public function isManager(): bool
+    {
+        return $this->role === self::ROLE_MANAGER;
+    }
+
     public function workoutSplits(): HasMany
     {
         return $this->hasMany(WorkoutSplit::class);
+    }
+
+    public function savedWorkouts(): BelongsToMany
+    {
+        return $this->belongsToMany(WorkoutSplit::class, 'saved_workouts')->withTimestamps();
+    }
+
+    public function loggedSets(): HasMany
+    {
+        return $this->hasMany(LoggedSet::class);
+    }
+
+    public function activeSplit(): HasOne
+    {
+        return $this->hasOne(WorkoutSplit::class)->where('is_active', true);
     }
 }
