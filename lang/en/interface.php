@@ -10,11 +10,8 @@ return [
     'apply' => 'Apply',
 
     // Home
-    'welcome_title' => 'Welcome to SimpleWorkout',
     'welcome_text' => 'Manage your training programs and track your progress.',
-    'active_workout' => 'Active workout',
     'no_active_workout' => 'No active workout yet.',
-    'see_workouts' => 'See my workouts',
     'main_nav' => 'Main navigation',
     'login_subtitle' => 'Welcome back!',
     'register_subtitle' => 'Create your account to manage your workouts.',
@@ -25,15 +22,9 @@ return [
     'no_workouts' => 'No workouts yet.',
     'days_count' => '{0} No days|{1} :count day|[2,*] :count days',
     'active' => 'Active',
-    'inactive' => 'Inactive',
-    'back_to_list' => '← My workouts',
     'days' => 'Days',
     'no_days' => 'No days in this workout.',
     'rest_day' => 'Rest day',
-    'training_day' => 'Training',
-    'program' => 'Program',
-    'download_program' => 'Download the program (JSON)',
-    'no_program' => 'No program attached.',
 
     // Search
     'search' => 'Search my workouts',
@@ -47,26 +38,17 @@ return [
     'create_title' => 'Create a workout',
     'edit_title' => 'Edit a workout',
     'name' => 'Name',
-    'program_file' => 'Program (JSON file)',
-    'current_file' => 'Current file:',
-    'download' => 'download',
-    'replace_hint' => 'Choosing a new file will replace it.',
-    'remove_file' => 'Remove the file',
     'is_active' => 'Active workout',
     'save' => 'Save',
     'cancel' => 'Cancel',
     'edit' => 'Edit',
     'delete' => 'Delete',
-    'choose_file' => 'Choose a file',
-    'no_file_chosen' => 'No file chosen',
 
     // Confirmations
     'confirm_delete' => 'Delete this workout, its days and exercises? This cannot be undone.',
-    'confirm_remove_file' => 'Remove the program file?',
     'created' => 'Workout created.',
     'updated' => 'Workout updated.',
     'deleted' => 'Workout deleted.',
-    'file_removed' => 'Program removed.',
 
     // Register
     'register_title' => 'Create an account',
@@ -75,7 +57,6 @@ return [
     'password' => 'Password',
     'password_confirmation' => 'Confirm password',
     'register_button' => 'Create account',
-    'have_account' => 'I already have an account',
 
     // Login 
     'login_title' => 'Log in',
@@ -101,7 +82,6 @@ return [
     'admin_text' => '{1} :count account in the app.|[2,*] :count accounts in the app.',
     'role_member' => 'Member',
     'role_manager' => 'Manager',
-    'workouts_count' => '{0} No workouts|{1} :count workout|[2,*] :count workouts',
 
     // Errors
     'forbidden_title' => 'Accès refusé',
