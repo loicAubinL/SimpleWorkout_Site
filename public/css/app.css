@@ -312,7 +312,7 @@ svg {
     flex-wrap: wrap;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1180px) {
     .entete .nav-principale,
     .entete-interieur > .nav-compte {
         display: none;
@@ -1497,4 +1497,68 @@ th.nombre {
     align-items: center;
     gap: 0.4rem;
     margin-right: auto;
+}
+
+.bloc-progression {
+    margin-bottom: 1.25rem;
+}
+
+.barre-outils-titre {
+    margin: 0 auto 0 0;
+}
+
+.lien-carte {
+    color: var(--texte);
+    text-decoration: none;
+}
+
+.lien-carte:hover {
+    color: var(--texte);
+    border-color: var(--texte-3);
+}
+
+.jour-numero.badge-accent {
+    background: var(--accent);
+    color: var(--sur-accent);
+}
+
+.logo svg {
+    flex-shrink: 0;
+}
+
+figure {
+    margin: 0;
+}
+
+/* Nav compacte sur bureau */
+.entete .nav-lien {
+    padding: 0.5rem 0.6rem;
+}
+
+.entete-interieur {
+    gap: 1rem;
+}
+
+.nav-nom {
+    max-width: 12ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.menu-mobile-panneau .nav-nom {
+    max-width: none;
+}
+
+.pied .choix-langue {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.pied-interieur {
+    align-items: center;
+}
+
+.icone {
+    max-width: none;
 }

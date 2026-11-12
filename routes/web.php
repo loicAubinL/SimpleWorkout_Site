@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\AccueilController;
 use App\Http\Controllers\AdministrationController;
+use App\Http\Controllers\HistoriqueController;
+use App\Http\Controllers\SeanceController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompteController;
 use App\Http\Controllers\CopieWorkoutSplitController;
@@ -22,21 +25,7 @@ use Illuminate\Validation\Rule;
 | Pages publiques
 |--------------------------------------------------------------------------
 */
-Route::get('/', function (Request $request) {
-    $actif = $request->user()?->workoutSplits()
-        ->where('is_active', true)
-        ->withCount('workoutDays')
-        ->first();
-
-    $derniers = WorkoutSplit::public()
-        ->with('user:id,name')
-        ->withCount('workoutDays')
-        ->latest()
-        ->limit(6)
-        ->get();
-
-    return view('accueil', compact('actif', 'derniers'));
-})->name('accueil');
+Route::get('/', AccueilController::class)->name('accueil');
 
 Route::get('/workouts-publics', WorkoutPublicController::class)->name('workouts.publics');
 Route::view('/recits', 'recits')->name('recits');
@@ -97,6 +86,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/sauvegardes', [SavedWorkoutController::class, 'index'])->name('saved.index');
     Route::post('/workout-splits/{workoutSplit}/sauvegarde', [SavedWorkoutController::class, 'store'])->name('saved.store');
     Route::delete('/workout-splits/{workoutSplit}/sauvegarde', [SavedWorkoutController::class, 'destroy'])->name('saved.destroy');
+
+    Route::get('/seance/{workoutSplit}', [SeanceController::class, 'show'])->name('session.show');
+    Route::post('/seance/{workoutSplit}/terminer', [SeanceController::class, 'finish'])->name('session.finish');
+    Route::post('/exercises/{exercise}/series', [SeanceController::class, 'storeSet'])->name('session.sets.store');
+    Route::delete('/series/{loggedSet}', [SeanceController::class, 'destroySet'])->name('session.sets.destroy');
+
+    Route::get('/historique', [HistoriqueController::class, 'index'])->name('history.index');
+    Route::get('/progression/{exercise}', [HistoriqueController::class, 'progress'])->name('progress.show');
 
     Route::get('/recherche/workouts', RechercheWorkoutSplitController::class)->name('recherche.workouts');
 

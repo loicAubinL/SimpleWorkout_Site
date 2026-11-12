@@ -22,7 +22,7 @@
             <nav class="nav-principale" aria-label="{{ __('interface.main_nav') }}">
                 @include('layouts._nav-liens')
             </nav>
-            @include('layouts._nav-compte', ['suffixe' => 'bureau'])
+            @include('layouts._nav-compte')
 
             <details class="menu-mobile">
                 <summary aria-label="{{ __('interface.menu') }}">
@@ -34,7 +34,7 @@
                         @include('layouts._nav-liens')
                     </nav>
                     <hr>
-                    @include('layouts._nav-compte', ['suffixe' => 'mobile'])
+                    @include('layouts._nav-compte')
                 </div>
             </details>
         </div>
@@ -53,6 +53,15 @@
     <footer class="pied">
         <div class="pied-interieur">
             <p>&copy; {{ date('Y') }} SimpleWorkout · {{ __('interface.footer') }}</p>
+            <form method="post" action="{{ route('locale.update') }}" class="choix-langue">
+                @csrf
+                <label for="locale">{{ __('interface.language') }}</label>
+                <select id="locale" name="locale" onchange="this.form.submit()">
+                    <option value="fr" @selected(app()->getLocale() === 'fr')>Français</option>
+                    <option value="en" @selected(app()->getLocale() === 'en')>English</option>
+                </select>
+                <noscript><button type="submit" class="bouton bouton-petit bouton-secondaire">{{ __('interface.apply') }}</button></noscript>
+            </form>
             <p>
                 <a href="{{ route('recits') }}">{{ __('interface.nav_stories') }}</a>
                 · {{ __('interface.credits') }}
