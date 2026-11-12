@@ -1596,3 +1596,22 @@ figure {
 .entete-interieur {
     max-width: 1240px;
 }
+
+/* Menu fermé : ne pas mettre en page le panneau (évite un débordement horizontal) */
+.menu-mobile:not([open]) .menu-mobile-panneau {
+    display: none;
+}
+
+@media (max-width: 600px) {
+    .recherche-barre {
+        flex-wrap: wrap;
+    }
+
+    .recherche-barre .champ-icone {
+        flex-basis: 100%;
+    }
+}
+
+.tableau-conteneur {
+    position: relative;
+}
