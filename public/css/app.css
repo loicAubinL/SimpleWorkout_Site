@@ -1570,3 +1570,29 @@ figure {
 .recherche-admin select {
     width: auto;
 }
+
+/* Bureau : compte en icône seule (nom accessible), badge de rôle masqué */
+.entete-interieur > .nav-compte .nav-nom,
+.entete-interieur > .nav-compte .badge {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+}
+
+.carte > h2:first-child,
+.carte > .carte-titre:first-child h2 {
+    margin-top: 0;
+}
+
+@media (max-width: 1320px) {
+    .nav-principale .nav-lien .icone {
+        display: none;
+    }
+}
+
+.entete-interieur {
+    max-width: 1240px;
+}

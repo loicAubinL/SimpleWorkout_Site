@@ -1,6 +1,6 @@
 <div class="nav-compte">
     @auth
-    <a href="{{ route('account.show') }}" @class(['nav-lien', 'actif' => request()->routeIs('account.*')])>
+    <a href="{{ route('account.show') }}" title="{{ auth()->user()->name }}" @class(['nav-lien', 'actif' => request()->routeIs('account.*')])>
         <x-icon name="user" :size="18" />
         <span class="nav-nom">{{ auth()->user()->name }}</span>
         @if (auth()->user()->isManager())
