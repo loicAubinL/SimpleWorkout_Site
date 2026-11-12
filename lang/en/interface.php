@@ -5,7 +5,7 @@ return [
     'nav_home' => 'Home',
     'nav_workouts' => 'My workouts',
     'nav_stories' => 'User stories',
-    'footer' => 'My Workout App',
+    'footer' => 'Your training log.',
     'language' => 'Language',
     'apply' => 'Apply',
 
@@ -107,4 +107,17 @@ return [
     'forbidden_title' => 'Accès refusé',
     'forbidden_text' => "Vous n'avez pas la permission d'effectuer cette action.",
     'back_home' => "Retour à l'accueil",
+
+    // Layout
+    'skip_to_content' => 'Skip to content',
+    'menu' => 'Menu',
+    'credits' => 'Lucide icons (ISC) · Barlow font (OFL)',
+    'nav_saved' => 'Saved',
+    'nav_history' => 'History',
+    'remember_me' => 'Remember me',
+    'no_account_yet' => 'No account yet?',
+    'already_member' => 'Already a member?',
+    'password_hint' => 'At least 8 characters.',
+    'not_found_title' => 'Page not found',
+    'not_found_text' => 'This page does not exist or is not available.',
 ];

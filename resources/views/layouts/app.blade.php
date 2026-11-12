@@ -4,66 +4,60 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', __('interface.footer'))</title>
+    <meta name="theme-color" content="#0E1013">
+    <title>@hasSection('title')@yield('title') · @endif{{ config('app.name') === 'Laravel' ? 'SimpleWorkout' : config('app.name') }}</title>
+    <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
+    <link rel="preload" href="{{ asset('fonts/barlow-condensed-700.woff2') }}" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}?v={{ filemtime(public_path('css/app.css')) }}">
     @stack('scripts')
 </head>
 
 <body>
-    <header>
-        <nav aria-label="{{ __('interface.main_nav') }}">
-            <div class="nav-liens">
-                <a href="{{ route('accueil') }}" class="nav-marque">SimpleWorkout</a>
-                <a href="{{ route('workouts.publics') }}" @class(['actif'=> request()->routeIs('workouts.publics')])>{{ __('interface.public_workouts') }}</a>
-                @auth
-                <a href="{{ route('workout-splits.index') }}" @class(['actif'=> request()->routeIs('workout-splits.*')])>{{ __('interface.nav_workouts') }}</a>
-                <a href="{{ route('account.show') }}" @class(['actif'=> request()->routeIs('account.show')])>{{ __('interface.my_account') }}</a>
-                @if (auth()->user()->role === \App\Models\User::ROLE_MANAGER)
-                <a href="{{ route('admin.index') }}" @class(['actif'=> request()->routeIs('admin.*')])>{{ __('interface.admin') }}</a>
-                @endif
-                @endauth
-                <a href="{{ route('recits') }}" @class(['actif'=> request()->routeIs('recits')])>{{ __('interface.nav_stories') }}</a>
-            </div>
+    <a href="#contenu" class="lien-evitement">{{ __('interface.skip_to_content') }}</a>
 
-            <div class="nav-compte">
-                @auth
-                <span class="nav-utilisateur">
-                    {{ auth()->user()->name }}
-                    @if (auth()->user()->role === \App\Models\User::ROLE_MANAGER)
-                    <span class="nav-role">{{ __('interface.role_manager') }}</span>
-                    @endif
-                </span>
-                <form method="post" action="{{ route('logout') }}" class="nav-deconnexion">
-                    @csrf
-                    <button type="submit">{{ __('interface.logout') }}</button>
-                </form>
-                @else
-                <a href="{{ route('login') }}" class="nav-lien-secondaire">{{ __('interface.login_title') }}</a>
-                <a href="{{ route('register') }}" class="nav-bouton">{{ __('interface.register_title') }}</a>
-                @endauth
+    <header class="entete">
+        <div class="entete-interieur">
+            <x-logo />
 
-                <form method="post" action="{{ route('locale.update') }}" class="choix-langue">
-                    @csrf
-                    <label for="locale" class="sr-only">{{ __('interface.language') }}</label>
-                    <select id="locale" name="locale" onchange="this.form.submit()">
-                        <option value="fr" @selected(app()->getLocale() === 'fr')>FR</option>
-                        <option value="en" @selected(app()->getLocale() === 'en')>EN</option>
-                    </select>
-                    <noscript><button type="submit">{{ __('interface.apply') }}</button></noscript>
-                </form>
-            </div>
-        </nav>
+            <nav class="nav-principale" aria-label="{{ __('interface.main_nav') }}">
+                @include('layouts._nav-liens')
+            </nav>
+            @include('layouts._nav-compte', ['suffixe' => 'bureau'])
+
+            <details class="menu-mobile">
+                <summary aria-label="{{ __('interface.menu') }}">
+                    <x-icon name="menu" class="icone-ouvrir" />
+                    <x-icon name="x" class="icone-fermer" />
+                </summary>
+                <div class="menu-mobile-panneau">
+                    <nav class="pile" aria-label="{{ __('interface.main_nav') }}">
+                        @include('layouts._nav-liens')
+                    </nav>
+                    <hr>
+                    @include('layouts._nav-compte', ['suffixe' => 'mobile'])
+                </div>
+            </details>
+        </div>
     </header>
 
-    <main>
+    <main id="contenu">
         @if (session('status'))
-        <p class="message-succes" role="status">{{ session('status') }}</p>
+        <p class="message message-succes" role="status">
+            <x-icon name="circle-check" />
+            <span>{{ session('status') }}</span>
+        </p>
         @endif
         @yield('content')
     </main>
 
-    <footer>
-        <p>&copy; {{ date('Y') }} - {{ __('interface.footer') }}</p>
+    <footer class="pied">
+        <div class="pied-interieur">
+            <p>&copy; {{ date('Y') }} SimpleWorkout · {{ __('interface.footer') }}</p>
+            <p>
+                <a href="{{ route('recits') }}">{{ __('interface.nav_stories') }}</a>
+                · {{ __('interface.credits') }}
+            </p>
+        </div>
     </footer>
 </body>
 

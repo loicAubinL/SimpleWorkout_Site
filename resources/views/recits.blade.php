@@ -62,11 +62,16 @@ $recitsAdmin = [
 @endphp
 
 @section('content')
-<h1>Récits utilisateurs</h1>
-<p>Fonctionnalités attendues du projet SimpleWorkout.</p>
+<div class="entete-page">
+    <div>
+        <span class="surtitre">SimpleWorkout</span>
+        <h1>Récits utilisateurs</h1>
+        <p class="sous-titre">Fonctionnalités attendues du projet SimpleWorkout.</p>
+    </div>
+</div>
 
 <div class="grille-recits">
-    <div class="colonne-recits">
+    <div class="colonne-recits carte">
         <h2>Récits utilisateur</h2>
         <ul class="liste-recits">
             @foreach ($recitsUtilisateur as $recit)
@@ -87,7 +92,7 @@ $recitsAdmin = [
         </ul>
     </div>
 
-    <div class="colonne-recits">
+    <div class="colonne-recits carte">
         <h2>Récits administrateur</h2>
         <ul class="liste-recits">
             @foreach ($recitsAdmin as $recit)

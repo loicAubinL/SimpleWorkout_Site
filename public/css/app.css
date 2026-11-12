@@ -1,52 +1,1413 @@
 /* ==================================================
    SimpleWorkout — public/css/app.css
-   1.  Base
-   2.  En-tête et navigation
-   3.  Contenu principal
-   4.  Listes
-   5.  Cartes (jours, exercices)
-   6.  Formulaires
-   7.  Boutons
-   8.  Fichier programme
-   9.  Recherche
-   10. Pagination
-   11. Composants (badges, messages, états)
-   12. Récits
-   13. Séries enregistrées
-   14. Pages connexion / inscription
-   15. Pied de page
-   16. Petit écran
+   Thème « sombre sportif » : fond presque noir, accent lime.
+
+   1.  Variables et polices
+   2.  Base
+   3.  En-tête, navigation et menu mobile
+   4.  Mise en page (conteneur, en-tête de page, grilles)
+   5.  Boutons
+   6.  Cartes et listes
+   7.  Badges, messages, états vides
+   8.  Formulaires
+   9.  Tableaux
+   10. Accueil (workout du jour)
+   11. Séance et progression
+   12. Pagination
+   13. Récits
+   14. Pied de page
+   15. Utilitaires et accessibilité
 ================================================== */
 
 /* --------------------------------------------------
-   1. BASE
+   1. VARIABLES ET POLICES
 -------------------------------------------------- */
-* {
+@font-face {
+    font-family: "Barlow Condensed";
+    src: url("../fonts/barlow-condensed-600.woff2") format("woff2");
+    font-weight: 600;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Barlow Condensed";
+    src: url("../fonts/barlow-condensed-700.woff2") format("woff2");
+    font-weight: 700;
+    font-display: swap;
+}
+
+:root {
+    --fond: #0e1013;
+    --surface: #161a1f;
+    --surface-2: #1e232a;
+    --surface-3: #262c35;
+    --bordure: #2c323b;
+    --texte: #eef0f3;
+    --texte-2: #a4acb8;
+    --texte-3: #737c89;
+    --accent: #c6f432;
+    --accent-fonce: #a8d61a;
+    --accent-doux: rgb(198 244 50 / 0.12);
+    --sur-accent: #0e1013;
+    --danger: #ff6b6b;
+    --danger-doux: rgb(255 107 107 / 0.12);
+    --info: #6cb6ff;
+
+    --police-titre: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+    --police-texte: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --police-chiffres: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
+
+    --rayon: 12px;
+    --rayon-petit: 8px;
+    --ombre: 0 1px 0 rgb(255 255 255 / 0.03) inset, 0 8px 24px rgb(0 0 0 / 0.25);
+    --largeur: 1120px;
+    --transition: 150ms ease;
+}
+
+/* --------------------------------------------------
+   2. BASE
+-------------------------------------------------- */
+*,
+*::before,
+*::after {
     box-sizing: border-box;
+}
+
+html {
+    color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
 }
 
 body {
     margin: 0;
-    font-family:
-        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-    background-color: #0b0f14;
-    color: #e6edf3;
-    line-height: 1.5;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
+    background: var(--fond);
+    color: var(--texte);
+    font-family: var(--police-texte);
+    font-size: 1rem;
+    line-height: 1.55;
 }
 
-/* Contour visible au clavier (Tab) sur tout ce qui est cliquable */
-a:focus-visible,
-button:focus-visible,
-select:focus-visible {
-    outline: 2px solid #4a9eff;
+h1,
+h2,
+h3 {
+    font-family: var(--police-titre);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: 0.01em;
+    margin: 0 0 0.5em;
+}
+
+h1 {
+    font-size: clamp(2rem, 1.4rem + 2.4vw, 2.9rem);
+    text-transform: uppercase;
+}
+
+h2 {
+    font-size: 1.6rem;
+    margin-top: 2rem;
+}
+
+h3 {
+    font-size: 1.25rem;
+}
+
+p {
+    margin: 0 0 1rem;
+}
+
+a {
+    color: var(--accent);
+    text-underline-offset: 3px;
+}
+
+a:hover {
+    color: var(--accent-fonce);
+}
+
+img,
+svg {
+    display: block;
+    max-width: 100%;
+}
+
+.icone {
+    display: inline-block;
+    flex-shrink: 0;
+    vertical-align: middle;
+}
+
+:focus-visible {
+    outline: 2px solid var(--accent);
     outline-offset: 2px;
+    border-radius: 4px;
 }
 
-/* Texte caché à l'écran, mais lu par les lecteurs d'écran */
+::selection {
+    background: var(--accent);
+    color: var(--sur-accent);
+}
+
+/* --------------------------------------------------
+   3. EN-TÊTE, NAVIGATION ET MENU MOBILE
+-------------------------------------------------- */
+.entete {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgb(14 16 19 / 0.88);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--bordure);
+}
+
+.entete-interieur {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    max-width: var(--largeur);
+    margin: 0 auto;
+    padding: 0.75rem 1.25rem;
+}
+
+.logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    color: var(--texte);
+    text-decoration: none;
+    font-family: var(--police-titre);
+    font-size: 1.45rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+}
+
+.logo:hover {
+    color: var(--texte);
+}
+
+.logo strong {
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.nav-principale {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    flex: 1;
+}
+
+.nav-lien {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--rayon-petit);
+    color: var(--texte-2);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    transition: color var(--transition), background var(--transition);
+}
+
+.nav-lien:hover {
+    color: var(--texte);
+    background: var(--surface-2);
+}
+
+.nav-lien.actif {
+    color: var(--texte);
+    background: var(--surface-2);
+    box-shadow: inset 0 -2px 0 var(--accent);
+}
+
+.nav-compte {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+}
+
+.nav-utilisateur {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--texte-2);
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.choix-langue select {
+    appearance: none;
+    padding: 0.35rem 0.6rem;
+    border: 1px solid var(--bordure);
+    border-radius: var(--rayon-petit);
+    background: var(--surface);
+    color: var(--texte-2);
+    font: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.menu-mobile {
+    display: none;
+    margin-left: auto;
+}
+
+.menu-mobile > summary {
+    list-style: none;
+    display: inline-flex;
+    padding: 0.5rem;
+    border: 1px solid var(--bordure);
+    border-radius: var(--rayon-petit);
+    cursor: pointer;
+    color: var(--texte);
+}
+
+.menu-mobile > summary::-webkit-details-marker {
+    display: none;
+}
+
+.menu-mobile .icone-fermer,
+.menu-mobile[open] .icone-ouvrir {
+    display: none;
+}
+
+.menu-mobile[open] .icone-fermer {
+    display: inline-block;
+}
+
+.menu-mobile-panneau {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    display: grid;
+    gap: 0.25rem;
+    padding: 0.75rem 1.25rem 1.25rem;
+    background: var(--fond);
+    border-bottom: 1px solid var(--bordure);
+    box-shadow: 0 16px 32px rgb(0 0 0 / 0.4);
+}
+
+.menu-mobile-panneau .nav-lien {
+    padding: 0.75rem;
+    font-size: 1rem;
+}
+
+.menu-mobile-panneau hr {
+    width: 100%;
+    border: 0;
+    border-top: 1px solid var(--bordure);
+    margin: 0.5rem 0;
+}
+
+.menu-mobile-panneau .nav-compte {
+    margin: 0;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 900px) {
+    .entete .nav-principale,
+    .entete-interieur > .nav-compte {
+        display: none;
+    }
+
+    .menu-mobile {
+        display: block;
+    }
+}
+
+/* --------------------------------------------------
+   4. MISE EN PAGE
+-------------------------------------------------- */
+main {
+    flex: 1;
+    width: 100%;
+    max-width: var(--largeur);
+    margin: 0 auto;
+    padding: 2rem 1.25rem 4rem;
+}
+
+.entete-page {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.75rem;
+}
+
+.entete-page h1 {
+    margin: 0;
+}
+
+.entete-page .surtitre,
+.surtitre {
+    display: block;
+    margin-bottom: 0.35rem;
+    color: var(--accent);
+    font-family: var(--police-titre);
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.entete-page .sous-titre,
+.sous-titre {
+    margin: 0.5rem 0 0;
+    color: var(--texte-2);
+    max-width: 60ch;
+}
+
+.fil {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-bottom: 1rem;
+    color: var(--texte-2);
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+.fil:hover {
+    color: var(--texte);
+}
+
+.grille {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+    gap: 1rem;
+}
+
+.grille-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+    gap: 1.25rem;
+    align-items: start;
+}
+
+.pile {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.section {
+    margin-top: 2.5rem;
+}
+
+.section-titre {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.section-titre h2 {
+    margin: 0;
+}
+
+/* --------------------------------------------------
+   5. BOUTONS
+-------------------------------------------------- */
+.bouton,
+button.bouton,
+.formulaire button[type="submit"]:not([class]) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 2.6rem;
+    padding: 0.55rem 1.1rem;
+    border: 1px solid var(--accent);
+    border-radius: var(--rayon-petit);
+    background: var(--accent);
+    color: var(--sur-accent);
+    font: inherit;
+    font-weight: 650;
+    line-height: 1.2;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background var(--transition), border-color var(--transition), color var(--transition), transform var(--transition);
+}
+
+.bouton:hover {
+    background: var(--accent-fonce);
+    border-color: var(--accent-fonce);
+    color: var(--sur-accent);
+}
+
+.bouton:active {
+    transform: translateY(1px);
+}
+
+.bouton-secondaire {
+    background: transparent;
+    border-color: var(--bordure);
+    color: var(--texte);
+}
+
+.bouton-secondaire:hover {
+    background: var(--surface-2);
+    border-color: var(--texte-3);
+    color: var(--texte);
+}
+
+.bouton-fantome {
+    background: transparent;
+    border-color: transparent;
+    color: var(--texte-2);
+}
+
+.bouton-fantome:hover {
+    background: var(--surface-2);
+    border-color: transparent;
+    color: var(--texte);
+}
+
+.bouton-danger {
+    background: transparent;
+    border-color: rgb(255 107 107 / 0.4);
+    color: var(--danger);
+}
+
+.bouton-danger:hover {
+    background: var(--danger-doux);
+    border-color: var(--danger);
+    color: var(--danger);
+}
+
+.bouton-petit {
+    min-height: 2.1rem;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.875rem;
+}
+
+.bouton-icone {
+    min-height: 2.25rem;
+    width: 2.25rem;
+    padding: 0;
+}
+
+.bouton-large {
+    width: 100%;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.actions form {
+    margin: 0;
+}
+
+/* --------------------------------------------------
+   6. CARTES ET LISTES
+-------------------------------------------------- */
+.carte {
+    background: var(--surface);
+    border: 1px solid var(--bordure);
+    border-radius: var(--rayon);
+    padding: 1.25rem;
+    box-shadow: var(--ombre);
+}
+
+.carte > :last-child {
+    margin-bottom: 0;
+}
+
+.carte-titre {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.carte-titre h2,
+.carte-titre h3 {
+    margin: 0;
+}
+
+/* Carte d'un split (listes, page publique) */
+.carte-split {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    transition: border-color var(--transition), transform var(--transition);
+}
+
+.carte-split:hover {
+    border-color: var(--texte-3);
+}
+
+.carte-split h3 {
+    margin: 0;
+    font-size: 1.4rem;
+}
+
+.carte-split h3 a {
+    color: var(--texte);
+    text-decoration: none;
+}
+
+/* Toute la carte est cliquable, sans imbriquer les boutons dans le lien */
+.carte-split h3 a::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+}
+
+.carte-split .actions {
+    position: relative;
+    z-index: 1;
+    margin-top: auto;
+}
+
+.carte-split .description {
+    color: var(--texte-2);
+    font-size: 0.925rem;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 1rem;
+    color: var(--texte-2);
+    font-size: 0.875rem;
+}
+
+.meta > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+/* Liste de lignes (jours, exercices, comptes) */
+.liste {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--bordure);
+    border-radius: var(--rayon);
+    background: var(--surface);
+    overflow: hidden;
+}
+
+.liste > li {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.9rem 1.1rem;
+    border-top: 1px solid var(--bordure);
+}
+
+.liste > li:first-child {
+    border-top: 0;
+}
+
+.liste .principal {
+    flex: 1;
+    min-width: 0;
+}
+
+.liste .titre {
+    font-weight: 600;
+    color: var(--texte);
+    text-decoration: none;
+}
+
+a.titre:hover {
+    color: var(--accent);
+}
+
+/* Jour d'un split */
+.jour {
+    padding: 0;
+    overflow: hidden;
+}
+
+.jour-entete {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--bordure);
+}
+
+.jour-entete h3 {
+    margin: 0;
+    font-size: 1.35rem;
+    flex: 1;
+}
+
+.jour-numero {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: var(--surface-3);
+    color: var(--texte-2);
+    font-family: var(--police-titre);
+    font-weight: 700;
+}
+
+.jour-repos {
+    padding: 1rem 1.25rem;
+    color: var(--texte-2);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.exercices {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.exercices > li {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 0.5rem 1rem;
+    padding: 0.85rem 1.25rem;
+    border-top: 1px solid var(--bordure);
+}
+
+.exercices > li:first-child {
+    border-top: 0;
+}
+
+.exercice-nom {
+    font-weight: 600;
+}
+
+.exercice-notes {
+    color: var(--texte-3);
+    font-size: 0.85rem;
+    margin: 0.15rem 0 0;
+}
+
+.chiffres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.chiffre {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.25rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: 6px;
+    background: var(--surface-2);
+    font-size: 0.85rem;
+    color: var(--texte-2);
+    white-space: nowrap;
+}
+
+.chiffre b {
+    color: var(--texte);
+    font-family: var(--police-chiffres);
+    font-weight: 600;
+}
+
+.jour-pied {
+    padding: 0.75rem 1.25rem;
+    border-top: 1px solid var(--bordure);
+    background: var(--surface-2);
+}
+
+.actions-ligne {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.actions-ligne form {
+    margin: 0;
+}
+
+/* --------------------------------------------------
+   7. BADGES, MESSAGES, ÉTATS VIDES
+-------------------------------------------------- */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.15rem 0.55rem;
+    border: 1px solid var(--bordure);
+    border-radius: 999px;
+    background: var(--surface-2);
+    color: var(--texte-2);
+    font-size: 0.78rem;
+    font-weight: 600;
+    line-height: 1.5;
+    white-space: nowrap;
+}
+
+.badge-accent {
+    border-color: transparent;
+    background: var(--accent);
+    color: var(--sur-accent);
+}
+
+.badge-contour {
+    border-color: rgb(198 244 50 / 0.45);
+    background: var(--accent-doux);
+    color: var(--accent);
+}
+
+.badge-danger {
+    border-color: rgb(255 107 107 / 0.45);
+    background: var(--danger-doux);
+    color: var(--danger);
+}
+
+.message {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    margin: 0 0 1.5rem;
+    padding: 0.85rem 1rem;
+    border-radius: var(--rayon-petit);
+    border: 1px solid;
+}
+
+.message-succes {
+    border-color: rgb(198 244 50 / 0.35);
+    background: var(--accent-doux);
+    color: var(--texte);
+}
+
+.message-succes .icone {
+    color: var(--accent);
+}
+
+.message-alerte {
+    border-color: rgb(255 107 107 / 0.4);
+    background: var(--danger-doux);
+    color: var(--texte);
+}
+
+.message-erreur {
+    margin: 0.35rem 0 0;
+    color: var(--danger);
+    font-size: 0.875rem;
+}
+
+.etat-vide {
+    display: grid;
+    justify-items: center;
+    gap: 0.5rem;
+    padding: 2.5rem 1.25rem;
+    border: 1px dashed var(--bordure);
+    border-radius: var(--rayon);
+    color: var(--texte-2);
+    text-align: center;
+}
+
+.etat-vide .icone {
+    color: var(--texte-3);
+}
+
+.etat-vide p {
+    margin: 0;
+}
+
+.texte-discret {
+    color: var(--texte-2);
+}
+
+.petit {
+    font-size: 0.875rem;
+}
+
+/* --------------------------------------------------
+   8. FORMULAIRES
+-------------------------------------------------- */
+.formulaire {
+    display: grid;
+    gap: 1.1rem;
+    max-width: 640px;
+}
+
+.formulaire-large {
+    max-width: none;
+}
+
+.champ {
+    display: grid;
+    gap: 0.4rem;
+}
+
+.champ > label,
+.formulaire > label:not(.case-a-cocher) {
+    font-weight: 600;
+    font-size: 0.925rem;
+}
+
+.rangee {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+input[type="number"],
+input[type="date"],
+select,
+textarea {
+    width: 100%;
+    min-height: 2.75rem;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--bordure);
+    border-radius: var(--rayon-petit);
+    background: var(--surface-2);
+    color: var(--texte);
+    font: inherit;
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+textarea {
+    min-height: 6rem;
+    resize: vertical;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--texte-3);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-doux);
+}
+
+[aria-invalid="true"] {
+    border-color: var(--danger) !important;
+}
+
+.aide {
+    color: var(--texte-3);
+    font-size: 0.825rem;
+    margin: 0;
+}
+
+.case-a-cocher {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    cursor: pointer;
+}
+
+.case-a-cocher input {
+    width: 1.15rem;
+    height: 1.15rem;
+    margin: 0.15rem 0 0;
+    accent-color: var(--accent);
+}
+
+.case-a-cocher strong {
+    display: block;
+    font-weight: 600;
+}
+
+.case-a-cocher span span {
+    color: var(--texte-3);
+    font-size: 0.85rem;
+}
+
+.recherche-barre {
+    display: flex;
+    gap: 0.5rem;
+    max-width: 560px;
+    margin-bottom: 1.5rem;
+}
+
+.recherche-barre .champ-icone {
+    position: relative;
+    flex: 1;
+}
+
+.champ-icone .icone {
+    position: absolute;
+    left: 0.8rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--texte-3);
+    pointer-events: none;
+}
+
+.champ-icone input {
+    padding-left: 2.5rem;
+}
+
+#search-results {
+    list-style: none;
+    margin: 0.5rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0.35rem;
+}
+
+#search-results a {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.6rem 0.85rem;
+    border-radius: var(--rayon-petit);
+    background: var(--surface-2);
+    color: var(--texte);
+    text-decoration: none;
+}
+
+#search-results a:hover {
+    background: var(--surface-3);
+}
+
+#search-status {
+    margin: 0.4rem 0 0;
+    color: var(--texte-3);
+    font-size: 0.85rem;
+}
+
+#search-status:empty {
+    display: none;
+}
+
+/* Cartes connexion / inscription */
+.carte-auth {
+    width: 100%;
+    max-width: 440px;
+    margin: 1.5rem auto 0;
+    padding: 2rem;
+}
+
+.carte-auth .logo-marque {
+    margin-bottom: 1.25rem;
+}
+
+.carte-auth h1 {
+    font-size: 2.2rem;
+}
+
+.carte-auth .formulaire {
+    margin-top: 1.5rem;
+}
+
+.lien-bas {
+    margin: 1.5rem 0 0;
+    text-align: center;
+    color: var(--texte-2);
+    font-size: 0.925rem;
+}
+
+.zone-danger {
+    border-color: rgb(255 107 107 / 0.35);
+}
+
+.zone-danger h2 {
+    color: var(--danger);
+}
+
+/* --------------------------------------------------
+   9. TABLEAUX
+-------------------------------------------------- */
+.tableau-conteneur {
+    overflow-x: auto;
+    border: 1px solid var(--bordure);
+    border-radius: var(--rayon);
+    background: var(--surface);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.925rem;
+}
+
+th,
+td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-top: 1px solid var(--bordure);
+    vertical-align: middle;
+}
+
+thead th {
+    border-top: 0;
+    background: var(--surface-2);
+    color: var(--texte-2);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+td.nombre,
+th.nombre {
+    text-align: right;
+    font-family: var(--police-chiffres);
+    font-variant-numeric: tabular-nums;
+}
+
+/* --------------------------------------------------
+   10. ACCUEIL (WORKOUT DU JOUR)
+-------------------------------------------------- */
+.hero {
+    position: relative;
+    overflow: hidden;
+    padding: 2rem;
+    border-radius: calc(var(--rayon) + 4px);
+    border: 1px solid var(--bordure);
+    background:
+        radial-gradient(120% 140% at 100% 0%, rgb(198 244 50 / 0.16), transparent 55%),
+        var(--surface);
+}
+
+.hero h1 {
+    font-size: clamp(2.6rem, 1.8rem + 4vw, 4.2rem);
+    margin: 0.25rem 0 0.5rem;
+}
+
+.hero .sous-titre {
+    margin-bottom: 1.5rem;
+}
+
+.hero-exercices {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+    gap: 0.75rem;
+    margin: 0 0 1.5rem;
+    padding: 0;
+    list-style: none;
+}
+
+.hero-exercices li {
+    padding: 0.9rem 1rem;
+    border-radius: var(--rayon-petit);
+    background: rgb(255 255 255 / 0.03);
+    border: 1px solid var(--bordure);
+}
+
+.hero-exercices .exercice-nom {
+    display: block;
+    margin-bottom: 0.15rem;
+}
+
+.hero-exercices .volume {
+    font-family: var(--police-titre);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.accueil-visiteur {
+    display: grid;
+    gap: 1.5rem;
+    padding: 3rem 2rem;
+}
+
+.accueil-visiteur h1 {
+    font-size: clamp(2.8rem, 1.8rem + 5vw, 5rem);
+    max-width: 14ch;
+    margin: 0;
+}
+
+.accueil-visiteur h1 em {
+    font-style: normal;
+    color: var(--accent);
+}
+
+.atouts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.atout .icone {
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+}
+
+.atout h3 {
+    margin-bottom: 0.35rem;
+}
+
+.atout p {
+    margin: 0;
+    color: var(--texte-2);
+    font-size: 0.925rem;
+}
+
+/* --------------------------------------------------
+   11. SÉANCE ET PROGRESSION
+-------------------------------------------------- */
+.seance-exercice {
+    padding: 0;
+    overflow: hidden;
+}
+
+.seance-exercice .jour-entete h3 {
+    font-size: 1.3rem;
+}
+
+.seance-series {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.seance-series li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 1.25rem;
+    border-top: 1px solid var(--bordure);
+    font-family: var(--police-chiffres);
+    font-size: 0.925rem;
+}
+
+.seance-series li:first-child {
+    border-top: 0;
+}
+
+.seance-series .numero {
+    color: var(--texte-3);
+    width: 1.5rem;
+}
+
+.seance-series .valeur {
+    flex: 1;
+}
+
+.seance-series .valeur .icone {
+    color: var(--accent);
+}
+
+.form-serie {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 0.5rem;
+    align-items: end;
+    padding: 1rem 1.25rem;
+    border-top: 1px solid var(--bordure);
+    background: var(--surface-2);
+}
+
+.form-serie label {
+    font-size: 0.78rem;
+    color: var(--texte-2);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.form-serie input {
+    background: var(--surface);
+    font-family: var(--police-chiffres);
+}
+
+.barre-progression {
+    height: 6px;
+    border-radius: 999px;
+    background: var(--surface-3);
+    overflow: hidden;
+}
+
+.barre-progression span {
+    display: block;
+    height: 100%;
+    background: var(--accent);
+    border-radius: inherit;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.stat {
+    padding: 1rem 1.25rem;
+}
+
+.stat-valeur {
+    display: block;
+    font-family: var(--police-titre);
+    font-size: 2.2rem;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.stat-libelle {
+    color: var(--texte-2);
+    font-size: 0.85rem;
+}
+
+.graphique {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+}
+
+.graphique .grille-ligne {
+    stroke: var(--bordure);
+    stroke-width: 1;
+}
+
+.graphique .axe-texte {
+    fill: var(--texte-3);
+    font-size: 11px;
+    font-family: var(--police-texte);
+}
+
+.graphique .courbe {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 2.5;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}
+
+.graphique .aire {
+    fill: var(--accent-doux);
+}
+
+.graphique .point {
+    fill: var(--fond);
+    stroke: var(--accent);
+    stroke-width: 2;
+}
+
+.graphique .point-titre {
+    fill: var(--texte);
+    font-size: 12px;
+    font-weight: 600;
+    font-family: var(--police-texte);
+}
+
+/* --------------------------------------------------
+   12. PAGINATION
+-------------------------------------------------- */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 2rem;
+}
+
+/* --------------------------------------------------
+   13. RÉCITS
+-------------------------------------------------- */
+.grille-recits {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+    gap: 1.25rem;
+    align-items: start;
+}
+
+.liste-recits {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.75rem;
+}
+
+.liste-recits > li {
+    padding: 1rem 1.1rem;
+    border: 1px solid var(--bordure);
+    border-left: 3px solid var(--bordure);
+    border-radius: var(--rayon-petit);
+    background: var(--surface-2);
+}
+
+.liste-recits > li.recit-complete {
+    border-left-color: var(--accent);
+}
+
+.badge-complete {
+    display: inline-block;
+    margin-left: 0.35rem;
+    padding: 0.05rem 0.5rem;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--sur-accent);
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+.criteres {
+    margin: 0.6rem 0 0;
+    padding-left: 1.1rem;
+    color: var(--texte-2);
+    font-size: 0.875rem;
+}
+
+/* --------------------------------------------------
+   14. PIED DE PAGE
+-------------------------------------------------- */
+.pied {
+    border-top: 1px solid var(--bordure);
+    color: var(--texte-3);
+    font-size: 0.85rem;
+}
+
+.pied-interieur {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+    max-width: var(--largeur);
+    margin: 0 auto;
+    padding: 1.5rem 1.25rem;
+}
+
+.pied p {
+    margin: 0;
+}
+
+.pied a {
+    color: var(--texte-2);
+}
+
+/* --------------------------------------------------
+   15. UTILITAIRES ET ACCESSIBILITÉ
+-------------------------------------------------- */
 .sr-only {
     position: absolute;
     width: 1px;
@@ -59,1006 +1420,64 @@ select:focus-visible {
     border: 0;
 }
 
-/* --------------------------------------------------
-   2. EN-TÊTE ET NAVIGATION
-   (limité à header nav pour ne pas toucher la pagination)
--------------------------------------------------- */
-header {
-    background-color: #10151d;
-    border-bottom: 1px solid #1c2531;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    width: 100%;
-}
-
-header nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 12px 20px;
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 14px 24px;
-}
-
-/* Groupe de gauche : logo + pages */
-.nav-liens,
-.nav-compte {
-    display: flex;
-    align-items: center;
-    gap: 2px;
-    white-space: nowrap;
-}
-
-.nav-compte {
-    gap: 10px;
-}
-
-header nav a {
-    text-decoration: none;
-    transition:
-        color 0.15s ease,
-        background-color 0.15s ease;
-}
-
-.nav-marque {
-    color: #ffffff;
-    font-size: 16px;
-    font-weight: 800;
-    letter-spacing: -0.01em;
-    margin-right: 10px;
-}
-
-.nav-liens a:not(.nav-marque) {
-    padding: 7px 10px;
-    border-radius: 8px;
-    color: #8fa3b8;
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.nav-liens a:not(.nav-marque):hover {
-    color: #e6edf3;
-    background-color: #16202c;
-}
-
-/* Page en cours */
-.nav-liens a.actif {
-    color: #4a9eff;
-    background-color: #16283d;
-}
-
-/* Groupe de droite : compte + langue */
-.nav-utilisateur {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    color: #e6edf3;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-.nav-role {
-    padding: 2px 8px;
-    border-radius: 999px;
-    background-color: #2a2213;
-    color: #f0b44c;
-    font-size: 11px;
-    font-weight: 700;
-}
-
-.nav-lien-secondaire {
-    color: #8fa3b8;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-.nav-lien-secondaire:hover {
-    color: #4a9eff;
-}
-
-header nav a.nav-bouton {
-    padding: 7px 14px;
-    border-radius: 8px;
-    background-color: #1a5cff;
-    color: #ffffff;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-header nav a.nav-bouton:hover {
-    background-color: #4a9eff;
-}
-
-/* Les formulaires du menu n'héritent pas du style des formulaires */
-header nav form {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    margin: 0;
-    padding: 0;
-    border: none;
-}
-
-nav form.nav-deconnexion button {
-    padding: 6px 12px;
-    font-size: 13px;
-    background-color: transparent;
-    border: 1px solid #263341;
-    color: #8fa3b8;
-}
-
-nav form.nav-deconnexion button:hover {
-    background-color: #2a1418;
-    border-color: #d64545;
-    color: #ff9a9a;
-}
-
-/* Choix de langue (compact : FR / EN) */
-nav form.choix-langue {
-    padding-left: 10px;
-    border-left: 1px solid #263341;
-}
-
-nav form.choix-langue select {
-    color-scheme: dark;
-    cursor: pointer;
-    background-color: #0b0f14;
-    border: 1px solid #263341;
-    border-radius: 8px;
-    color: #e6edf3;
-    padding: 6px 8px;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-nav form.choix-langue select option {
-    background-color: #10151d;
-    color: #e6edf3;
-}
-
-nav form.choix-langue button {
-    padding: 6px 12px;
-    font-size: 13px;
-}
-
-/* --------------------------------------------------
-   3. CONTENU PRINCIPAL
--------------------------------------------------- */
-main {
-    flex: 1;
-    width: 100%;
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 32px 20px;
-}
-
-h1 {
-    font-size: 24px;
-    font-weight: 700;
-    margin: 0 0 6px;
-    color: #ffffff;
-    letter-spacing: -0.01em;
-}
-
-h2 {
-    font-size: 18px;
-    font-weight: 600;
-    margin: 28px 0 14px;
-    color: #4a9eff;
-}
-
-p {
-    color: #8fa3b8;
-    margin-top: 0;
-}
-
-a {
-    color: #4a9eff;
-    text-decoration: none;
-}
-
-/* --------------------------------------------------
-   4. LISTES
--------------------------------------------------- */
-ul,
-ol {
-    list-style: none;
-    margin: 20px 0 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-ul li {
-    background-color: #131a24;
-    border: 1px solid #1c2531;
-    border-radius: 12px;
-    padding: 0;
-    overflow: hidden;
-    transition: border-color 0.15s ease;
-}
-
-ul li:hover {
-    border-color: #2a3a4d;
-}
-
-ul li > a {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    padding: 16px 18px;
-    width: 100%;
-    color: #ffffff;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 15px;
-}
-
-/* --------------------------------------------------
-   5. CARTES (jours, exercices)
--------------------------------------------------- */
-.carte-exercice {
-    background-color: #131a24;
-    border: 1px solid #1c2531;
-    border-radius: 12px;
-    padding: 18px 20px;
-    margin-bottom: 12px;
-}
-
-.exercice-nom {
-    font-weight: 600;
-    color: #ffffff;
-    font-size: 15px;
-}
-
-.exercice-details {
-    color: #7d8b9a;
-    font-size: 13px;
-    font-weight: 500;
-    margin-left: 6px;
-}
-
-/* --------------------------------------------------
-   6. FORMULAIRES
--------------------------------------------------- */
-form {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 8px;
-    margin-top: 14px;
-    padding-top: 14px;
-    border-top: 1px solid #1c2531;
-}
-
-input[type="number"],
-input[type="text"],
-input[type="email"],
-input[type="password"],
-textarea {
-    background-color: #0b0f14;
-    border: 1px solid #263341;
-    border-radius: 8px;
-    color: #e6edf3;
-    padding: 9px 12px;
-    font-size: 13px;
-    font-family: inherit;
-    width: 92px;
-    outline: none;
-    transition:
-        border-color 0.15s ease,
-        box-shadow 0.15s ease;
-}
-
-input::placeholder,
-textarea::placeholder {
-    color: #5c6b7a;
-}
-
-input:focus,
-textarea:focus {
-    border-color: #4a9eff;
-    box-shadow: 0 0 0 3px rgba(74, 158, 255, 0.15);
-}
-
-/* Champ en erreur (aria-invalid posé par la validation serveur) */
-input[aria-invalid="true"],
-textarea[aria-invalid="true"] {
-    border-color: #d64545;
-}
-
-/* Formulaires pleine page : création, modification, connexion */
-form.formulaire {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 6px;
-    max-width: 420px;
-    margin-top: 20px;
-    padding: 24px;
-    background-color: #131a24;
-    border: 1px solid #1c2531;
-    border-radius: 12px;
-}
-
-form.formulaire label {
-    color: #e6edf3;
-    font-size: 13px;
-    font-weight: 600;
-    margin-top: 10px;
-}
-
-form.formulaire label:first-of-type {
-    margin-top: 0;
-}
-
-form.formulaire input,
-form.formulaire textarea {
-    width: 100%;
-}
-
-form.formulaire textarea {
-    min-height: 90px;
-    resize: vertical;
-}
-
-form.formulaire .message-erreur {
-    margin: 4px 0 0;
-    padding: 6px 10px;
-    font-size: 12px;
-}
-
-form.formulaire .actions {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-top: 16px;
-}
-
-/* Case à cocher sur une ligne */
-form.formulaire label.case-a-cocher {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 14px;
-}
-
-form.formulaire label.case-a-cocher input {
-    width: auto;
-    margin: 0;
-}
-
-.aide {
-    margin: 2px 0 0;
-    font-size: 12px;
-    color: #5c6b7a;
-}
-
-/* --------------------------------------------------
-   7. BOUTONS
--------------------------------------------------- */
-button {
-    background-color: #1a5cff;
-    color: #ffffff;
-    border: none;
-    border-radius: 8px;
-    padding: 9px 18px;
-    font-size: 13px;
-    font-weight: 600;
-    font-family: inherit;
-    cursor: pointer;
-    transition: background-color 0.15s ease;
-}
-
-button:hover {
-    background-color: #4a9eff;
-}
-
-button.bouton-danger {
-    background-color: #d64545;
-}
-
-button.bouton-danger:hover {
-    background-color: #ef5757;
-}
-
-button.bouton-plein {
-    width: 100%;
-    margin-top: 18px;
-    padding: 12px;
-    font-size: 14px;
-}
-
-/* Liens qui ressemblent à des boutons */
-a.bouton {
-    display: inline-block;
-    margin-top: 12px;
-    padding: 9px 18px;
-    background-color: #1a5cff;
-    color: #ffffff;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    transition: background-color 0.15s ease;
-}
-
-a.bouton:hover,
-a.bouton:focus-visible {
-    background-color: #4a9eff;
-    color: #ffffff;
-}
-
-a.bouton-danger {
-    display: inline-block;
-    flex: none;
-    width: auto;
-    padding: 8px 16px;
-    background-color: #d64545;
-    color: #ffffff;
-    border: none;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    white-space: nowrap;
-    transition: background-color 0.15s ease;
-}
-
-a.bouton-danger:hover {
-    background-color: #ef5757;
-}
-
-/* Boutons Modifier / Supprimer d'une ressource, sur une ligne */
-.actions-ressource {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin: 16px 0 8px;
-}
-
-.actions-ressource a.bouton {
-    margin-top: 0;
-}
-
-.actions-ressource form {
-    margin: 0;
-    padding: 0;
-    border: none;
-}
-
-/* --------------------------------------------------
-   8. FICHIER PROGRAMME
--------------------------------------------------- */
-/* Champ fichier personnalisé (texte traduit au lieu du bouton natif) */
-.champ-fichier {
-    position: relative;
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-/* Caché visuellement, mais toujours accessible au clavier */
-.champ-fichier input[type="file"] {
+.lien-evitement {
     position: absolute;
-    width: 1px;
-    height: 1px;
-    opacity: 0;
-    overflow: hidden;
-}
-
-form.formulaire .champ-fichier label.bouton-fichier {
-    margin: 0;
-    padding: 8px 14px;
-    border: 1px solid #263341;
-    border-radius: 8px;
-    background-color: #0b0f14;
-    color: #e6edf3;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition:
-        border-color 0.15s ease,
-        color 0.15s ease;
-}
-
-form.formulaire .champ-fichier label.bouton-fichier:hover,
-.champ-fichier input:focus-visible + label.bouton-fichier {
-    border-color: #4a9eff;
-    color: #4a9eff;
-}
-
-.nom-fichier {
-    font-size: 13px;
-    color: #8fa3b8;
-    word-break: break-all;
-}
-
-/* Fichier actuel + bouton poubelle */
-.fichier-actuel {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-button.bouton-poubelle {
-    padding: 6px 10px;
-    font-size: 14px;
-    line-height: 1;
-}
-
-/* Formulaire DELETE vide : seul le bouton poubelle est visible */
-form#supprimer-programme {
-    display: none;
-}
-
-/* Aperçu du JSON dans le détail */
-.apercu-json {
-    background-color: #0b0f14;
-    border: 1px solid #1c2531;
-    border-radius: 10px;
-    padding: 14px;
-    margin-top: 12px;
-    max-height: 320px;
-    overflow: auto;
-    font-size: 12px;
-    color: #e6edf3;
-}
-
-/* --------------------------------------------------
-   9. RECHERCHE
--------------------------------------------------- */
-.recherche {
-    position: relative;
-    margin: 24px 0;
-}
-
-.recherche label {
-    display: block;
-    font-size: 13px;
-    font-weight: 600;
-    color: #e6edf3;
-    margin-bottom: 8px;
-}
-
-.recherche input[type="search"] {
-    width: 100%;
-    background-color: #131a24;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%238fa3b8' stroke-width='2' stroke-linecap='round' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: 14px center;
-    border: 1px solid #1c2531;
-    border-radius: 12px;
-    color: #e6edf3;
-    padding: 13px 16px 13px 42px;
-    font-size: 14px;
-    font-family: inherit;
-    outline: none;
-    transition:
-        border-color 0.15s ease,
-        box-shadow 0.15s ease;
-}
-
-.recherche input[type="search"]::placeholder {
-    color: #5c6b7a;
-}
-
-.recherche input[type="search"]:focus {
-    border-color: #4a9eff;
-    box-shadow: 0 0 0 3px rgba(74, 158, 255, 0.15);
-}
-
-#search-status {
-    margin: 8px 0 0 4px;
-    font-size: 12px;
-    min-height: 1.2em;
-}
-
-/* Résultats : menu déroulant par-dessus la liste */
-#search-results {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 100%;
-    z-index: 20;
-    margin: 4px 0 0;
-    padding: 6px;
-    gap: 2px;
-    background-color: #10151d;
-    border: 1px solid #263341;
-    border-radius: 12px;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
-    max-height: 320px;
-    overflow-y: auto;
-}
-
-#search-results:empty {
-    display: none;
-}
-
-#search-results li,
-#search-results li:hover {
-    background: none;
-    border: none;
-    border-radius: 8px;
-}
-
-#search-results li > a {
-    padding: 10px 12px;
-    border-radius: 8px;
-    font-size: 14px;
-}
-
-#search-results li > a:hover,
-#search-results li > a:focus-visible {
-    background-color: #16283d;
-}
-
-/* --------------------------------------------------
-   10. PAGINATION
--------------------------------------------------- */
-main nav {
-    margin-top: 24px;
-}
-
-ul.pagination {
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    margin: 0;
-}
-
-ul.pagination li,
-ul.pagination li:hover {
-    background: none;
-    border: none;
-}
-
-ul.pagination li > a,
-ul.pagination li > span {
-    display: inline-block;
-    width: auto;
-    padding: 8px 14px;
-    border: 1px solid #263341;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    color: #8fa3b8;
-}
-
-ul.pagination li > a:hover {
-    border-color: #4a9eff;
-    color: #4a9eff;
-}
-
-ul.pagination li.disabled > span {
-    opacity: 0.4;
-}
-
-/* --------------------------------------------------
-   11. COMPOSANTS (badges, messages, états)
--------------------------------------------------- */
-.badge {
-    font-size: 12px;
-    padding: 4px 10px;
-    border-radius: 6px;
-    background-color: #16283d;
-    color: #4a9eff;
-    white-space: nowrap;
-    font-weight: 500;
-}
-
-.message-succes,
-.message-erreur {
-    border-radius: 10px;
-    padding: 12px 16px;
-    margin-bottom: 20px;
-    font-size: 14px;
-}
-
-.message-succes {
-    background-color: rgba(46, 160, 67, 0.1);
-    border: 1px solid rgba(46, 160, 67, 0.35);
-    color: #7ee2a8;
-}
-
-.message-erreur {
-    background-color: #2a1418;
-    border: 1px solid #4a1f26;
-    color: #ff9a9a;
-}
-
-.etat-vide {
-    text-align: center;
-    padding: 40px 16px;
-    color: #7d8b9a;
-    background-color: #131a24;
-    border: 1px dashed #1c2531;
-    border-radius: 12px;
-}
-
-/* --------------------------------------------------
-   12. RÉCITS
--------------------------------------------------- */
-.grille-recits {
-    display: flex;
-    gap: 20px;
-    align-items: flex-start;
-}
-
-.colonne-recits {
-    flex: 1;
-    min-width: 0;
-}
-
-.colonne-recits h2 {
-    font-size: 16px;
-    margin-top: 0;
-    margin-bottom: 12px;
-    border-bottom: 1px solid #1c2531;
-    padding-bottom: 8px;
-}
-
-.liste-recits li {
-    display: block;
-    line-height: 1.5;
-    font-size: 13px;
-    background: none;
-    border: none;
-    padding: 6px 0;
-}
-
-.liste-recits strong {
-    color: #4a9eff;
-}
-
-/* Plus spécifique que .liste-recits li, sinon le fond et la bordure sont écrasés */
-.liste-recits li.recit-complete {
-    background-color: rgba(46, 160, 67, 0.1);
-    border: 1px solid rgba(46, 160, 67, 0.35);
-    border-left: 4px solid #2ea043;
-    border-radius: 8px;
-    padding: 8px 10px;
-}
-
-.badge-complete {
-    display: inline-block;
-    margin-left: 6px;
-    padding: 2px 10px;
-    background-color: #2ea043;
-    color: #ffffff;
-    border-radius: 999px;
-    font-size: 11px;
+    left: 1rem;
+    top: -4rem;
+    z-index: 50;
+    padding: 0.5rem 1rem;
+    border-radius: var(--rayon-petit);
+    background: var(--accent);
+    color: var(--sur-accent);
     font-weight: 700;
-    white-space: nowrap;
 }
 
-.liste-recits ul.criteres {
-    list-style: disc;
-    margin: 6px 0 0 18px;
-    gap: 2px;
+.lien-evitement:focus {
+    top: 0.75rem;
 }
 
-.liste-recits ul.criteres li,
-.liste-recits ul.criteres li:hover {
-    display: list-item;
-    background: none;
-    border: none;
-    padding: 0;
-    font-size: 12px;
-    color: #8fa3b8;
-}
-
-/* --------------------------------------------------
-   13. SÉRIES ENREGISTRÉES (logged sets)
--------------------------------------------------- */
-.serie {
-    background-color: #131a24;
-    border: 1px solid #1c2531;
-    border-radius: 12px;
-    padding: 14px 18px;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.serie-info {
-    font-size: 14px;
-    color: #e6edf3;
-}
-
-.serie-badge {
-    font-size: 12px;
-    padding: 3px 10px;
-    border-radius: 6px;
-    background-color: #16283d;
-    color: #4a9eff;
-    font-weight: 600;
-    margin-right: 8px;
-}
-
-/* --------------------------------------------------
-   14. PAGES CONNEXION / INSCRIPTION
--------------------------------------------------- */
-/* Carte centrée qui contient le titre et le formulaire */
-.carte-auth {
-    width: 100%;
-    max-width: 420px;
-    margin: 24px auto 0;
-    padding: 32px 28px;
-    background-color: #131a24;
-    border: 1px solid #1c2531;
-    border-radius: 16px;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
-}
-
-.carte-auth h1 {
-    text-align: center;
-}
-
-.carte-auth .sous-titre {
-    text-align: center;
-    font-size: 14px;
-    margin-bottom: 20px;
-}
-
-/* Dans la carte, le formulaire n'a plus besoin de son propre cadre */
-.carte-auth form.formulaire {
-    max-width: none;
-    margin: 0;
-    padding: 0;
-    background: none;
-    border: none;
-}
-
-.carte-auth input {
-    padding: 11px 14px;
-    font-size: 14px;
-}
-
-/* Case reCAPTCHA centrée */
-.carte-auth .g-recaptcha {
-    display: flex;
-    justify-content: center;
-    margin-top: 16px;
-}
-
-.lien-bas {
-    margin: 20px 0 0;
-    text-align: center;
-    font-size: 13px;
-}
-
-.lien-bas a {
-    font-weight: 600;
-}
-
-/* --------------------------------------------------
-   15. PIED DE PAGE
--------------------------------------------------- */
-footer {
-    text-align: center;
-    padding: 22px 16px;
-    font-size: 13px;
-    color: #5c6b7a;
-    border-top: 1px solid #1c2531;
-    background-color: #0b0f14;
-    width: 100%;
-}
-
-/* --------------------------------------------------
-   16. PETIT ÉCRAN
--------------------------------------------------- */
-@media (max-width: 1180px) {
-    /* Menu trop long : les deux groupes passent l'un sous l'autre, centrés */
-    header nav {
-        justify-content: center;
-        padding: 12px 16px;
-    }
-
-    .nav-liens,
-    .nav-compte {
-        width: 100%;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-}
-
-@media (max-width: 768px) {
-    .grille-recits {
-        flex-direction: column;
-    }
-}
-
-@media (max-width: 480px) {
-    /* Mise en page */
+@media (max-width: 600px) {
     main {
-        padding: 20px 14px;
+        padding-top: 1.5rem;
     }
 
-    h1 {
-        font-size: 21px;
+    .carte,
+    .hero {
+        padding: 1.1rem;
     }
 
-    /* Navigation */
-    .nav-liens a:not(.nav-marque) {
-        padding: 6px 9px;
-        font-size: 13px;
-    }
-
-    .nav-marque {
-        width: 100%;
-        text-align: center;
-        margin: 0 0 4px;
-    }
-
-    /* Formulaires : un champ par ligne */
-    form {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    /* ...sauf ceux du menu, qui restent sur une ligne */
-    header nav form {
-        flex-direction: row;
-    }
-
-    form.formulaire {
-        padding: 18px;
-    }
-
-    input[type="number"],
-    input[type="text"],
-    input[type="email"],
-    input[type="password"] {
-        width: 100%;
-    }
-
-    /* Connexion / inscription */
     .carte-auth {
-        padding: 24px 16px;
+        padding: 1.5rem 1.25rem;
     }
 
-    /* La case reCAPTCHA fait 304 px : on la réduit un peu */
-    .carte-auth .g-recaptcha {
-        transform: scale(0.9);
-        transform-origin: center;
+    .jour.carte,
+    .seance-exercice.carte {
+        padding: 0;
     }
 
-    /* Listes : le badge passe sous le nom si besoin */
-    ul li > a {
+    .exercices > li {
+        grid-template-columns: 1fr;
+    }
+
+    .entete-page .actions {
+        width: 100%;
+    }
+
+    .liste > li {
         flex-wrap: wrap;
-        padding: 14px 16px;
     }
 
-    /* Fichier programme */
-    .fichier-actuel {
-        flex-direction: column;
-        align-items: flex-start;
+    .form-serie {
+        grid-template-columns: 1fr 1fr;
     }
 
-    .apercu-json {
-        font-size: 11px;
-        max-height: 240px;
+    .form-serie button {
+        grid-column: 1 / -1;
     }
+}
 
-    /* Recherche */
-    #search-results {
-        max-height: 260px;
-    }
-
-    /* Séries */
-    .serie {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
     }
 }

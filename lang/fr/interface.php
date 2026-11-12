@@ -5,7 +5,7 @@ return [
     'nav_home' => 'Accueil',
     'nav_workouts' => 'Mes workouts',
     'nav_stories' => 'Récits',
-    'footer' => 'Mon Application Workout',
+    'footer' => "Ton carnet d'entraînement.",
     'language' => 'Langue',
     'apply' => 'Appliquer',
 
@@ -107,4 +107,17 @@ return [
     'forbidden_title' => 'Accès refusé',
     'forbidden_text' => "Vous n'avez pas la permission d'effectuer cette action.",
     'back_home' => "Retour à l'accueil",
+
+    // Mise en page
+    'skip_to_content' => 'Aller au contenu',
+    'menu' => 'Menu',
+    'credits' => 'Icônes Lucide (ISC) · Police Barlow (OFL)',
+    'nav_saved' => 'Sauvegardés',
+    'nav_history' => 'Historique',
+    'remember_me' => 'Se souvenir de moi',
+    'no_account_yet' => 'Pas encore de compte ?',
+    'already_member' => 'Déjà membre ?',
+    'password_hint' => 'Au moins 8 caractères.',
+    'not_found_title' => 'Page introuvable',
+    'not_found_text' => "Cette page n'existe pas ou n'est pas accessible.",
 ];

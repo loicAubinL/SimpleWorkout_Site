@@ -3,24 +3,26 @@
 @section('title', __('interface.login_title'))
 
 @section('content')
-<div class="carte-auth">
+<div class="carte carte-auth">
+    <x-logo-mark :size="44" class="logo-marque" />
     <h1>{{ __('interface.login_title') }}</h1>
     <p class="sous-titre">{{ __('interface.login_subtitle') }}</p>
 
     <form method="post" action="{{ route('login.store') }}" class="formulaire">
         @csrf
+        <x-champ name="email" type="email" :label="__('interface.email')" required autofocus autocomplete="email" />
+        <x-champ name="password" type="password" :label="__('interface.password')" required autocomplete="current-password" />
 
-        <label for="email">{{ __('interface.email') }}</label>
-        <input id="email" name="email" type="email" value="{{ old('email') }}" required autofocus
-            @error('email') aria-invalid="true" aria-describedby="email-erreur" @enderror>
-        @error('email') <p id="email-erreur" class="message-erreur" role="alert">{{ $message }}</p> @enderror
+        <label class="case-a-cocher">
+            <input type="checkbox" name="remember" value="1" @checked(old('remember'))>
+            <span>{{ __('interface.remember_me') }}</span>
+        </label>
 
-        <label for="password">{{ __('interface.password') }}</label>
-        <input id="password" name="password" type="password" required>
-
-        <button type="submit" class="bouton-plein">{{ __('interface.login_button') }}</button>
+        <button type="submit" class="bouton bouton-large">
+            <x-icon name="log-in" :size="18" /> {{ __('interface.login_button') }}
+        </button>
     </form>
 
-    <p class="lien-bas"><a href="{{ route('register') }}">{{ __('interface.no_account') }}</a></p>
+    <p class="lien-bas">{{ __('interface.no_account_yet') }} <a href="{{ route('register') }}">{{ __('interface.no_account') }}</a></p>
 </div>
 @endsection
