@@ -1,6 +1,14 @@
 # SimpleWorkout_Site
 
-Application de suivi d'entraînement, refaite avec Laravel 12 dans Docker (PHP 8.2, Apache, MySQL 8.4).
+> [!IMPORTANT]
+> **Branche `test-claude-code` : test personnel de Claude Code, pas une remise scolaire.**
+> Cette branche sert à essayer Claude Code sur le projet. Elle n'est **pas** une remise
+> du cours 420-5H6-MO et ne doit pas être fusionnée dans `main`. Les remises officielles
+> restent sur `main` et sur les branches et étiquettes `projet-chapitre-XX`, qui n'ont pas été modifiées.
+
+Application de suivi d'entraînement faite avec Laravel 12 dans Docker (PHP 8.2, Apache, MySQL 8.4) :
+splits → jours → exercices, séances avec séries enregistrées, historique et progression,
+workouts publics à sauvegarder ou copier, et administration des comptes.
 
 ## Prérequis
 
@@ -12,6 +20,7 @@ Application de suivi d'entraînement, refaite avec Laravel 12 dans Docker (PHP 8
 ```powershell
 git clone https://github.com/loicAubinL/SimpleWorkout_Site.git
 cd SimpleWorkout_Site
+git switch test-claude-code
 Copy-Item .env.example .env
 ```
 
@@ -24,12 +33,37 @@ docker compose config --quiet
 docker compose up --build -d
 docker compose exec app composer install
 docker compose exec app php artisan key:generate
-docker compose exec app php artisan migrate
-docker compose exec app php artisan storage:link
+docker compose exec app php artisan migrate --seed
 ```
 
 > `key:generate` seulement à la première installation.
-> `storage:link` rend accessibles les fichiers programme (JSON) téléversés.
+> Aucun build front-end n'est nécessaire : le CSS (`public/css/app.css`), la police et les icônes sont servis tels quels.
+
+### Migrations et données de démonstration
+
+| Commande | Effet |
+| --- | --- |
+| `docker compose exec app php artisan migrate` | Applique les nouvelles migrations (garde les données) |
+| `docker compose exec app php artisan db:seed` | Ajoute les données de démo (sur une base vide) |
+| `docker compose exec app php artisan migrate:fresh --seed` | **Efface toute la base**, puis recrée tables et démo |
+| `docker compose exec app php artisan migrate:status` | État des migrations |
+
+Le seeder crée trois comptes, des splits réalistes (Push Pull Legs, Upper / Lower, Full Body, etc.)
+avec leurs jours et exercices, un workout sauvegardé et six semaines d'historique de séances pour le compte démo.
+
+> **Base séparée pour tester sans toucher à la vôtre** : créer une base vide
+> (ex. `simpleworkout_claude`) dans MySQL, mettre `DB_DATABASE=simpleworkout_claude` dans `.env`,
+> puis `php artisan config:clear` et `php artisan migrate --seed`.
+
+## Comptes de test
+
+Après le seeder (mot de passe : `password`) :
+
+| Courriel                   | Rôle        | Contenu                                                                 |
+| -------------------------- | ----------- | ----------------------------------------------------------------------- |
+| `demo@example.test`        | Membre      | Split actif PPL (public), Full Body (privé), historique, 1 sauvegarde   |
+| `alex@example.test`        | Membre      | Upper / Lower et Bras express (publics), un workout privé               |
+| `responsable@example.test` | Responsable | Accès à `/administration`                                               |
 
 ## Utilisation
 
@@ -37,7 +71,16 @@ docker compose exec app php artisan storage:link
 - MySQL (Workbench) : `127.0.0.1:3307`, identifiants de `.env`
     > Dans `.env`, garder `DB_HOST=db` et `DB_PORT=3306` : c'est le port interne au réseau Docker.
     > Le port `3307` sert seulement à se connecter depuis l'hôte (Workbench).
-- État des migrations : `docker compose exec app php artisan migrate:status`
+
+## Tests
+
+```powershell
+docker compose exec app php artisan test
+```
+
+39 tests Feature (SQLite en mémoire, aucune donnée MySQL touchée) : inscription avec reCAPTCHA simulé,
+connexion, CRUD des workouts, jours et exercices, policies (403), workouts privés et publics,
+sauvegardes et copie, séances et progression, Mon compte, administration et ses garde-fous.
 
 ## Arrêter et redémarrer
 
@@ -47,27 +90,6 @@ docker compose up -d
 ```
 
 `docker compose down -v` supprime aussi les données MySQL : à éviter sauf pour repartir d'une base vide.
-
-## Données de démonstration
-
-Sur une base locale jetable (efface toutes les données) :
-
-```powershell
-docker compose exec app php artisan migrate:fresh --seed
-```
-
-Crée deux comptes de test, 13 workouts pour le compte démo (dont un sans jour) et un workout appartenant à un autre utilisateur.
-
-Des fichiers JSON de démonstration (valides et invalides) sont dans `docs/demo/`.
-
-## Comptes de test
-
-Après `migrate:fresh --seed` (mot de passe : `password`) :
-
-| Courriel                   | Rôle                                    |
-| -------------------------- | --------------------------------------- |
-| `demo@example.test`        | Membre                                  |
-| `responsable@example.test` | Responsable (accès à `/administration`) |
 
 ## reCAPTCHA
 
@@ -81,35 +103,55 @@ RECAPTCHA_SECRET_KEY=
 
 Puis : `docker compose exec app php artisan config:clear`
 
-## Rôles et accès
+## Fonctionnalités et accès
 
-- Visiteur : accueil, workouts publics, détail d'un workout, récits, connexion, inscription.
-- Membre : en plus, Mes workouts, Mon compte, recherche, créer ; modifier et supprimer **ses** workouts seulement (sinon 403).
-- Responsable : en plus, la section `/administration`.
+- **Visiteur** : accueil, workouts publics (avec recherche), détail d'un workout **public**, récits, connexion, inscription.
+- **Membre** :
+    - CRUD complet de ses workouts (splits), de leurs jours et de leurs exercices (séries, répétitions, charge, repos, RIR, notes), avec réordonnancement ;
+    - un workout actif à la fois : il donne le **workout du jour** à l'accueil ;
+    - un workout est **privé** par défaut, et peut être rendu **public** ;
+    - **sauvegarder / retirer** un workout public (le sien ou celui d'un autre), et le **copier** dans ses workouts pour le modifier ;
+    - **séance** : enregistrer ses séries, puis « Terminer » fait passer le cycle au jour suivant ;
+    - **historique** des séances et **progression** par exercice (meilleure charge, volume, 1RM estimé, graphique) ;
+    - **Mon compte** : modifier son nom, son courriel et son mot de passe, ou supprimer son compte.
+- **Responsable** : en plus, `/administration` : consulter, créer, modifier (rôle compris) et supprimer
+  tous les comptes ; consulter, modifier et supprimer leurs workouts, jours et exercices ; créer un workout pour un compte.
+  Garde-fous : impossible de supprimer son propre compte depuis l'administration ou de retirer le dernier responsable.
+
+Sécurité : validation serveur (FormRequests), jeton CSRF sur chaque formulaire, autorisation par la policy
+`WorkoutSplitPolicy` (propriétaire, public/privé, responsable) et le middleware `EnsureManager`,
+valeurs échappées par Blade.
 
 ## Routes principales
 
-| Méthode | Adresse                          | Action                                     | Accès                         |
-| ------- | -------------------------------- | ------------------------------------------ | ----------------------------- |
-| GET     | `/`                              | Accueil (workout actif + derniers publics) | Public                        |
-| GET     | `/workouts-publics`              | Liste paginée de tous les workouts         | Public                        |
-| GET     | `/recits`                        | Page des récits                            | Public                        |
-| POST    | `/langue`                        | Changer la langue (fr / en)                | Public                        |
-| GET     | `/inscription`                   | Formulaire d'inscription                   | Non connecté (`guest`)        |
-| POST    | `/inscription`                   | Création du compte (reCAPTCHA)             | Non connecté (`guest`)        |
-| GET     | `/connexion`                     | Formulaire de connexion                    | Non connecté (`guest`)        |
-| POST    | `/connexion`                     | Connexion (6 essais par minute)            | Non connecté (`guest`)        |
-| POST    | `/deconnexion`                   | Déconnexion                                | Connecté                      |
-| GET     | `/compte`                        | Mon compte                                 | Connecté                      |
-| GET     | `/workout-splits`                | Mes workouts (liste paginée)               | Connecté                      |
-| GET     | `/workout-splits/create`         | Formulaire de création                     | Connecté                      |
-| POST    | `/workout-splits`                | Création                                   | Connecté                      |
-| GET     | `/workout-splits/{id}`           | Détail                                     | Public                        |
-| GET     | `/workout-splits/{id}/edit`      | Formulaire de modification                 | Propriétaire (policy)         |
-| PATCH   | `/workout-splits/{id}`           | Modification                               | Propriétaire (policy)         |
-| DELETE  | `/workout-splits/{id}`           | Suppression                                | Propriétaire (policy)         |
-| DELETE  | `/workout-splits/{id}/programme` | Retirer le fichier programme               | Propriétaire (policy)         |
-| GET     | `/recherche/workouts?q=`         | Recherche JSON par nom de jour             | Connecté                      |
-| GET     | `/administration`                | Liste des comptes                          | Responsable (`EnsureManager`) |
+| Méthode     | Adresse                                       | Action                                   | Accès                   |
+| ----------- | --------------------------------------------- | ---------------------------------------- | ----------------------- |
+| GET         | `/`                                           | Accueil (workout du jour si connecté)    | Public                  |
+| GET         | `/workouts-publics?q=`                        | Workouts publics avec recherche          | Public                  |
+| GET         | `/recits`                                     | Récits                                   | Public                  |
+| POST        | `/langue`                                     | Changer la langue (fr / en)              | Public                  |
+| GET / POST  | `/inscription`, `/connexion`                  | Inscription (reCAPTCHA), connexion       | Non connecté            |
+| POST        | `/deconnexion`                                | Déconnexion                              | Connecté                |
+| resource    | `/workout-splits`                             | CRUD des workouts (détail : policy view) | Connecté / propriétaire |
+| PATCH       | `/workout-splits/{id}/activer`                | Définir comme actif                      | Propriétaire            |
+| POST        | `/workout-splits/{id}/copier`                 | Copier dans mes workouts                 | Connecté (policy copy)  |
+| POST/DELETE | `/workout-splits/{id}/sauvegarde`             | Sauvegarder / retirer                    | Connecté (policy save)  |
+| GET         | `/sauvegardes`                                | Mes workouts sauvegardés                 | Connecté                |
+| resource    | `/workout-splits/{id}/days`, `/days/{id}`     | CRUD des jours (+ `/deplacer`)           | Propriétaire            |
+| resource    | `/days/{id}/exercises`, `/exercises/{id}`     | CRUD des exercices (+ `/deplacer`)       | Propriétaire            |
+| GET         | `/seance/{id}?jour=`                          | Séance du jour                           | Propriétaire            |
+| POST        | `/exercises/{id}/series`, `/seance/{id}/terminer` | Enregistrer une série, terminer       | Propriétaire            |
+| DELETE      | `/series/{id}`                                | Supprimer une série                      | Auteur de la série      |
+| GET         | `/historique`, `/progression/{exercice}`      | Historique et progression                | Connecté / propriétaire |
+| GET         | `/recherche/workouts?q=`                      | Recherche JSON dans mes workouts         | Connecté                |
+| GET/PATCH/PUT/DELETE | `/compte`, `/compte/mot-de-passe`    | Mon compte                               | Connecté                |
+| resource    | `/administration/comptes`                     | CRUD des comptes                         | Responsable             |
+| GET / POST  | `/administration/comptes/{id}/workouts`       | Créer un workout pour un compte          | Responsable             |
 
 Vérifier la liste réelle : `docker compose exec app php artisan route:list --except-vendor`
+
+## Crédits
+
+- Logo SimpleWorkout : SVG fait maison (`resources/views/components/logo-mark.blade.php`, `public/favicon.svg`).
+- Icônes : [Lucide](https://lucide.dev) v0.460.0, licence ISC (`public/vendor/lucide/LICENSE`), intégrées en SVG.
+- Police des titres : Barlow Condensed, SIL Open Font License (`public/fonts/OFL.txt`), hébergée localement.
