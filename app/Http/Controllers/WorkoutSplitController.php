@@ -62,7 +62,7 @@ class WorkoutSplitController extends Controller
         }
 
         return redirect()->route('workout-splits.show', $split)
-            ->with('status', 'Workout créé.');
+            ->with('status', __('interface.created'));
     }
     /**
      * Display the specified resource.
@@ -127,7 +127,7 @@ class WorkoutSplitController extends Controller
         }
 
         return redirect()->route('workout-splits.show', $workoutSplit)
-            ->with('status', 'Workout modifié.');
+            ->with('status', __('interface.updated'));
     }
     /**
      * Remove the specified resource from storage.
@@ -144,7 +144,7 @@ class WorkoutSplitController extends Controller
         }
 
         return redirect()->route('workout-splits.index')
-            ->with('status', 'Workout supprimé.');
+            ->with('status', __('interface.deleted'));
     }
 
     private function stockerProgramme(?UploadedFile $fichier): ?string
