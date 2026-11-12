@@ -450,37 +450,37 @@ button.bouton,
     transform: translateY(1px);
 }
 
-.bouton-secondaire {
+.bouton.bouton-secondaire {
     background: transparent;
     border-color: var(--bordure);
     color: var(--texte);
 }
 
-.bouton-secondaire:hover {
+.bouton.bouton-secondaire:hover {
     background: var(--surface-2);
     border-color: var(--texte-3);
     color: var(--texte);
 }
 
-.bouton-fantome {
+.bouton.bouton-fantome {
     background: transparent;
     border-color: transparent;
     color: var(--texte-2);
 }
 
-.bouton-fantome:hover {
+.bouton.bouton-fantome:hover {
     background: var(--surface-2);
     border-color: transparent;
     color: var(--texte);
 }
 
-.bouton-danger {
+.bouton.bouton-danger {
     background: transparent;
     border-color: rgb(255 107 107 / 0.4);
     color: var(--danger);
 }
 
-.bouton-danger:hover {
+.bouton.bouton-danger:hover {
     background: var(--danger-doux);
     border-color: var(--danger);
     color: var(--danger);
@@ -1256,7 +1256,7 @@ th.nombre {
 
 .stats {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 96px), 1fr));
     gap: 1rem;
     margin-bottom: 1.5rem;
 }
