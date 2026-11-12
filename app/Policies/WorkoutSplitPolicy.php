@@ -4,62 +4,63 @@ namespace App\Policies;
 
 use App\Models\User;
 use App\Models\WorkoutSplit;
-use Illuminate\Auth\Access\Response;
 
 class WorkoutSplitPolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * Le responsable peut consulter, modifier et supprimer tous les workouts.
      */
-    public function viewAny(User $user): bool
+    public function before(?User $user, string $ability): ?bool
     {
-        return false;
+        if ($user?->isManager() && in_array($ability, ['view', 'update', 'delete'], true)) {
+            return true;
+        }
+
+        return null;
     }
 
     /**
-     * Determine whether the user can view the model.
+     * Un workout public est visible par tous (même un visiteur) ; un workout privé, par son propriétaire.
      */
-    public function view(User $user, WorkoutSplit $workoutSplit): bool
+    public function view(?User $user, WorkoutSplit $workoutSplit): bool
     {
-        return false;
+        return $workoutSplit->is_public || $workoutSplit->user_id === $user?->id;
     }
 
     /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can update the model.
+     * Modifier le workout, ses jours et ses exercices : propriétaire seulement.
      */
     public function update(User $user, WorkoutSplit $workoutSplit): bool
     {
         return $workoutSplit->user_id === $user->id;
     }
-    /**
-     * Determine whether the user can delete the model.
-     */
+
     public function delete(User $user, WorkoutSplit $workoutSplit): bool
     {
         return $this->update($user, $workoutSplit);
     }
 
     /**
-     * Determine whether the user can restore the model.
+     * Sauvegarder dans sa liste : seulement un workout public (le sien ou celui d'un autre).
      */
-    public function restore(User $user, WorkoutSplit $workoutSplit): bool
+    public function save(User $user, WorkoutSplit $workoutSplit): bool
     {
-        return false;
+        return $workoutSplit->is_public;
     }
 
     /**
-     * Determine whether the user can permanently delete the model.
+     * Copier dans ses workouts : tout workout qu'on a le droit de voir.
      */
-    public function forceDelete(User $user, WorkoutSplit $workoutSplit): bool
+    public function copy(User $user, WorkoutSplit $workoutSplit): bool
     {
-        return false;
+        return $this->view($user, $workoutSplit);
+    }
+
+    /**
+     * Faire une séance : seulement sur ses propres workouts.
+     */
+    public function train(User $user, WorkoutSplit $workoutSplit): bool
+    {
+        return $workoutSplit->user_id === $user->id;
     }
 }

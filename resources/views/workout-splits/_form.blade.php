@@ -1,47 +1,22 @@
 @csrf
 
-<label for="name">{{ __('interface.name') }}</label>
-<input type="text" id="name" name="name"
-    value="{{ old('name', $split?->name) }}"
-    @error('name') aria-invalid="true" aria-describedby="name-erreur" @enderror>
-@error('name')
-<p id="name-erreur" class="message-erreur" role="alert">{{ $message }}</p>
-@enderror
+<x-champ name="name" :label="__('interface.name')" :value="$split?->name" required maxlength="255"
+    :placeholder="__('interface.split_name_placeholder')" />
 
-@if ($split?->program_path)
-<div class="fichier-actuel">
-    <span class="aide">
-        {{ __('interface.current_file') }}
-        <a href="{{ Storage::disk('public')->url($split->program_path) }}" download>{{ __('interface.download') }}</a>.
-        {{ __('interface.replace_hint') }}
-    </span>
-    <button type="submit" form="supprimer-programme" class="bouton-danger bouton-poubelle"
-        aria-label="{{ __('interface.remove_file') }}" title="{{ __('interface.remove_file') }}">🗑</button>
-</div>
-@endif
-
-<label for="program">{{ __('interface.program_file') }}</label>
-<div class="champ-fichier">
-    <input type="file" id="program" name="program" accept=".json,application/json"
-        @error('program') aria-invalid="true" aria-describedby="program-erreur" @enderror>
-    <label for="program" class="bouton-fichier">{{ __('interface.choose_file') }}</label>
-    <span class="nom-fichier" data-empty="{{ __('interface.no_file_chosen') }}">{{ __('interface.no_file_chosen') }}</span>
-</div>
-@error('program')
-<p id="program-erreur" class="message-erreur" role="alert">{{ $message }}</p>
-@enderror
-
-@push('scripts')
-<script src="{{ asset('js/fichier.js') }}" defer></script>
-@endpush
+<x-champ name="description" type="textarea" :label="__('interface.description')" :value="$split?->description"
+    maxlength="1000" rows="3" :aide="__('interface.description_hint')" />
 
 <label class="case-a-cocher">
-    <input type="checkbox" name="is_active" value="1"
-        @checked(old('is_active', $split?->is_active))>
-    {{ __('interface.is_active') }}
+    <input type="checkbox" name="is_active" value="1" @checked(old('is_active', $split?->is_active))>
+    <span><strong>{{ __('interface.is_active') }}</strong><span>{{ __('interface.is_active_hint') }}</span></span>
+</label>
+
+<label class="case-a-cocher">
+    <input type="checkbox" name="is_public" value="1" @checked(old('is_public', $split?->is_public))>
+    <span><strong>{{ __('interface.is_public') }}</strong><span>{{ __('interface.is_public_hint') }}</span></span>
 </label>
 
 <div class="actions">
-    <button type="submit">{{ __('interface.save') }}</button>
-    <a href="{{ route('workout-splits.index') }}">{{ __('interface.cancel') }}</a>
+    <button type="submit" class="bouton"><x-icon name="save" :size="18" /> {{ __('interface.save') }}</button>
+    <a href="{{ $split ? route('workout-splits.show', $split) : route('workout-splits.index') }}" class="bouton bouton-fantome">{{ __('interface.cancel') }}</a>
 </div>

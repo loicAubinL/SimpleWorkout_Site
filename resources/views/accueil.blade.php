@@ -23,6 +23,10 @@
 @endauth
 
 <h2>{{ __('interface.latest_public') }}</h2>
-@include('workout-splits._liste-publique', ['splits' => $derniers])
+<div class="grille">
+    @foreach ($derniers as $split)
+    <x-carte-split :split="$split" avec-auteur />
+    @endforeach
+</div>
 <a href="{{ route('workouts.publics') }}" class="bouton">{{ __('interface.see_all_public') }}</a>
 @endsection

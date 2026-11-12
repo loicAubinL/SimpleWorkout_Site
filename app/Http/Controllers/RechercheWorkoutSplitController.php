@@ -19,7 +19,10 @@ class RechercheWorkoutSplitController extends Controller
 
         $splits = $user->workoutSplits()
             ->where(function ($requete) use ($terme) {
-                $requete->whereHas('workoutDays', fn($jours) => $jours->where('name', 'like', '%' . $terme . '%'));
+                $motif = '%' . $terme . '%';
+                $requete->where('name', 'like', $motif)
+                    ->orWhereHas('workoutDays', fn($jours) => $jours->where('name', 'like', $motif))
+                    ->orWhereHas('exercises', fn($exercices) => $exercices->where('exercises.name', 'like', $motif));
             })
             ->withCount('workoutDays')
             ->orderBy('name')
@@ -30,7 +33,7 @@ class RechercheWorkoutSplitController extends Controller
             'data' => $splits->map(fn(WorkoutSplit $split) => [
                 'id' => $split->id,
                 'label' => $split->name,
-                'details' => __('interface.days_count', ['count' => $split->workout_days_count]),
+                'details' => trans_choice('interface.days_count', $split->workout_days_count),
                 'url' => route('workout-splits.show', $split),
             ]),
         ]);

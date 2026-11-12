@@ -2,167 +2,133 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Http\Requests\EnregistrerWorkoutSplitRequest;
 use App\Models\WorkoutSplit;
 use Illuminate\Contracts\View\View;
-use App\Http\Requests\EnregistrerWorkoutSplitRequest;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
-use Throwable;
+use Illuminate\Support\Facades\Storage;
 
 class WorkoutSplitController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request): View
     {
         $splits = $request->user()
             ->workoutSplits()
-            ->withCount('workoutDays')
+            ->withCount(['workoutDays', 'exercises'])
+            ->orderByDesc('is_active')
             ->latest()
-            ->paginate(10);
+            ->paginate(12);
 
         return view('workout-splits.index', compact('splits'));
     }
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create(): View
     {
         return view('workout-splits.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(EnregistrerWorkoutSplitRequest $request): RedirectResponse
     {
-        $donnees = $request->safe()->except('program');
+        $donnees = $request->validated();
         $user = $request->user();
-        $chemin = $this->stockerProgramme($request->file('program'));
 
-        try {
-            $split = DB::transaction(function () use ($user, $donnees, $chemin) {
-                if ($donnees['is_active']) {
-                    $user->workoutSplits()->update(['is_active' => false]);
-                }
-
-                return $user->workoutSplits()->create([...$donnees, 'program_path' => $chemin]);
-            });
-        } catch (Throwable $exception) {
-            if ($chemin) {
-                Storage::disk('public')->delete($chemin);
+        $split = DB::transaction(function () use ($user, $donnees) {
+            if ($donnees['is_active']) {
+                $user->workoutSplits()->update(['is_active' => false]);
             }
-            throw $exception;
-        }
+
+            return $user->workoutSplits()->create($donnees);
+        });
 
         return redirect()->route('workout-splits.show', $split)
             ->with('status', __('interface.created'));
     }
-    /**
-     * Display the specified resource.
-     */
-    public function show(WorkoutSplit $workoutSplit): View
+
+    public function show(Request $request, WorkoutSplit $workoutSplit): View
     {
-        $workoutSplit->load(['user:id,name', 'workoutDays' => fn($q) => $q->orderBy('position')]);
+        Gate::authorize('view', $workoutSplit);
 
+        $workoutSplit->load(['user:id,name', 'workoutDays.exercises'])
+            ->loadCount('savedBy');
 
-        $apercu = null;
-        if ($workoutSplit->program_path && Storage::disk('public')->exists($workoutSplit->program_path)) {
-            $apercu = json_encode(
-                json_decode(Storage::disk('public')->get($workoutSplit->program_path)),
-                JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
-            );
-        }
+        $user = $request->user();
 
-        return view('workout-splits.show', ['split' => $workoutSplit, 'apercu' => $apercu]);
+        return view('workout-splits.show', [
+            'split' => $workoutSplit,
+            'estSauvegarde' => $user ? $user->savedWorkouts()->whereKey($workoutSplit->id)->exists() : false,
+            'jourCourant' => $workoutSplit->currentDay(),
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(WorkoutSplit $workoutSplit): View
     {
         Gate::authorize('update', $workoutSplit);
 
         return view('workout-splits.edit', ['split' => $workoutSplit]);
     }
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(EnregistrerWorkoutSplitRequest $request, WorkoutSplit $workoutSplit): RedirectResponse
     {
         Gate::authorize('update', $workoutSplit);
-        $donnees = $request->safe()->except('program');
-        $nouveauChemin = $this->stockerProgramme($request->file('program'));
-        $ancienChemin = $workoutSplit->program_path;
+        $donnees = $request->validated();
 
-        try {
-            DB::transaction(function () use ($workoutSplit, $donnees, $nouveauChemin) {
-                if ($donnees['is_active']) {
-                    $workoutSplit->user->workoutSplits()
-                        ->whereKeyNot($workoutSplit->id)
-                        ->update(['is_active' => false]);
-                }
-
-                $workoutSplit->update([
-                    ...$donnees,
-                    ...($nouveauChemin ? ['program_path' => $nouveauChemin] : []),
-                ]);
-            });
-        } catch (Throwable $exception) {
-            if ($nouveauChemin) {
-                Storage::disk('public')->delete($nouveauChemin);
+        DB::transaction(function () use ($workoutSplit, $donnees) {
+            if ($donnees['is_active']) {
+                $this->desactiverLesAutres($workoutSplit);
             }
-            throw $exception;
-        }
 
-        if ($nouveauChemin && $ancienChemin) {
-            Storage::disk('public')->delete($ancienChemin);
-        }
+            $workoutSplit->update($donnees);
+        });
 
         return redirect()->route('workout-splits.show', $workoutSplit)
             ->with('status', __('interface.updated'));
     }
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(WorkoutSplit $workoutSplit): RedirectResponse
+
+    public function destroy(Request $request, WorkoutSplit $workoutSplit): RedirectResponse
     {
         Gate::authorize('delete', $workoutSplit);
-        $chemin = $workoutSplit->program_path;
+        $proprietaire = $workoutSplit->user_id;
+        $ancienFichier = $workoutSplit->program_path;
 
         $workoutSplit->delete();
 
-        if ($chemin) {
-            Storage::disk('public')->delete($chemin);
+        // Fichier JSON hérité du chapitre 8, s'il existe encore.
+        if ($ancienFichier) {
+            Storage::disk('public')->delete($ancienFichier);
+        }
+
+        // Un responsable qui supprime le workout d'un autre compte revient à la fiche de ce compte.
+        if ($proprietaire !== $request->user()->id && $request->user()->isManager()) {
+            return redirect()->route('admin.users.show', $proprietaire)
+                ->with('status', __('interface.deleted'));
         }
 
         return redirect()->route('workout-splits.index')
             ->with('status', __('interface.deleted'));
     }
 
-    private function stockerProgramme(?UploadedFile $fichier): ?string
-    {
-        return $fichier?->storeAs('programmes', Str::random(40) . '.json', 'public');
-    }
-
-    public function destroyProgram(WorkoutSplit $workoutSplit): RedirectResponse
+    /**
+     * Définir comme workout actif (un seul à la fois par utilisateur).
+     */
+    public function activate(WorkoutSplit $workoutSplit): RedirectResponse
     {
         Gate::authorize('update', $workoutSplit);
-        $chemin = $workoutSplit->program_path;
 
-        if ($chemin) {
-            $workoutSplit->update(['program_path' => null]);
-            Storage::disk('public')->delete($chemin);
-        }
+        DB::transaction(function () use ($workoutSplit) {
+            $this->desactiverLesAutres($workoutSplit);
+            $workoutSplit->update(['is_active' => true]);
+        });
 
-        return redirect()->route('workout-splits.edit', $workoutSplit)
-            ->with('status', __('interface.file_removed'));
+        return back()->with('status', __('interface.activated'));
+    }
+
+    private function desactiverLesAutres(WorkoutSplit $workoutSplit): void
+    {
+        WorkoutSplit::where('user_id', $workoutSplit->user_id)
+            ->whereKeyNot($workoutSplit->id)
+            ->update(['is_active' => false]);
     }
 }
