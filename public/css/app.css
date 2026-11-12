@@ -1562,3 +1562,11 @@ figure {
 .icone {
     max-width: none;
 }
+
+.recherche-admin {
+    max-width: 760px;
+}
+
+.recherche-admin select {
+    width: auto;
+}

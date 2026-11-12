@@ -98,7 +98,7 @@ return [
 
     // Admin
     'admin' => 'Administration',
-    'admin_text' => 'Liste des comptes de l\'application.',
+    'admin_text' => "{1} :count compte dans l'application.|[2,*] :count comptes dans l'application.",
     'role_member' => 'Membre',
     'role_manager' => 'Responsable',
     'workouts_count' => '{0} Aucun workout|{1} :count workout|[2,*] :count workouts',
@@ -255,4 +255,37 @@ return [
     'best_set' => 'Meilleure série',
     'volume' => 'Volume',
     'no_progress' => 'Aucune série enregistrée pour cet exercice.',
+
+    // Mon compte
+    'member_since' => 'Membre depuis le :date',
+    'profile' => 'Profil',
+    'profile_updated' => 'Profil mis à jour.',
+    'change_password' => 'Changer le mot de passe',
+    'current_password' => 'Mot de passe actuel',
+    'new_password' => 'Nouveau mot de passe',
+    'password_updated' => 'Mot de passe modifié.',
+    'delete_account' => 'Supprimer mon compte',
+    'delete_account_text' => 'Tes workouts, tes séries enregistrées et tes sauvegardes seront supprimés définitivement.',
+    'confirm_delete_account' => 'Supprimer définitivement ton compte et toutes tes données ?',
+    'confirm_with_password' => 'Confirme avec ton mot de passe',
+    'account_deleted' => 'Ton compte a été supprimé.',
+    'last_manager' => 'Impossible : il doit rester au moins un responsable.',
+
+    // Administration
+    'accounts' => 'Comptes',
+    'create_account' => 'Créer un compte',
+    'edit_account' => 'Modifier le compte',
+    'search_accounts' => 'Rechercher par nom ou courriel',
+    'role' => 'Rôle',
+    'all_roles' => 'Tous les rôles',
+    'workouts' => 'Workouts',
+    'actions' => 'Actions',
+    'you' => 'toi',
+    'view' => 'Voir',
+    'user_created' => 'Compte créé.',
+    'user_updated' => 'Compte modifié.',
+    'user_deleted' => 'Compte supprimé.',
+    'cannot_delete_self' => 'Tu ne peux pas supprimer ton propre compte ici. Passe par Mon compte.',
+    'password_keep_hint' => 'Laisser vide pour garder le mot de passe actuel.',
+    'confirm_delete_user' => 'Supprimer le compte de :name, avec ses workouts et ses séries ?',
 ];

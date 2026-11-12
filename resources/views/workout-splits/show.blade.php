@@ -11,6 +11,8 @@
 @section('content')
 @if ($estProprietaire)
 <a href="{{ route('workout-splits.index') }}" class="fil"><x-icon name="arrow-left" :size="16" /> {{ __('interface.my_workouts') }}</a>
+@elseif (auth()->user()?->isManager())
+<a href="{{ route('admin.users.show', $split->user_id) }}" class="fil"><x-icon name="arrow-left" :size="16" /> {{ $split->user->name }}</a>
 @else
 <a href="{{ route('workouts.publics') }}" class="fil"><x-icon name="arrow-left" :size="16" /> {{ __('interface.public_workouts') }}</a>
 @endif

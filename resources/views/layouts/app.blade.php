@@ -47,6 +47,12 @@
             <span>{{ session('status') }}</span>
         </p>
         @endif
+        @error('compte')
+        <p class="message message-alerte" role="alert">
+            <x-icon name="x" />
+            <span>{{ $message }}</span>
+        </p>
+        @enderror
         @yield('content')
     </main>
 

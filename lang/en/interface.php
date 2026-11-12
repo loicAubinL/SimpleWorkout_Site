@@ -98,7 +98,7 @@ return [
 
     // Admin
     'admin' => 'Administration',
-    'admin_text' => 'List of application accounts.',
+    'admin_text' => '{1} :count account in the app.|[2,*] :count accounts in the app.',
     'role_member' => 'Member',
     'role_manager' => 'Manager',
     'workouts_count' => '{0} No workouts|{1} :count workout|[2,*] :count workouts',
@@ -255,4 +255,37 @@ return [
     'best_set' => 'Best set',
     'volume' => 'Volume',
     'no_progress' => 'No sets logged for this exercise yet.',
+
+    // My account
+    'member_since' => 'Member since :date',
+    'profile' => 'Profile',
+    'profile_updated' => 'Profile updated.',
+    'change_password' => 'Change password',
+    'current_password' => 'Current password',
+    'new_password' => 'New password',
+    'password_updated' => 'Password changed.',
+    'delete_account' => 'Delete my account',
+    'delete_account_text' => 'Your workouts, logged sets and saved workouts will be permanently deleted.',
+    'confirm_delete_account' => 'Permanently delete your account and all your data?',
+    'confirm_with_password' => 'Confirm with your password',
+    'account_deleted' => 'Your account has been deleted.',
+    'last_manager' => 'Not allowed: at least one manager must remain.',
+
+    // Administration
+    'accounts' => 'Accounts',
+    'create_account' => 'Create an account',
+    'edit_account' => 'Edit account',
+    'search_accounts' => 'Search by name or email',
+    'role' => 'Role',
+    'all_roles' => 'All roles',
+    'workouts' => 'Workouts',
+    'actions' => 'Actions',
+    'you' => 'you',
+    'view' => 'View',
+    'user_created' => 'Account created.',
+    'user_updated' => 'Account updated.',
+    'user_deleted' => 'Account deleted.',
+    'cannot_delete_self' => 'You cannot delete your own account here. Use My account.',
+    'password_keep_hint' => 'Leave empty to keep the current password.',
+    'confirm_delete_user' => 'Delete the account of :name, with its workouts and sets?',
 ];

@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccueilController;
-use App\Http\Controllers\AdministrationController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\HistoriqueController;
 use App\Http\Controllers\SeanceController;
 use App\Http\Controllers\AuthController;
@@ -98,6 +98,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/recherche/workouts', RechercheWorkoutSplitController::class)->name('recherche.workouts');
 
     Route::get('/compte', [CompteController::class, 'show'])->name('account.show');
+    Route::patch('/compte', [CompteController::class, 'update'])->name('account.update');
+    Route::put('/compte/mot-de-passe', [CompteController::class, 'updatePassword'])->name('account.password');
+    Route::delete('/compte', [CompteController::class, 'destroy'])->name('account.destroy');
 });
 
 /*
@@ -105,7 +108,16 @@ Route::middleware('auth')->group(function () {
 | Administration (responsable)
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth', EnsureManager::class])->group(function () {
-    Route::get('/administration', [AdministrationController::class, 'index'])
-        ->name('admin.index');
-});
+Route::middleware(['auth', EnsureManager::class])
+    ->prefix('administration')
+    ->name('admin.')
+    ->group(function () {
+        Route::redirect('/', '/administration/comptes')->name('index');
+
+        Route::resource('comptes', UserController::class)
+            ->parameters(['comptes' => 'user'])
+            ->names('users');
+
+        Route::get('/comptes/{user}/workouts/create', [UserController::class, 'createSplit'])->name('users.splits.create');
+        Route::post('/comptes/{user}/workouts', [UserController::class, 'storeSplit'])->name('users.splits.store');
+    });
